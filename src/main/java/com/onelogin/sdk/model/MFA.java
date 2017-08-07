@@ -8,10 +8,10 @@ import org.json.JSONObject;
 
 public class MFA {
 
-	protected String stateToken;
-	protected String callbackUrl;
-	protected User user;
-	protected List<Device> devices;
+	public String stateToken;
+	public String callbackUrl;
+	public User user;
+	public List<Device> devices;
 
 	public MFA(JSONObject data) {
 		stateToken = data.optString("state_token", null);

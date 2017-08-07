@@ -3,7 +3,6 @@ package com.onelogin.sdk.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,5 +23,21 @@ public class SessionTokenMFAInfo {
 			JSONObject jobj = dataArray.getJSONObject(i);
 			devices.add(new Device(jobj));
 		}
+	}
+
+	public String getStateToken() {
+		return stateToken;
+	}
+
+	public String getCallbackUrl()	{
+		return callbackUrl;
+	}
+
+	public User getUser()	{
+		return user;
+	}
+
+	public List<Device> getDevices()	{
+		return devices;
 	}
 }

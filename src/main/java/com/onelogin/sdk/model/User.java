@@ -137,21 +137,21 @@ public class User {
 		userParams.put("username", username);
 		userParams.put("firstname", firstname);
 		userParams.put("lastname", lastname);
-		userParams.put("distinguishedName", distinguishedName);
+		userParams.put("distinguished_name", distinguishedName);
 		userParams.put("phone", phone);
 		userParams.put("company", company);
 		userParams.put("department", department);
 		userParams.put("status", status);
-		userParams.put("memberOf", memberOf);
+		userParams.put("member_of", memberOf);
 		userParams.put("samaccountname", samaccountname);
 		userParams.put("invalid_login_attempts", samaccountname);
 		userParams.put("userprincipalname", userprincipalname);
-		userParams.put("group_id", groupId);
+		userParams.put("group_id", (this.getClass().getField("groupId") == null)? null: Long.toString(groupId));
 		userParams.put("openid_name", openidName);
 		userParams.put("locale_code", localeCode);
 		userParams.put("notes", notes);
 		userParams.put("openid_name", openidName);
-		userParams.put("directory_id", directoryId);
+		userParams.put("directory_id", (this.getClass().getField("directoryId") == null)? null: Long.toString(directoryId));
 		userParams.put("manager_ad_id", (this.getClass().getField("managerAdId") == null)? null: Long.toString(managerAdId));
 		
 		return userParams;

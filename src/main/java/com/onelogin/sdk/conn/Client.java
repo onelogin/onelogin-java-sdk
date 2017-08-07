@@ -113,7 +113,7 @@ public class Client {
 	////////////////////////////////
 
 	/**
-  	 * Generates an access token and refresh token that you can use to call Onelogin's API.
+  	 * Generates an access token and refresh token that you may use to call Onelogin's API methods.
   	 *
   	 * @throws OAuthSystemException
 	 * @throws OAuthProblemException
@@ -247,11 +247,7 @@ public class Client {
 	 */
 	public RateLimit getRateLimit() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -282,13 +278,13 @@ public class Client {
 	////////////////////
 
 	/**
-  	 * Gets a paginated list of User resources (50 users per page).
+  	 * Gets a list of User resources. (if no limit provided, by default get 50 elements)
   	 *
 	 * @param queryParameters
 	 *            Parameters to filter the result of the list
   	 *
   	 * @return List of User
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -299,18 +295,18 @@ public class Client {
 	public List<User> getUsers(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
 		int limit = 50;
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USERS_URL));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-			url.addParameter(parameter.getKey(), parameter.getValue());
 			if (parameter.getKey() == "limit") {
 				limit = Integer.parseInt(parameter.getValue());
+				if (limit >= 50) {
+					// We don't add limit if is more than 50, API call have that limitation
+					continue;
+				}
 			}
+			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
@@ -323,8 +319,9 @@ public class Client {
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
+		String afterCursor = null;
 		List<User> users = new ArrayList<User>();
-		while (oAuthResponse == null || (users.size() < limit && oAuthResponse.getAfterCursor() != null)) {
+		while (oAuthResponse == null || (users.size() < limit && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
@@ -335,20 +332,31 @@ public class Client {
 						users.add(user);					
 					}					
 				}
+
+				afterCursor = oAuthResponse.getAfterCursor();
+				if (!afterCursor.isEmpty()) {
+					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
+					bearerRequest.setLocationUri(url.toString());
+				}
 			} else {
 				error = oAuthResponse.getError();
 				errorDescription = oAuthResponse.getErrorDescription();
 				break;
 			}
 		}
+		
+		if (!users.isEmpty()) {
+			users = users.subList(0, limit);
+		}
+		
 		return users;
 	}
 
 	/**
-  	 * Gets a paginated list of User resources (50 users per page).
+  	 * Gets a list of User resources (50 users).
   	 *
   	 * @return List of User
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -368,7 +376,7 @@ public class Client {
 	 *            Id of the user
   	 *
   	 * @return User
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -378,11 +386,7 @@ public class Client {
 	 */
 	public User getUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USER_URL, Long.toString(id)));		
 
@@ -414,7 +418,7 @@ public class Client {
 	 *            Id of the user
   	 *
   	 * @return List of Apps
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -424,11 +428,7 @@ public class Client {
 	 */
 	public List<App> getUserApps(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_APPS_FOR_USER_URL, Long.toString(id)));		
 
@@ -466,7 +466,7 @@ public class Client {
 	 *            Id of the user
   	 *
   	 * @return List of Role Ids
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -476,11 +476,7 @@ public class Client {
 	 */
 	public List<Integer> getUserRoles(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_FOR_USER_URL, Long.toString(id)));		
 
@@ -508,7 +504,7 @@ public class Client {
   	 * Gets a list of all custom attribute fields (also known as custom user fields) that have been defined for OL account.
   	 *
   	 * @return List of custom attribute fields
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -517,11 +513,7 @@ public class Client {
 	 */
 	public List<String> getCustomAttributes() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_CUSTOM_ATTRIBUTES_URL));		
 
@@ -563,11 +555,7 @@ public class Client {
 	 */
 	public User createUser(Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -620,11 +608,7 @@ public class Client {
 	 */
 	public Object createSessionLoginToken(Map<String, Object> queryParams, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -691,9 +675,9 @@ public class Client {
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-         *
+  	 *
   	 * @return Session Token
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -702,11 +686,7 @@ public class Client {
 	 */
 	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_TOKEN_VERIFY_FACTOR));		
 
@@ -753,9 +733,9 @@ public class Client {
 	 *            Provide the MFA device_id you are submitting for verification.  
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-         *
+  	 *
   	 * @return Session Token
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -823,11 +803,7 @@ public class Client {
 	 */
 	public User updateUser(long id, Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -879,11 +855,7 @@ public class Client {
 	 */
 	public Boolean assignRoleToUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -932,11 +904,7 @@ public class Client {
 	 */
 	public Boolean removeRoleFromUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -987,11 +955,7 @@ public class Client {
 	 */
 	public Boolean setPasswordUsingClearText(long id, String password, String passwordConfirmation) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1047,11 +1011,7 @@ public class Client {
 	 */
 	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm, String passwordSalt) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1129,11 +1089,7 @@ public class Client {
 	 */
 	public Boolean setCustomAttributeToUser(long id, Map<String, Object> customAttributes) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1180,11 +1136,7 @@ public class Client {
 	 */
 	public Boolean logUserOut(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1217,7 +1169,7 @@ public class Client {
 	 *            Id of the user to be modified
 	 * @param minutes
 	 *            Set to the number of minutes for which you want to lock the user account. (0 to delegate on policy)
-         *
+  	 *
 	 * @return true if success
 	 *
   	 * @throws OAuthSystemException
@@ -1228,11 +1180,7 @@ public class Client {
 	 */
 	public Boolean lockUser(long id, int minutes) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1268,7 +1216,7 @@ public class Client {
 	 * @param id
 	 *            Id of the user to be deleted
 	 *
-	 * return true if success
+	 * @return true if success
 	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
@@ -1278,11 +1226,7 @@ public class Client {
 	 */
 	public Boolean deleteUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1312,13 +1256,13 @@ public class Client {
 	////////////////////
 
 	/**
-  	 * Gets a paginated list of Role resources (50 roles per page).
+  	 * Gets a list of Role resources. (if no limit provided, by default get 50 elements)
   	 *
 	 * @param queryParameters
 	 *            Parameters to filter the result of the list
   	 *
   	 * @return List of Role
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1329,18 +1273,18 @@ public class Client {
 	public List<Role> getRoles(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
 		int limit = 50;
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_URL));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-			url.addParameter(parameter.getKey(), parameter.getValue());
 			if (parameter.getKey() == "limit") {
 				limit = Integer.parseInt(parameter.getValue());
+				if (limit >= 50) {
+					// We don't add limit if is more than 50, API call have that limitation
+					continue;
+				}
 			}
+			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
@@ -1354,7 +1298,8 @@ public class Client {
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		List<Role> roles = new ArrayList<Role>();
-		while (oAuthResponse == null || (roles.size() < limit && oAuthResponse.getAfterCursor() != null)) {
+		String afterCursor = null;
+		while (oAuthResponse == null || (roles.size() < limit && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
@@ -1365,20 +1310,31 @@ public class Client {
 						roles.add(role);					
 					}					
 				}
+
+				afterCursor = oAuthResponse.getAfterCursor();
+				if (!afterCursor.isEmpty()) {
+					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
+					bearerRequest.setLocationUri(url.toString());
+				}
 			} else {
 				error = oAuthResponse.getError();
 				errorDescription = oAuthResponse.getErrorDescription();
 				break;
 			}
 		}
+
+		if (!roles.isEmpty()) {
+			roles = roles.subList(0, limit);
+		}
+
 		return roles;
 	}
 
 	/**
-  	 * Gets a paginated list of Role resources (50 roles per page).
+  	 * Gets a list of Role resources. (50 elements).
   	 *
   	 * @return List of Role
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1398,7 +1354,7 @@ public class Client {
 	 *            Id of the role
   	 *
   	 * @return Role
-         *
+     *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1408,11 +1364,7 @@ public class Client {
 	 */
 	public Role getRole(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_URL, Long.toString(id)));		
 
@@ -1472,13 +1424,13 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a paginated list of Event resources (50 events per page).
+  	 * Gets a list of Event resources. (if no limit provided, by default get 50 elements)
   	 *
 	 * @param queryParameters
 	 *            Parameters to filter the result of the list
   	 *
   	 * @return List of Event
-         *
+     *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1489,18 +1441,17 @@ public class Client {
 	public List<Event> getEvents(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
 		int limit = 50;
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENTS_URL));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-			url.addParameter(parameter.getKey(), parameter.getValue());
 			if (parameter.getKey() == "limit") {
 				limit = Integer.parseInt(parameter.getValue());
+				if (limit >= 50) {
+					continue;
+				}
 			}
+			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
@@ -1513,8 +1464,9 @@ public class Client {
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
+		String afterCursor = null;
 		List<Event> events = new ArrayList<Event>();
-		while (oAuthResponse == null || (events.size() < limit && oAuthResponse.getAfterCursor() != null)) {
+		while (oAuthResponse == null || (events.size() < limit && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
@@ -1525,20 +1477,31 @@ public class Client {
 						events.add(event);					
 					}					
 				}
+				
+				afterCursor = oAuthResponse.getAfterCursor();
+				if (!afterCursor.isEmpty()) {
+					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
+					bearerRequest.setLocationUri(url.toString());
+				}
 			} else {
 				error = oAuthResponse.getError();
 				errorDescription = oAuthResponse.getErrorDescription();
 				break;
 			}
 		}
+
+		if (!events.isEmpty()) {
+			events = events.subList(0, limit);
+		}
+		
 		return events;
 	}
 
 	/**
-  	 * Gets a paginated list of Event resources (50 events per page).
+  	 * Gets a list of Event resources. (50 elements)
   	 *
   	 * @return List of Event
-         *
+     *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1557,8 +1520,8 @@ public class Client {
 	 * @param id
 	 *            Id of the event
   	 *
-  	 * @return Role
-         *
+  	 * @return Event
+     *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1568,11 +1531,7 @@ public class Client {
 	 */
 	public Event getEvent(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_URL, Long.toString(id)));
 
@@ -1614,11 +1573,7 @@ public class Client {
 	 */
 	public void createEvent(Map<String, Object> eventParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -1647,10 +1602,13 @@ public class Client {
 	/////////////////////
 
 	/**
-  	 * Gets a paginated list of Group resources (50 groups per page).
+  	 * Gets a list of Group resources (element of groups limited with the limit parameter).
   	 *
+	 * @param limit
+	 *            Limit the number of groups returned
+	 *
   	 * @return List of Group
-         *
+	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1658,18 +1616,15 @@ public class Client {
   	 * @see com.onelogin.sdk.model.Group
   	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
-	public List<Group> getGroups() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Group> getGroups(int limit) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		int limit = 50;
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_GROUPS_URL));
+		
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(settings.getURL(Constants.GET_GROUPS_URL))
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
@@ -1677,8 +1632,9 @@ public class Client {
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
+		String afterCursor = null;
 		List<Group> groups = new ArrayList<Group>();
-		while (oAuthResponse == null || (groups.size() < limit && oAuthResponse.getAfterCursor() != null)) {
+		while (oAuthResponse == null || (groups.size() < limit && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
@@ -1689,13 +1645,40 @@ public class Client {
 						groups.add(group);					
 					}					
 				}
+				
+				afterCursor = oAuthResponse.getAfterCursor();
+				if (!afterCursor.isEmpty()) {
+					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
+					bearerRequest.setLocationUri(url.toString());
+				}
 			} else {
 				error = oAuthResponse.getError();
 				errorDescription = oAuthResponse.getErrorDescription();
 				break;
 			}
 		}
+
+		if (!groups.isEmpty()) {
+			groups = groups.subList(0, limit);
+		}
+		
 		return groups;
+	}
+
+	/**
+  	 * Gets a list of Group resources. (50 elements)
+  	 *
+  	 * @return List of Group
+     *
+  	 * @throws OAuthSystemException
+  	 * @throws OAuthProblemException
+  	 * @throws URISyntaxException
+	 *
+  	 * @see com.onelogin.sdk.model.Group
+  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
+	 */
+	public List<Group> getGroups() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getGroups(50);
 	}
 
 	/**
@@ -1705,7 +1688,7 @@ public class Client {
 	 *            Id of the group
   	 *
   	 * @return Group
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1715,11 +1698,8 @@ public class Client {
 	 */
 	public Group getGroup(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
+
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_URL, Long.toString(id)));
 		
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
@@ -1757,12 +1737,12 @@ public class Client {
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param subdomain
-	 *            subdomain of the OneLogin user accessing the app
+	 *            subdomain of the OneLogin account related to the user/app
 	 * @param ipAddress
 	 *             whitelisted IP address that needs to be bypassed (some MFA scenarios). 
-         *
+  	 *
   	 * @return SAMLEndpointResponse
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1772,11 +1752,7 @@ public class Client {
 	 */
 	public SAMLEndpointResponse getSAMLAssertion(String usernameOrEmail, String password, String appId, String subdomain, String ipAddress) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_SAML_ASSERTION_URL));		
 
@@ -1832,9 +1808,9 @@ public class Client {
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param subdomain
 	 *            subdomain of the OneLogin user accessing the app
-         *
+  	 *
   	 * @return SAMLEndpointResponse
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1859,9 +1835,9 @@ public class Client {
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
 	 * @param urlEndpoint
 	 *			  Specify an url where return the response.
-         *
+  	 *
   	 * @return SAMLEndpointResponse
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1871,11 +1847,7 @@ public class Client {
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		String target;
 		if (urlEndpoint != null && !urlEndpoint.isEmpty()) {
@@ -1933,9 +1905,9 @@ public class Client {
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-         *
+  	 *
   	 * @return SAMLEndpointResponse
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1956,9 +1928,9 @@ public class Client {
 	 *            Provide the MFA device_id you are submitting for verification.  
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-         *
+  	 *
   	 * @return SAMLEndpointResponse
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1981,7 +1953,7 @@ public class Client {
 	 *            Set to the email address of the user that you want to generate an invite link for.
 	 *
   	 * @return String with the link
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -1990,11 +1962,7 @@ public class Client {
 	 */
 	public String generateInviteLink(String email) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -2040,20 +2008,16 @@ public class Client {
 	 *            provide it here. The invite link will be sent to this address instead.
 	 *
   	 * @return True if the mail with the link was sent
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
 	 *
   	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
 	 */
-	public Boolean sendInviteLink(String email, String personal_email) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public Boolean sendInviteLink(String email, String personalEmail) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		if (accessToken == null) {
-			getAccessToken();
-		} else if (this.isExpired()) {
-			refreshToken();
-		}
+		prepareToken();
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
@@ -2069,8 +2033,8 @@ public class Client {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("email", email);
-		if (personal_email != null) {
-			params.put("personal_email", personal_email);
+		if (personalEmail != null) {
+			params.put("personal_email", personalEmail);
 		}
 		String body = JSONUtils.buildJSON(params);
 		bearerRequest.setBody(body);
@@ -2096,7 +2060,7 @@ public class Client {
 	 *            Set to the email address of the user that you want to send an invite link for.
 	 *
   	 * @return True if the mail with the link was sent
-         *
+  	 *
   	 * @throws OAuthSystemException
   	 * @throws OAuthProblemException
   	 * @throws URISyntaxException
@@ -2133,7 +2097,7 @@ public class Client {
 	 */
 	public List<App> getEmbedApps(String token, String email) throws URISyntaxException, ClientProtocolException, IOException, ParserConfigurationException, SAXException, XPathExpressionException {
 		cleanError();
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.EMBED_APP_URL));
+		URIBuilder url = new URIBuilder(Constants.EMBED_APP_URL);
 		url.addParameter("token", token);
 		url.addParameter("email", email);
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -2175,6 +2139,19 @@ public class Client {
 	//  Auxiliary methods  //
 	/////////////////////////
 
+	/**
+	 * Prepare the client before execute a call to the API (get token ready)  
+	 * @throws OAuthProblemException 
+	 * @throws OAuthSystemException 
+	 */
+	public void prepareToken() throws OAuthSystemException, OAuthProblemException {	
+		if (accessToken == null) {
+			getAccessToken();
+		} else if (this.isExpired()) {
+			refreshToken();
+		}
+	}
+	
 	/**
 	 * @return when the token has expired. 
 	 */
