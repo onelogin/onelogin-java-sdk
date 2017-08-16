@@ -17,7 +17,7 @@ public class App {
 		name = data.optString("name", null);
 		icon = data.optString("icon", null);
 		provisioned = data.optString("provisioned", null);
-		extensionRequired = data.optBoolean("extension_required", false);
+		extensionRequired = data.optBoolean("extension", false);
 		loginId = data.optInt("login_id");
 		personal = data.optBoolean("personal", false);
 	}
