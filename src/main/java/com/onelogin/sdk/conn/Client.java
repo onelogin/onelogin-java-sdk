@@ -66,6 +66,10 @@ import com.onelogin.sdk.util.Settings;
 
 public class Client {
 
+	public static final String VERSION = "1.0.0";
+
+	public static final String CUSTOM_USER_AGENT = "onelogin-java-sdk " + VERSION;
+
 	/**
 	 * OAuth 2.0 Access Token
 	 */
@@ -97,6 +101,11 @@ public class Client {
 	protected Settings settings;
 
 	/**
+	 * The User-Agent to be used on requests
+	 */
+	public String userAgent;
+
+	/**
 	 * Constructs the client to execute Onelogin's API calls.
 	 * It initializes the Settings (read Onelogin's credentials
 	 * and the instance location from the config file)
@@ -106,6 +115,7 @@ public class Client {
 	 */
 	public Client() throws IOException, Error {
 		this.settings = new Settings();
+		this.userAgent = CUSTOM_USER_AGENT;
 	}
 
 	////////////////////////////////
@@ -126,13 +136,13 @@ public class Client {
 		//OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest request = OAuthClientRequest
 			.tokenLocation(settings.getURL(Constants.TOKEN_REQUEST_URL))            
-            //.tokenLocation("http://pitbulk.no-ip.org/api/php/debug.php")            
             //.setGrantType(GrantType.CLIENT_CREDENTIALS)
             .buildBodyMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "client_id:" + settings.getClientId() + ", client_secret:" + settings.getClientSecret());
+		headers.put("User-Agent", this.userAgent);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization(false));
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("grant_type", GrantType.CLIENT_CREDENTIALS);
@@ -175,6 +185,7 @@ public class Client {
 
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("grant_type", GrantType.REFRESH_TOKEN);
@@ -215,7 +226,8 @@ public class Client {
 
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "client_id:" + settings.getClientId() + ", client_secret:" + settings.getClientSecret());
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization(false));
+		headers.put("User-Agent", this.userAgent);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("access_token", accessToken);
@@ -256,7 +268,8 @@ public class Client {
             .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);		
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
@@ -315,7 +328,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
@@ -334,7 +348,7 @@ public class Client {
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
-				if (!afterCursor.isEmpty()) {
+				if (afterCursor != null && !afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
 					bearerRequest.setLocationUri(url.toString());
 				}
@@ -396,7 +410,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		User user = null;
@@ -438,7 +453,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		List<App> apps = new ArrayList<App>();
@@ -486,7 +502,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		List<Integer> roles = null;
@@ -523,7 +540,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		List<String> customAttributes = null;
@@ -565,8 +583,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		String body = JSONUtils.buildJSON(userParams);
@@ -618,8 +637,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		if (allowedOrigin != null) {
 			headers.put("Custom-Allowed-Origin-Header-1", allowedOrigin);
 		}
@@ -696,8 +716,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -773,6 +794,7 @@ public class Client {
 		httpPost.setEntity(input);
         input.setContentEncoding(new BasicHeader("Content-Type","application/json;charset=UTF-8"));
         httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("User-Agent", this.userAgent);
         httpPost.setEntity(input); 
         CloseableHttpResponse response = httpclient.execute(httpPost);
         String cookieHeader = null;
@@ -813,8 +835,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		String body = JSONUtils.buildJSON(userParams);
@@ -865,8 +888,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -914,8 +938,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -965,8 +990,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1021,8 +1047,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1099,8 +1126,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1146,8 +1174,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Boolean success = true;
@@ -1190,8 +1219,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1236,8 +1266,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Boolean removed = true;
@@ -1293,7 +1324,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
@@ -1312,7 +1344,9 @@ public class Client {
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
-				if (!afterCursor.isEmpty()) {
+				if (afterCursor == "null") {
+					afterCursor = null;
+				} else if (!afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
 					bearerRequest.setLocationUri(url.toString());
 				}
@@ -1374,7 +1408,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Role role = null;
@@ -1409,6 +1444,7 @@ public class Client {
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_TYPES_URL));
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(url.toString());
+		httpGet.setHeader("Accept", "application/json");
 		CloseableHttpResponse response = httpclient.execute(httpGet);
 		String json_string = EntityUtils.toString(response.getEntity());
 		JSONObject json_object = new JSONObject(json_string);
@@ -1460,7 +1496,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
@@ -1479,7 +1516,7 @@ public class Client {
 				}
 				
 				afterCursor = oAuthResponse.getAfterCursor();
-				if (!afterCursor.isEmpty()) {
+				if (afterCursor != null && !afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
 					bearerRequest.setLocationUri(url.toString());
 				}
@@ -1541,7 +1578,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Event event = null;
@@ -1583,8 +1621,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		String body = JSONUtils.buildJSON(eventParams);
@@ -1628,7 +1667,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
@@ -1647,7 +1687,7 @@ public class Client {
 				}
 				
 				afterCursor = oAuthResponse.getAfterCursor();
-				if (!afterCursor.isEmpty()) {
+				if (afterCursor != null && !afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
 					bearerRequest.setLocationUri(url.toString());
 				}
@@ -1708,7 +1748,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Group group = null;
@@ -1763,8 +1804,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -1863,7 +1905,8 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
+		headers.put("User-Agent", this.userAgent);
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
 		bearerRequest.setHeaders(headers);
 
@@ -1972,8 +2015,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -2027,8 +2071,9 @@ public class Client {
                 .buildHeaderMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, "bearer:" + accessToken);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -2081,7 +2126,7 @@ public class Client {
 	 * @param token
 	 *            Provide your embedding token.
 	 * @param email
-	 *            Provide the email of the user for which you want to return a list of embeddable apps.
+	 *            Provide the email of the user for which you want to return a list of apps to be embed.
 	 *
   	 * @return String that contains an XML with the App info
   	 *
@@ -2102,6 +2147,7 @@ public class Client {
 		url.addParameter("email", email);
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(url.toString());
+		httpGet.setHeader("Accept", "application/json");
 		CloseableHttpResponse response = httpclient.execute(httpGet);
 		String xmlString = EntityUtils.toString(response.getEntity());
 		List<App> apps = new ArrayList<App>();
@@ -2179,6 +2225,18 @@ public class Client {
 	public void cleanError() {
 		error = null;
 		errorDescription = null;
+	}
+
+	protected String getAuthorization(Boolean bearer) {
+		if (bearer == true) {
+			return "bearer:" + accessToken;
+		} else {
+			return "client_id:" + settings.getClientId() + ", client_secret:" + settings.getClientSecret();
+		}
+	}
+
+	protected String getAuthorization() {
+		return getAuthorization(true);
 	}
 }
 

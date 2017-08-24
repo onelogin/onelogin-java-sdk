@@ -143,11 +143,21 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 	}
 
 	public String getBeforeCursor() {
-		return getParam("before_cursor");
+		String value = getParam("before_cursor");
+		if (value == "null") {
+			return null;
+		} else {
+			return value;
+		}
 	}
 
 	public String getAfterCursor() {
-		return getParam("after_cursor");
+		String value = getParam("after_cursor");
+		if (value == "null") {
+			return null;
+		} else {
+			return value;
+		}
 	}
 
 	public String getPreviousLink() {
