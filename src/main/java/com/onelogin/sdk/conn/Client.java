@@ -342,8 +342,12 @@ public class Client {
 				if (dataArray != null && dataArray.length > 0) {
 					User user;
 					for (JSONObject data: dataArray) {
-						user = new User(data);
-						users.add(user);					
+						if (users.size() < limit) {
+							user = new User(data);
+							users.add(user);
+						} else {
+							return users;
+						}
 					}					
 				}
 
@@ -358,11 +362,7 @@ public class Client {
 				break;
 			}
 		}
-		
-		if (!users.isEmpty()) {
-			users = users.subList(0, limit);
-		}
-		
+
 		return users;
 	}
 
@@ -1338,8 +1338,12 @@ public class Client {
 				if (dataArray != null && dataArray.length > 0) {
 					Role role;
 					for (JSONObject data: dataArray) {
-						role = new Role(data);
-						roles.add(role);					
+						if (roles.size() < limit) {
+							role = new Role(data);
+							roles.add(role);
+						} else {
+							return roles;
+						}
 					}					
 				}
 
@@ -1355,10 +1359,6 @@ public class Client {
 				errorDescription = oAuthResponse.getErrorDescription();
 				break;
 			}
-		}
-
-		if (!roles.isEmpty()) {
-			roles = roles.subList(0, limit);
 		}
 
 		return roles;
@@ -1510,11 +1510,15 @@ public class Client {
 				if (dataArray != null && dataArray.length > 0) {
 					Event event;
 					for (JSONObject data: dataArray) {
-						event = new Event(data);
-						events.add(event);					
+						if (events.size() < limit) {
+							event = new Event(data);
+							events.add(event);
+						} else {
+							return events;
+						}
 					}					
 				}
-				
+
 				afterCursor = oAuthResponse.getAfterCursor();
 				if (afterCursor != null && !afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
@@ -1527,10 +1531,6 @@ public class Client {
 			}
 		}
 
-		if (!events.isEmpty()) {
-			events = events.subList(0, limit);
-		}
-		
 		return events;
 	}
 
@@ -1681,11 +1681,15 @@ public class Client {
 				if (dataArray != null && dataArray.length > 0) {
 					Group group;
 					for (JSONObject data: dataArray) {
-						group = new Group(data);
-						groups.add(group);					
+						if (groups.size() < limit) {
+							group = new Group(data);
+							groups.add(group);
+						} else {
+							return groups;
+						}
 					}					
 				}
-				
+
 				afterCursor = oAuthResponse.getAfterCursor();
 				if (afterCursor != null && !afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
@@ -1698,10 +1702,6 @@ public class Client {
 			}
 		}
 
-		if (!groups.isEmpty()) {
-			groups = groups.subList(0, limit);
-		}
-		
 		return groups;
 	}
 
