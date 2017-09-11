@@ -157,7 +157,11 @@ public class Client {
 		if (oAuthResponse.getResponseCode() == 200) {
 			accessToken = oAuthResponse.getAccessToken();
 			refreshToken = oAuthResponse.getRefreshToken();
-			expiration = new DateTime(System.currentTimeMillis() + oAuthResponse.getExpiresIn());
+			Long expiresIn = oAuthResponse.getExpiresIn();
+			expiration = null;
+			if (expiresIn != null) {
+				expiration = new DateTime(System.currentTimeMillis() + (expiresIn * 1000));
+			}
 		} else {
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
@@ -198,7 +202,11 @@ public class Client {
 		if (oAuthResponse.getResponseCode() == 200) {
 			accessToken = oAuthResponse.getAccessToken();
 			refreshToken = oAuthResponse.getRefreshToken();
-			expiration = new DateTime(System.currentTimeMillis() + oAuthResponse.getExpiresIn());
+			Long expiresIn = oAuthResponse.getExpiresIn();
+			expiration = null;
+			if (expiresIn != null) {
+				expiration = new DateTime(System.currentTimeMillis() + (expiresIn * 1000));
+			}
 		} else {
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
