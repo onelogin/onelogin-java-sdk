@@ -108,7 +108,7 @@ public class Client {
 	/**
 	 * Constructs the client to execute Onelogin's API calls.
 	 * It initializes the Settings (read Onelogin's credentials
-	 * and the instance location from the config file)
+	 * and the region from the config file)
 	 *
 	 * @throws IOException
 	 * @throws Error

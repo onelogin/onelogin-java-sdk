@@ -28,18 +28,23 @@ public class Settings {
 	public final static String CLIENT_ID_KEY = "onelogin.sdk.client_id";
 	public final static String CLIENT_SECRET_KEY = "onelogin.sdk.client_secret";
 	public final static String INSTANCE = "onelogin.sdk.instance";
+	public final static String REGION = "onelogin.sdk.region";
 
 	private String clientID;
 	private String clientSecret;
-	private String instance = "us";
+	private String region = "us";
 
 	public Settings() throws IOException, Error {
 		this.loadPropFile("onelogin.sdk.properties");
 		this.clientID = loadStringProperty(CLIENT_ID_KEY);
 		this.clientSecret = loadStringProperty(CLIENT_SECRET_KEY);
-		String instanceValue = loadStringProperty(INSTANCE);
-		if (instanceValue != null && !instanceValue.isEmpty()) {
-		    this.instance = instanceValue;
+		String regionValue = loadStringProperty(REGION);
+		if (regionValue == null || regionValue.isEmpty()) {			
+			regionValue = loadStringProperty(INSTANCE);
+		}
+
+		if (regionValue != null && !regionValue.isEmpty()) {
+		    this.region = regionValue;
 		}
 	}
 
@@ -51,31 +56,32 @@ public class Settings {
 		return clientSecret;
 	}
 
-	public String getInstance() {
-		return instance;
+	
+	public String getRegion() {
+		return region;
 	}
 
 	public String getURL(String name, String id) {
 		if (id != null) {
-			return String.format(name, this.instance, id);
+			return String.format(name, this.region, id);
 		} else {
-			return String.format(name, this.instance);
+			return String.format(name, this.region);
 		}
 	}
 
 	public String getURL(String name, int id) {
 		if (id == 0) {
-			return String.format(name, this.instance);
+			return String.format(name, this.region);
 		} else {
-			return String.format(name, this.instance, id);
+			return String.format(name, this.region, id);
 		}
 	}
 
 	public String getURL(String name, long id) {
 		if (id == 0) {
-			return String.format(name, this.instance);
+			return String.format(name, this.region);
 		} else {
-			return String.format(name, this.instance, id);
+			return String.format(name, this.region, id);
 		}
 	}
 	
