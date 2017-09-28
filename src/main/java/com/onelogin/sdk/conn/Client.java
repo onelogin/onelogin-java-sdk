@@ -50,6 +50,7 @@ import org.xml.sax.SAXException;
 
 import com.onelogin.sdk.exception.Error;
 import com.onelogin.sdk.model.App;
+import com.onelogin.sdk.model.EmbedApp;
 import com.onelogin.sdk.model.Event;
 import com.onelogin.sdk.model.EventType;
 import com.onelogin.sdk.model.Group;
@@ -2148,7 +2149,7 @@ public class Client {
   	 * @see com.onelogin.sdk.model.App
   	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/embed-apps/get-apps-to-embed-for-a-user">Get Apps to Embed for a User documentation</a>
 	 */
-	public List<App> getEmbedApps(String token, String email) throws URISyntaxException, ClientProtocolException, IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+	public List<EmbedApp> getEmbedApps(String token, String email) throws URISyntaxException, ClientProtocolException, IOException, ParserConfigurationException, SAXException, XPathExpressionException {
 		cleanError();
 		URIBuilder url = new URIBuilder(Constants.EMBED_APP_URL);
 		url.addParameter("token", token);
@@ -2158,7 +2159,7 @@ public class Client {
 		httpGet.setHeader("Accept", "application/json");
 		CloseableHttpResponse response = httpclient.execute(httpGet);
 		String xmlString = EntityUtils.toString(response.getEntity());
-		List<App> apps = new ArrayList<App>();
+		List<EmbedApp> embedApps = new ArrayList<EmbedApp>();
 		DocumentBuilderFactory docfactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = docfactory.newDocumentBuilder();
 		Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
@@ -2167,7 +2168,7 @@ public class Client {
 		if (appNodeList.getLength() > 0) {
 			Node appNode;
 			NodeList appAttrs;
-			App app;
+			EmbedApp embedApp;
 			for (int i = 0; i < appNodeList.getLength(); i++) {
 				appNode = appNodeList.item(0);
 				appAttrs = appNode.getChildNodes();
@@ -2180,12 +2181,12 @@ public class Client {
 						appJson.put(appAttrName, appAttrs.item(j).getTextContent());
 					}
 				}
-				app = new App(appJson);
-				apps.add(app);
+				embedApp = new EmbedApp(appJson);
+				embedApps.add(embedApp);
 			}
 		}
 		
-		return apps;
+		return embedApps;
 	}
 	
 	
