@@ -2088,7 +2088,7 @@ public class Client {
 	 *
 	 * @param email
 	 *            Set to the email address of the user that you want to send an invite link for.
-	 * @param personal_email
+	 * @param personalEmail
 	 *            If you want to send the invite email to an email other than the one provided in  email, 
 	 *            provide it here. The invite link will be sent to this address instead.
 	 *
