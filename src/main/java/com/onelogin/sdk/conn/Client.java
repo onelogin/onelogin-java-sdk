@@ -107,6 +107,11 @@ public class Client {
 	public String userAgent;
 
 	/**
+	 * Limit the number of elements returned in a search
+	 */
+	public int maxResults;
+
+	/**
 	 * Constructs the client to execute Onelogin's API calls.
 	 * It initializes the Settings (read Onelogin's credentials
 	 * and the region from the config file)
@@ -114,9 +119,14 @@ public class Client {
 	 * @throws IOException
 	 * @throws Error
 	 */
-	public Client() throws IOException, Error {
+	public Client(int maxResults) throws IOException, Error {
 		this.settings = new Settings();
 		this.userAgent = CUSTOM_USER_AGENT;
+		this.maxResults = maxResults;
+	}
+
+	public Client() throws IOException, Error {
+		this(1000);
 	}
 
 	////////////////////////////////
@@ -124,12 +134,12 @@ public class Client {
 	////////////////////////////////
 
 	/**
-  	 * Generates an access token and refresh token that you may use to call Onelogin's API methods.
-  	 *
-  	 * @throws OAuthSystemException
+	 * Generates an access token and refresh token that you may use to call Onelogin's API methods.
+	 *
+	 * @throws OAuthSystemException
 	 * @throws OAuthProblemException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/generate-tokens">Generate Tokens documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/generate-tokens">Generate Tokens documentation</a>
 	 */
 	public void getAccessToken() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
@@ -137,13 +147,10 @@ public class Client {
 		//OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest request = OAuthClientRequest
 			.tokenLocation(settings.getURL(Constants.TOKEN_REQUEST_URL))            
-            //.setGrantType(GrantType.CLIENT_CREDENTIALS)
-            .buildBodyMessage();
+			//.setGrantType(GrantType.CLIENT_CREDENTIALS)
+			.buildBodyMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization(false));
+		Map<String, String> headers = getAuthorizedHeader(false);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("grant_type", GrantType.CLIENT_CREDENTIALS);
@@ -170,12 +177,12 @@ public class Client {
 	}
 
 	/**
-  	 * Refreshing tokens provides a new set of access and refresh tokens.
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
+	 * Refreshing tokens provides a new set of access and refresh tokens.
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/refresh-tokens">Refresh Tokens documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/refresh-tokens">Refresh Tokens documentation</a>
 	 */
 	public void refreshToken() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
@@ -186,7 +193,7 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClientRequest request = OAuthClientRequest
 			.tokenLocation(settings.getURL(Constants.TOKEN_REFRESH_URL))            
-            .buildBodyMessage();
+			.buildBodyMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
@@ -215,12 +222,12 @@ public class Client {
 	}
 
 	/**
-  	 * Revokes an access token and refresh token pair.
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
+	 * Revokes an access token and refresh token pair.
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/revoke-tokens">Revoke Tokens documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/revoke-tokens">Revoke Tokens documentation</a>
 	 */
 	public void revokeToken() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
@@ -231,12 +238,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClientRequest request = OAuthClientRequest
 			.tokenLocation(settings.getURL(Constants.TOKEN_REVOKE_URL))            
-            .buildBodyMessage();
+			.buildBodyMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization(false));
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader(false);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("access_token", accessToken);
@@ -256,15 +260,15 @@ public class Client {
 	}
 
 	/**
-  	 * Gets current rate limit details about an access token.
-  	 *
-  	 * @return RateLimit object
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
+	 * Gets current rate limit details about an access token.
 	 *
-  	 * @see com.onelogin.sdk.model.RateLimit
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/get-rate-limit">Get Rate Limit documentation</a>
+	 * @return RateLimit object
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 *
+	 * @see com.onelogin.sdk.model.RateLimit
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/get-rate-limit">Get Rate Limit documentation</a>
 	 */
 	public RateLimit getRateLimit() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
@@ -274,11 +278,9 @@ public class Client {
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(settings.getURL(Constants.GET_RATE_URL))
 			//.setAccessToken(accessToken) // 'Authorization' => 'Bearer xxxx' not accepted right now
-            .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);		
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
@@ -299,65 +301,57 @@ public class Client {
 	//  User Methods  //
 	////////////////////
 
-	/**
-  	 * Gets a list of User resources. (if no limit provided, by default get 50 elements)
-  	 *
+    /**
+	 * Gets a list of User resources.
+	 *
 	 * @param queryParameters
 	 *            Parameters to filter the result of the list
-  	 *
-  	 * @return List of User
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @param maxResults
+	 *            Limit the number of users returned (optional)
 	 *
-  	 * @see com.onelogin.sdk.model.User
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @return List of User
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
 	 */
-	public List<User> getUsers(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<User> getUsers(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		int limit = 50;
 		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USERS_URL));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-			if (parameter.getKey() == "limit") {
-				limit = Integer.parseInt(parameter.getValue());
-				if (limit >= 50) {
-					// We don't add limit if is more than 50, API call have that limitation
-					continue;
-				}
-			}
 			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		String afterCursor = null;
 		List<User> users = new ArrayList<User>();
-		while (oAuthResponse == null || (users.size() < limit && afterCursor != null)) {
+		while (oAuthResponse == null || (users.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
 				if (dataArray != null && dataArray.length > 0) {
 					User user;
 					for (JSONObject data: dataArray) {
-						if (users.size() < limit) {
+						if (users.size() < maxResults) {
 							user = new User(data);
 							users.add(user);
 						} else {
 							return users;
 						}
-					}					
+					}
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
@@ -376,16 +370,55 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of User resources (50 users).
-  	 *
-  	 * @return List of User
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * Gets a list of User resources.
 	 *
-  	 * @see com.onelogin.sdk.model.User
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @param queryParameters
+	 *            Parameters to filter the result of the list
+	 *
+	 * @return List of User
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 */
+	public List<User> getUsers(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getUsers(queryParameters, this.maxResults);
+	}
+
+	/**
+	 * Gets a list of User resources.
+	 *
+	 * @param maxResults
+	 *            Limit the number of users returned (optional)
+	 *
+	 * @return List of User
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 */
+	public List<User> getUsers(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		HashMap<String, String> queryParameters = new HashMap<String, String>();
+		return getUsers(queryParameters, maxResults);
+	}
+
+	/**
+	 * Gets a list of User resources
+	 *
+	 * @return List of User
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
 	 */
 	public List<User> getUsers() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
@@ -393,19 +426,19 @@ public class Client {
 	}
 
 	/**
-  	 * Gets User by ID.
-  	 *
+	 * Gets User by ID.
+	 *
 	 * @param id
 	 *            Id of the user
-  	 *
-  	 * @return User
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.User
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-user-by-id">Get User by ID documentation</a>
+	 * @return User
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-user-by-id">Get User by ID documentation</a>
 	 */
 	public User getUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -416,11 +449,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		User user = null;
@@ -436,19 +467,19 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of apps accessible by a user, not including personal apps.
-  	 *
+	 * Gets a list of apps accessible by a user, not including personal apps.
+	 *
 	 * @param id
 	 *            Id of the user
-  	 *
-  	 * @return List of Apps
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.App
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-apps-for-user">Get Apps for a User documentation</a>
+	 * @return List of Apps
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.App
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-apps-for-user">Get Apps for a User documentation</a>
 	 */
 	public List<App> getUserApps(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -459,11 +490,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		List<App> apps = new ArrayList<App>();
@@ -474,8 +503,8 @@ public class Client {
 			if (dataArray != null && dataArray.length > 0) {
 				for (JSONObject data: dataArray) {
 					app = new App(data);
-					apps.add(app);					
-				}					
+					apps.add(app);
+				}
 			}
 		} else {
 			error = oAuthResponse.getError();
@@ -485,19 +514,19 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of role IDs that have been assigned to a user.
-  	 *
+	 * Gets a list of role IDs that have been assigned to a user.
+	 *
 	 * @param id
 	 *            Id of the user
-  	 *
-  	 * @return List of Role Ids
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.Role
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-roles-for-user">Get Roles for a User documentation</a>
+	 * @return List of Role Ids
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-roles-for-user">Get Roles for a User documentation</a>
 	 */
 	public List<Integer> getUserRoles(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -508,11 +537,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		List<Integer> roles = null;
@@ -527,15 +554,15 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of all custom attribute fields (also known as custom user fields) that have been defined for OL account.
-  	 *
-  	 * @return List of custom attribute fields
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * Gets a list of all custom attribute fields (also known as custom user fields) that have been defined for OL account.
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-custom-attributes">Get Custom Attributes documentation</a>
+	 * @return List of custom attribute fields
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-custom-attributes">Get Custom Attributes documentation</a>
 	 */
 	public List<String> getCustomAttributes() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -546,11 +573,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		List<String> customAttributes = null;
@@ -565,8 +590,8 @@ public class Client {
 	}
 
 	/**
-  	 * Creates an user
-  	 *
+	 * Creates an user
+	 *
 	 * @param userParams
 	 *            User data (firstname, lastname, email, username, company, department, directory_id, distinguished_name,
 	 *            external_id, group_id, invalid_login_attempts, locale_code, manager_ad_id, member_of, notes, openid_name,
@@ -574,11 +599,11 @@ public class Client {
 	 *
 	 * @return Created user
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-user">Create User documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-user">Create User documentation</a>
 	 */
 	public User createUser(Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -589,12 +614,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_USER_URL));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		String body = JSONUtils.buildJSON(userParams);
@@ -614,13 +636,13 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return user;		
+		return user;
 	}
 
 	/**
-  	 * Generates a session login token in scenarios in which MFA may or may not be required.
-  	 * A session login token expires two minutes after creation.
-  	 *
+	 * Generates a session login token in scenarios in which MFA may or may not be required.
+	 * A session login token expires two minutes after creation.
+	 *
 	 * @param queryParams
 	 *            Query Parameters (username_or_email, password, subdomain, return_to_url, ip_address, browser_id)
 	 * @param allowedOrigin
@@ -628,11 +650,11 @@ public class Client {
 	 *
 	 * @return SessionTokenInfo or SessionTokenMFAInfo object if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
 	 */
 	public Object createSessionLoginToken(Map<String, Object> queryParams, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -643,12 +665,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.SESSION_LOGIN_TOKEN_URL));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		if (allowedOrigin != null) {
 			headers.put("Custom-Allowed-Origin-Header-1", allowedOrigin);
 		}
@@ -673,45 +692,45 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return sessionToken;		
+		return sessionToken;
 	}
 
 	/**
-  	 * Generate a session login token in scenarios in which MFA may or may not be required.
-  	 * A session login token expires two minutes after creation.
-  	 *
+	 * Generate a session login token in scenarios in which MFA may or may not be required.
+	 * A session login token expires two minutes after creation.
+	 *
 	 * @param queryParams
 	 *            Query Parameters (username_or_email, password, subdomain, return_to_url, ip_address, browser_id)
 	 *
 	 * @return SessionTokenInfo or SessionTokenMFAInfo object if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
 	 */
 	public Object createSessionLoginToken(Map<String, Object> queryParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return createSessionLoginToken(queryParams, null);
 	}
 
 	/**
-  	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
-  	 *
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
 	 * @param devideId
 	 *            Provide the MFA device_id you are submitting for verification.  
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-  	 *
-  	 * @return Session Token
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 * @return Session Token
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
 	 */
 	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -722,12 +741,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -757,34 +773,34 @@ public class Client {
 	}
 
 	/**
-  	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
-  	 *
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
 	 * @param devideId
 	 *            Provide the MFA device_id you are submitting for verification.  
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-  	 *
-  	 * @return Session Token
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 * @return Session Token
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
 	 */
 	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSessionTokenVerified(devideId, stateToken, null);
 	}
 	
 	/**
-  	 * Post a session token to this API endpoint to start a session and set a cookie to log a user into an app.
-  	 *
+	 * Post a session token to this API endpoint to start a session and set a cookie to log a user into an app.
+	 *
 	 * @param sessionToken
 	 *            The session token
 	 *
-	 @return Header 'Set-Cookie' value
+	 * @return Header 'Set-Cookie' value
 	 *
-  	 * @throws URISyntaxException
+	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 *
@@ -801,22 +817,22 @@ public class Client {
 		StringEntity input = new StringEntity(body);
 		input.setContentType("application/json;charset=UTF-8");
 		httpPost.setEntity(input);
-        input.setContentEncoding(new BasicHeader("Content-Type","application/json;charset=UTF-8"));
-        httpPost.setHeader("Accept", "application/json");
-        httpPost.setHeader("User-Agent", this.userAgent);
-        httpPost.setEntity(input); 
-        CloseableHttpResponse response = httpclient.execute(httpPost);
-        String cookieHeader = null;
-        if (response.getHeaders("Set-Cookie").length > 0) {
-        	cookieHeader = response.getHeaders("Set-Cookie")[0].getValue();
-        }
+		input.setContentEncoding(new BasicHeader("Content-Type","application/json;charset=UTF-8"));
+		httpPost.setHeader("Accept", "application/json");
+		httpPost.setHeader("User-Agent", this.userAgent);
+		httpPost.setEntity(input); 
+		CloseableHttpResponse response = httpclient.execute(httpPost);
+		String cookieHeader = null;
+		if (response.getHeaders("Set-Cookie").length > 0) {
+			cookieHeader = response.getHeaders("Set-Cookie")[0].getValue();
+		}
 
-        return cookieHeader;
+		return cookieHeader;
 	}
 
 	/**
-  	 * Updates an user
-  	 *
+	 * Updates an user
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param userParams
@@ -826,11 +842,11 @@ public class Client {
 	 *
 	 * @return Updated user
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/update-user">Update User by ID documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/update-user">Update User by ID documentation</a>
 	 */
 	public User updateUser(long id, Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -841,12 +857,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_USER_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		String body = JSONUtils.buildJSON(userParams);
@@ -866,12 +879,12 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return user;		
+		return user;
 	}
 
 	/**
-  	 * Assigns Role to User
-  	 *
+	 * Assigns Role to User
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param roleIds
@@ -879,11 +892,11 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/assign-role-to-user">Assign Role to User documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/assign-role-to-user">Assign Role to User documentation</a>
 	 */
 	public Boolean assignRoleToUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -894,12 +907,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.ADD_ROLE_TO_USER_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -916,12 +926,12 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Remove Role from User
-  	 *
+	 * Remove Role from User
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param roleIds
@@ -929,11 +939,11 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/remove-role-from-user">Remove Role from User documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/remove-role-from-user">Remove Role from User documentation</a>
 	 */
 	public Boolean removeRoleFromUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -944,12 +954,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_ROLE_TO_USER_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -966,12 +973,12 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Sets Password by ID Using Cleartext
-  	 *
+	 * Sets Password by ID Using Cleartext
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param password
@@ -981,11 +988,11 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-in-cleartext">Set Password by ID Using Cleartext documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-in-cleartext">Set Password by ID Using Cleartext documentation</a>
 	 */
 	public Boolean setPasswordUsingClearText(long id, String password, String passwordConfirmation) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -996,12 +1003,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_PW_CLEARTEXT, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1019,12 +1023,12 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Set Password by ID Using Salt and SHA-256
-  	 *
+	 * Set Password by ID Using Salt and SHA-256
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param password
@@ -1038,11 +1042,11 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-using-sha-256">Set Password by ID Using Salt and SHA-256 documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-using-sha-256">Set Password by ID Using Salt and SHA-256 documentation</a>
 	 */
 	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm, String passwordSalt) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1053,12 +1057,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_PW_SALT, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1080,12 +1081,12 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Set Password by ID Using Salt and SHA-256
-  	 *
+	 * Set Password by ID Using Salt and SHA-256
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param password
@@ -1097,19 +1098,19 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-using-sha-256">Set Password by ID Using Salt and SHA-256 documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-using-sha-256">Set Password by ID Using Salt and SHA-256 documentation</a>
 	 */
 	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return setPasswordUsingHashSalt(id, password, passwordConfirmation, passwordAlgorithm, null);
 	}
 
 	/**
-  	 * Set Custom Attribute Value
-  	 *
+	 * Set Custom Attribute Value
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param customAttributes
@@ -1117,11 +1118,11 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-custom-attribute">Set Custom Attribute Value documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-custom-attribute">Set Custom Attribute Value documentation</a>
 	 */
 	public Boolean setCustomAttributeToUser(long id, Map<String, Object> customAttributes) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1132,12 +1133,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_CUSTOM_ATTRIBUTE_TO_USER_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1154,22 +1152,22 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Log a user out of any and all sessions.
-  	 *
+	 * Log a user out of any and all sessions.
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/log-user-out">Log User Out documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/log-user-out">Log User Out documentation</a>
 	 */
 	public Boolean logUserOut(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1180,12 +1178,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.LOG_USER_OUT_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Boolean success = true;
@@ -1196,25 +1191,25 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Use this call to lock a user’s account based on the policy assigned to the user,
-  	 * for a specific time you define in the request, or until you unlock it.
-  	 *
+	 * Use this call to lock a user’s account based on the policy assigned to the user,
+	 * for a specific time you define in the request, or until you unlock it.
+	 *
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param minutes
 	 *            Set to the number of minutes for which you want to lock the user account. (0 to delegate on policy)
-  	 *
+	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/lock-user-account">Lock User Account documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/lock-user-account">Lock User Account documentation</a>
 	 */
 	public Boolean lockUser(long id, int minutes) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1225,12 +1220,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.LOCK_USER_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -1246,22 +1238,22 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;		
+		return success;
 	}
 
 	/**
-  	 * Deletes an user
-  	 *
+	 * Deletes an user
+	 *
 	 * @param id
 	 *            Id of the user to be deleted
 	 *
 	 * @return true if success
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/delete-user">Delete User by ID documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/delete-user">Delete User by ID documentation</a>
 	 */
 	public Boolean deleteUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1272,12 +1264,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_USER_URL, Long.toString(id)));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Boolean removed = true;
@@ -1296,64 +1285,56 @@ public class Client {
 	////////////////////
 
 	/**
-  	 * Gets a list of Role resources. (if no limit provided, by default get 50 elements)
-  	 *
+	 * Gets a list of Role resources.
+	 *
 	 * @param queryParameters
 	 *            Parameters to filter the result of the list
-  	 *
-  	 * @return List of Role
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @param maxResults
+	 *            Limit the number of roles returned (optional)
 	 *
-  	 * @see com.onelogin.sdk.model.Role
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @return List of Role
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
 	 */
-	public List<Role> getRoles(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Role> getRoles(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		int limit = 50;
 		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_URL));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-			if (parameter.getKey() == "limit") {
-				limit = Integer.parseInt(parameter.getValue());
-				if (limit >= 50) {
-					// We don't add limit if is more than 50, API call have that limitation
-					continue;
-				}
-			}
 			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		List<Role> roles = new ArrayList<Role>();
 		String afterCursor = null;
-		while (oAuthResponse == null || (roles.size() < limit && afterCursor != null)) {
+		while (oAuthResponse == null || (roles.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
 				if (dataArray != null && dataArray.length > 0) {
 					Role role;
 					for (JSONObject data: dataArray) {
-						if (roles.size() < limit) {
+						if (roles.size() < maxResults) {
 							role = new Role(data);
 							roles.add(role);
 						} else {
 							return roles;
 						}
-					}					
+					}
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
@@ -1374,16 +1355,55 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of Role resources. (50 elements).
-  	 *
-  	 * @return List of Role
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * Gets a list of Role resources.
 	 *
-  	 * @see com.onelogin.sdk.model.Role
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @param queryParameters
+	 *            Parameters to filter the result of the list
+	 *
+	 * @return List of Role
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 */
+	public List<Role> getRoles(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getRoles(queryParameters, this.maxResults);
+	}
+
+	/**
+	 * Gets a list of Role resources.
+	 *
+	 * @param maxResults
+	 *            Limit the number of roles returned (optional)
+	 *
+	 * @return List of Role
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 */
+	public List<Role> getRoles(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		HashMap<String, String> queryParameters = new HashMap<String, String>();
+		return getRoles(queryParameters, maxResults);
+	}
+
+	/**
+	 * Gets a list of Role resources
+	 *
+	 * @return List of Role
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
 	 */
 	public List<Role> getRoles() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
@@ -1391,19 +1411,19 @@ public class Client {
 	}
 
 	/**
-  	 * Gets Role by ID.
-  	 *
+	 * Gets Role by ID.
+	 *
 	 * @param id
 	 *            Id of the role
-  	 *
-  	 * @return Role
-     *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.Role
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-role-by-id">Get Role by ID documentation</a>
+	 * @return Role
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-role-by-id">Get Role by ID documentation</a>
 	 */
 	public Role getRole(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1414,11 +1434,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Role role = null;
@@ -1438,16 +1456,16 @@ public class Client {
 	/////////////////////
 	
 	/**
-  	 * List of all OneLogin event types available to the Events API.
-  	 *
-  	 * @return List of EventType
-  	 *
+	 * List of all OneLogin event types available to the Events API.
+	 *
+	 * @return List of EventType
+	 *
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws ClientProtocolException
-  	 *
-  	 * @see com.onelogin.sdk.model.EventType
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/event-types">Get Event Types documentation</a>
+	 *
+	 * @see com.onelogin.sdk.model.EventType
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/event-types">Get Event Types documentation</a>
 	 */
 	public List<EventType> getEventTypes() throws URISyntaxException, ClientProtocolException, IOException {
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_TYPES_URL));
@@ -1469,63 +1487,56 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of Event resources. (if no limit provided, by default get 50 elements)
-  	 *
+	 * Gets a list of Event resources.
+	 *
 	 * @param queryParameters
 	 *            Parameters to filter the result of the list
-  	 *
-  	 * @return List of Event
-     *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @param maxResults
+	 *            Limit the number of events returned (optional)
 	 *
-  	 * @see com.onelogin.sdk.model.Event
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 * @return List of Event
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
-	public List<Event> getEvents(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Event> getEvents(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
-		int limit = 50;
 		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENTS_URL));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-			if (parameter.getKey() == "limit") {
-				limit = Integer.parseInt(parameter.getValue());
-				if (limit >= 50) {
-					continue;
-				}
-			}
 			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		String afterCursor = null;
 		List<Event> events = new ArrayList<Event>();
-		while (oAuthResponse == null || (events.size() < limit && afterCursor != null)) {
+		while (oAuthResponse == null || (events.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
 				if (dataArray != null && dataArray.length > 0) {
 					Event event;
 					for (JSONObject data: dataArray) {
-						if (events.size() < limit) {
+						if (events.size() < maxResults) {
 							event = new Event(data);
 							events.add(event);
 						} else {
 							return events;
 						}
-					}					
+					}
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
@@ -1544,16 +1555,55 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of Event resources. (50 elements)
-  	 *
-  	 * @return List of Event
-     *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * Gets a list of Event resources.
 	 *
-  	 * @see com.onelogin.sdk.model.Event
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 * @param queryParameters
+	 *            Parameters to filter the result of the list
+	 *
+	 * @return List of Event
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 */
+	public List<Event> getEvents(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getEvents(queryParameters, this.maxResults);
+	}
+
+	/**
+	 * Gets a list of Event resources.
+	 *
+	 * @param maxResults
+	 *            Limit the number of events returned (optional)
+	 *
+	 * @return List of Event
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 */
+	public List<Event> getEvents(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		HashMap<String, String> queryParameters = new HashMap<String, String>();
+		return getEvents(queryParameters, maxResults);
+	}
+
+	/**
+	 * Gets a list of Event resources. (50 elements)
+	 *
+	 * @return List of Event
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
 	public List<Event> getEvents() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
@@ -1561,19 +1611,19 @@ public class Client {
 	}
 	
 	/**
-  	 * Gets Event by ID.
-  	 *
+	 * Gets Event by ID.
+	 *
 	 * @param id
 	 *            Id of the event
-  	 *
-  	 * @return Event
-     *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.Event
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-event-by-id">Get Event by ID documentation</a>
+	 * @return Event
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-event-by-id">Get Event by ID documentation</a>
 	 */
 	public Event getEvent(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1584,11 +1634,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Event event = null;
@@ -1604,19 +1652,19 @@ public class Client {
 	}
 
 	/**
-  	 * Create an event in the OneLogin event log.
-  	 *
+	 * Create an event in the OneLogin event log.
+	 *
 	 * @param eventParams
 	 *            Event Data (event_type_id, account_id, actor_system, actor_user_id, actor_user_name, app_id,
 	 *            assuming_acting_user_id, custom_message, directory_sync_run_id, group_id, group_name, ipaddr,
 	 *            otp_device_id, otp_device_name, policy_id, policy_name, role_id, role_name, user_id, user_name)
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.Event
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/create-event">Create Event documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/create-event">Create Event documentation</a>
 	 */
 	public void createEvent(Map<String, Object> eventParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1627,12 +1675,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_EVENT_URL));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		String body = JSONUtils.buildJSON(eventParams);
@@ -1650,21 +1695,21 @@ public class Client {
 	/////////////////////
 
 	/**
-  	 * Gets a list of Group resources (element of groups limited with the limit parameter).
-  	 *
-	 * @param limit
-	 *            Limit the number of groups returned
+	 * Gets a list of Group resources (element of groups limited with the limit parameter).
 	 *
-  	 * @return List of Group
+	 * @param maxResults
+	 *            Limit the number of groups returned (optional)
 	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @return List of Group
 	 *
-  	 * @see com.onelogin.sdk.model.Group
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Group
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
-	public List<Group> getGroups(int limit) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Group> getGroups(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
 		prepareToken();
 
@@ -1673,30 +1718,28 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		String afterCursor = null;
 		List<Group> groups = new ArrayList<Group>();
-		while (oAuthResponse == null || (groups.size() < limit && afterCursor != null)) {
+		while (oAuthResponse == null || (groups.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if (oAuthResponse.getResponseCode() == 200) {
 				JSONObject[] dataArray = oAuthResponse.getDataArray();
 				if (dataArray != null && dataArray.length > 0) {
 					Group group;
 					for (JSONObject data: dataArray) {
-						if (groups.size() < limit) {
+						if (groups.size() < maxResults) {
 							group = new Group(data);
 							groups.add(group);
 						} else {
 							return groups;
 						}
-					}					
+					}
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
@@ -1715,35 +1758,35 @@ public class Client {
 	}
 
 	/**
-  	 * Gets a list of Group resources. (50 elements)
-  	 *
-  	 * @return List of Group
-     *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * Gets a list of Group resources.
 	 *
-  	 * @see com.onelogin.sdk.model.Group
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
+	 * @return List of Group
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Group
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
 	public List<Group> getGroups() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getGroups(50);
+		return getGroups(this.maxResults);
 	}
 
 	/**
-  	 * Gets Group by ID.
-  	 *
+	 * Gets Group by ID.
+	 *
 	 * @param id
 	 *            Id of the group
-  	 *
-  	 * @return Group
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.Group
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-group-by-id">Get Group by ID documentation</a>
+	 * @return Group
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.Group
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-group-by-id">Get Group by ID documentation</a>
 	 */
 	public Group getGroup(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1754,11 +1797,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Group group = null;
@@ -1778,8 +1819,8 @@ public class Client {
 	//////////////////////////////
 
 	/**
-  	 * Generates a SAML Assertion.
-  	 *
+	 * Generates a SAML Assertion.
+	 *
 	 * @param usernameOrEmail
 	 *            username or email of the OneLogin user accessing the app
 	 * @param password
@@ -1790,15 +1831,15 @@ public class Client {
 	 *            subdomain of the OneLogin account related to the user/app
 	 * @param ipAddress
 	 *             whitelisted IP address that needs to be bypassed (some MFA scenarios). 
-  	 *
-  	 * @return SAMLEndpointResponse
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
+	 * @return SAMLEndpointResponse
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertion(String usernameOrEmail, String password, String appId, String subdomain, String ipAddress) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1810,12 +1851,9 @@ public class Client {
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
 				//.setAccessToken(accessToken) // 'Authorization' => 'Bearer xxxx' not accepted
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -1849,8 +1887,8 @@ public class Client {
 	}
 
 	/**
-  	 * Generates a SAML Assertion.
-  	 *
+	 * Generates a SAML Assertion.
+	 *
 	 * @param usernameOrEmail
 	 *            username or email of the OneLogin user accessing the app
 	 * @param password
@@ -1859,23 +1897,23 @@ public class Client {
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param subdomain
 	 *            subdomain of the OneLogin user accessing the app
-  	 *
-  	 * @return SAMLEndpointResponse
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
+	 * @return SAMLEndpointResponse
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertion(String usernameOrEmail, String password, String appId, String subdomain) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertion(usernameOrEmail, password, appId, subdomain, null);
 	}
 
 	/**
-  	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
-  	 *
+	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
+	 *
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param devideId
@@ -1886,15 +1924,15 @@ public class Client {
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
 	 * @param urlEndpoint
 	 *			  Specify an url where return the response.
-  	 *
-  	 * @return SAMLEndpointResponse
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @return SAMLEndpointResponse
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -1911,12 +1949,9 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(target)
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put("User-Agent", this.userAgent);
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -1947,8 +1982,8 @@ public class Client {
 	}
 
 	/**
-  	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
-  	 *
+	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
+	 *
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param devideId
@@ -1957,38 +1992,38 @@ public class Client {
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-  	 *
-  	 * @return SAMLEndpointResponse
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @return SAMLEndpointResponse
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertionVerifying(appId, devideId, stateToken, otpToken, null);
 	}
 
 	/**
-  	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
-  	 *
+	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
+	 *
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param devideId
 	 *            Provide the MFA device_id you are submitting for verification.  
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-  	 *
-  	 * @return SAMLEndpointResponse
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
 	 *
-  	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @return SAMLEndpointResponse
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertionVerifying(appId, devideId, stateToken, null, null);
@@ -1999,18 +2034,18 @@ public class Client {
 	////////////////////////////
 
 	/**
-  	 * Generates an invite link for a user that you have already created in your OneLogin account.
-  	 *
+	 * Generates an invite link for a user that you have already created in your OneLogin account.
+	 *
 	 * @param email
 	 *            Set to the email address of the user that you want to generate an invite link for.
 	 *
-  	 * @return String with the link
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @return String with the link
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/generate-invite-link">Generate Invite Link documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/generate-invite-link">Generate Invite Link documentation</a>
 	 */
 	public String generateInviteLink(String email) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -2021,12 +2056,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GENERATE_INVITE_LINK_URL));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -2052,21 +2084,21 @@ public class Client {
 	}
 
 	/**
-  	 * Sends an invite link to a user that you have already created in your OneLogin account.
-  	 *
+	 * Sends an invite link to a user that you have already created in your OneLogin account.
+	 *
 	 * @param email
 	 *            Set to the email address of the user that you want to send an invite link for.
 	 * @param personal_email
 	 *            If you want to send the invite email to an email other than the one provided in  email, 
 	 *            provide it here. The invite link will be sent to this address instead.
 	 *
-  	 * @return True if the mail with the link was sent
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @return True if the mail with the link was sent
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
 	 */
 	public Boolean sendInviteLink(String email, String personalEmail) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
@@ -2077,12 +2109,9 @@ public class Client {
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.SEND_INVITE_LINK_URL));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-                .buildHeaderMessage();
+			.buildHeaderMessage();
 
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization());
-		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		headers.put("User-Agent", this.userAgent);
+		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -2108,18 +2137,18 @@ public class Client {
 	}
 
 	/**
-  	 * Send an invite link to a user that you have already created in your OneLogin account.
-  	 *
+	 * Send an invite link to a user that you have already created in your OneLogin account.
+	 *
 	 * @param email
 	 *            Set to the email address of the user that you want to send an invite link for.
 	 *
-  	 * @return True if the mail with the link was sent
-  	 *
-  	 * @throws OAuthSystemException
-  	 * @throws OAuthProblemException
-  	 * @throws URISyntaxException
+	 * @return True if the mail with the link was sent
 	 *
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
 	 */
 	public Boolean sendInviteLink(String email) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return sendInviteLink(email, null);
@@ -2130,24 +2159,24 @@ public class Client {
 	///////////////////////////
 
 	/**
-  	 * Lists apps accessible by a OneLogin user.
-  	 *
+	 * Lists apps accessible by a OneLogin user.
+	 *
 	 * @param token
 	 *            Provide your embedding token.
 	 * @param email
 	 *            Provide the email of the user for which you want to return a list of apps to be embed.
 	 *
-  	 * @return String that contains an XML with the App info
-  	 *
+	 * @return String that contains an XML with the App info
+	 *
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws XPathExpressionException 
-  	 *
-  	 * @see com.onelogin.sdk.model.App
-  	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/embed-apps/get-apps-to-embed-for-a-user">Get Apps to Embed for a User documentation</a>
+	 *
+	 * @see com.onelogin.sdk.model.App
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/embed-apps/get-apps-to-embed-for-a-user">Get Apps to Embed for a User documentation</a>
 	 */
 	public List<EmbedApp> getEmbedApps(String token, String email) throws URISyntaxException, ClientProtocolException, IOException, ParserConfigurationException, SAXException, XPathExpressionException {
 		cleanError();
@@ -2188,8 +2217,8 @@ public class Client {
 		
 		return embedApps;
 	}
-	
-	
+
+
 	/////////////////////////
 	//  Auxiliary methods  //
 	/////////////////////////
@@ -2206,7 +2235,7 @@ public class Client {
 			refreshToken();
 		}
 	}
-	
+
 	/**
 	 * @return when the token has expired. 
 	 */
@@ -2227,13 +2256,27 @@ public class Client {
 	public String getErrorDescription() {
 		return errorDescription;
 	}
-	
+
 	/**
 	 * Clean error message 
 	 */
 	public void cleanError() {
 		error = null;
 		errorDescription = null;
+	}
+
+	protected Map<String, String> getAuthorizedHeader(Boolean bearer) {
+		Map<String, String> headers = new HashMap<String, String>();
+
+		headers.put(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
+		headers.put("User-Agent", this.userAgent);
+		headers.put(OAuth.HeaderType.AUTHORIZATION, getAuthorization(bearer));
+		
+		return headers;
+	}
+
+	protected Map<String, String> getAuthorizedHeader() {
+		return getAuthorizedHeader(true);
 	}
 
 	protected String getAuthorization(Boolean bearer) {

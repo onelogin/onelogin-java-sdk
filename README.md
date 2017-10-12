@@ -256,6 +256,9 @@ public class AppTest
        /* Get Events */
        List<Event> events = client.getEvents();
 
+       /* Get 30 Events */
+       List<Event> events2 = client.getEvents(30);
+
        /* Get Event */
        Event event = client.getEvent(events.get(0).id);
 

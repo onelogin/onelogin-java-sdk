@@ -17,12 +17,12 @@ public class Settings {
 
 	/**
 	 * Private property to construct a logger for this class.
-     */
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(Settings.class);
 
 	/**
-     * Private property that contains the SDK settings
-     */
+	 * Private property that contains the SDK settings
+	 */
 	private Properties prop = new Properties();	
 
 	public final static String CLIENT_ID_KEY = "onelogin.sdk.client_id";
@@ -101,10 +101,8 @@ public class Settings {
 	private void loadPropFile(String propFileName) throws IOException, Error {
 
 		InputStream inputStream = null;
-
 		try {
-			//inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-			inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName);
+			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 			if (inputStream != null) {
 				this.prop.load(inputStream);
 				LOGGER.debug("properties file " + propFileName + "loaded succesfully");
