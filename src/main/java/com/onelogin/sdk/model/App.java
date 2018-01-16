@@ -9,7 +9,7 @@ public class App {
 	public String icon;
 	public String provisioned;
 	public Boolean extension;
-	public int loginId;
+	public String loginId;
 	public Boolean personal;
 
 	public App(JSONObject data) {
@@ -18,7 +18,7 @@ public class App {
 		icon = data.optString("icon", null);
 		provisioned = data.optString("provisioned", null);
 		extension = data.optBoolean("extension", false);
-		loginId = data.optInt("login_id");
+		loginId = data.optString("login_id");
 		personal = data.optBoolean("personal", false);
 	}
 }
