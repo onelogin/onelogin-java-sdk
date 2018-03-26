@@ -1122,7 +1122,7 @@ public class Client {
 	 * @throws OAuthProblemException
 	 * @throws URISyntaxException
 	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-custom-attribute">Set Custom Attribute Value documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-state">Set User State documentation</a>
 	 */
 	public Boolean setStateToUser(long id, int state) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
