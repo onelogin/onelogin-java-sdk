@@ -22,6 +22,7 @@ public class User {
 	public String company;
 	public String department;
 	public int status;
+	public int state;
 	public String memberOf;
 	public String samaccountname;
 	public String userprincipalname;
@@ -54,6 +55,7 @@ public class User {
 		company = data.optString("company", null);
 		department = data.optString("department", null);
 		status = data.optInt("status");
+		state = data.optInt("state");
 		memberOf = data.optString("member_of", null);
 		samaccountname = data.optString("samaccountname", null);
 		userprincipalname = data.optString("userprincipalname", null);
@@ -102,6 +104,7 @@ public class User {
 		userData.company = company;
 		userData.department = department;
 		userData.status = status;
+		userData.state = state;
 		userData.memberOf = memberOf;
 		userData.samaccountname = samaccountname;
 		userData.userprincipalname = userprincipalname;
@@ -142,6 +145,7 @@ public class User {
 		userParams.put("company", company);
 		userParams.put("department", department);
 		userParams.put("status", status);
+		userParams.put("state", state);
 		userParams.put("member_of", memberOf);
 		userParams.put("samaccountname", samaccountname);
 		userParams.put("invalid_login_attempts", samaccountname);

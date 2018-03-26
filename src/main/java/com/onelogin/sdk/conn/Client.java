@@ -1109,6 +1109,53 @@ public class Client {
 	}
 
 	/**
+	 * Set User State
+	 *
+	 * @param id
+	 *            Id of the user to be modified
+	 * @param state
+	 *            Set to the state value. [Unapproved: 0, Approved (licensed): 1, Rejected: 2, Unlicensed: 3]
+	 *
+	 * @return true if success
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-custom-attribute">Set Custom Attribute Value documentation</a>
+	 */
+	public Boolean setStateToUser(long id, int state) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		cleanError();
+		prepareToken();
+
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_USER_STATE_URL, Long.toString(id)));
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("state", state);
+
+		String body = JSONUtils.buildJSON(params);
+		bearerRequest.setBody(body);
+
+		Boolean success = true;
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
+		if (oAuthResponse.getResponseCode() != 200) {
+			success = false;
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return success;
+	}
+	
+	/**
 	 * Set Custom Attribute Value
 	 *
 	 * @param id

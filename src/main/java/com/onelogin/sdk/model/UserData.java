@@ -13,6 +13,7 @@ public class UserData {
 	public String company;
 	public String department;
 	public int status;
+	public int state;
 	public String memberOf;
 	public String samaccountname;
 	public String userprincipalname;

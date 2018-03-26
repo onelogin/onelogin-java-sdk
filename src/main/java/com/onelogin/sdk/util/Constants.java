@@ -31,6 +31,7 @@ public final class Constants {
 	public static final String SET_PW_CLEARTEXT = "https://api.%s.onelogin.com/api/1/users/set_password_clear_text/%s";
 	public static final String SET_PW_SALT = "https://api.%s.onelogin.com/api/1/users/set_password_using_salt/%s";
 	public static final String SET_CUSTOM_ATTRIBUTE_TO_USER_URL = "https://api.%s.onelogin.com/api/1/users/%s/set_custom_attributes";
+	public static final String SET_USER_STATE_URL = "https://api.%s.onelogin.com/api/1/users/%s/set_state";
 	public static final String LOG_USER_OUT_URL = "https://api.%s.onelogin.com/api/1/users/%s/logout";
 	public static final String LOCK_USER_URL = "https://api.%s.onelogin.com/api/1/users/%s/lock_user";
 
