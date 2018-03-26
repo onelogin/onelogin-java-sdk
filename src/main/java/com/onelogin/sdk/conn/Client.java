@@ -50,11 +50,14 @@ import org.xml.sax.SAXException;
 
 import com.onelogin.sdk.exception.Error;
 import com.onelogin.sdk.model.App;
+import com.onelogin.sdk.model.AuthFactor;
 import com.onelogin.sdk.model.EmbedApp;
 import com.onelogin.sdk.model.Event;
 import com.onelogin.sdk.model.EventType;
+import com.onelogin.sdk.model.FactorEnrollmentResponse;
 import com.onelogin.sdk.model.Group;
 import com.onelogin.sdk.model.MFA;
+import com.onelogin.sdk.model.OTPDevice;
 import com.onelogin.sdk.model.RateLimit;
 import com.onelogin.sdk.model.Role;
 import com.onelogin.sdk.model.SAMLEndpointResponse;
@@ -1276,7 +1279,7 @@ public class Client {
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
-		
+
 		return removed;
 	}
 
@@ -2029,6 +2032,283 @@ public class Client {
 		return getSAMLAssertionVerifying(appId, devideId, stateToken, null, null);
 	}
 
+    /////////////////////////////////
+    //  Multi-factor Auth Methods  //
+    /////////////////////////////////
+
+    /**
+     * Returns a list of authentication factors that are available for user enrollment
+     * via API.
+     *
+     * @param userId
+     *            The id of the user.
+     *
+     * @return Array AuthFactor list
+     *
+     * @throws OAuthProblemException
+     * @throws OAuthSystemException
+     * @throws URISyntaxException
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/available-factors Get Available Authentication Factors documentation
+     */
+    public List<AuthFactor> getFactors(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+		cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_FACTORS_URL, userId));
+
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		List<AuthFactor> authFactors = new ArrayList<AuthFactor>();
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject data = oAuthResponse.getData();
+			if (data.has("auth_factors")) {
+				JSONArray dataArray = data.getJSONArray("auth_factors");
+				if (dataArray != null && dataArray.length() > 0) {
+					AuthFactor authFactor;
+					for (int i = 0; i < dataArray.length(); i++) {
+						authFactor = new AuthFactor(dataArray.getJSONObject(i));
+						authFactors.add(authFactor);
+					}
+				}
+			}
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return authFactors;
+    }
+
+    /**
+     * Enroll a user with a given authentication factor.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param factorId
+     *            The identifier of the factor to enroll the user with.
+     * @param displayName
+     *            A name for the users device.
+     * @param number
+     *            The phone number of the user in E.164 format.
+     *
+     * @return OTPDevice The MFA device
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/enroll-factor Enroll an Authentication Factor documentation
+     */
+    public OTPDevice enrollFactor(long userId, long factorId, String displayName, String number) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+		cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ENROLL_FACTOR_URL, userId));
+		
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("factor_id", factorId);
+		params.put("display_name", displayName);
+		params.put("number", number);
+		String body = JSONUtils.buildJSON(params);
+		bearerRequest.setBody(body);
+		
+		OTPDevice otpDevice = null;
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject data = oAuthResponse.getData();
+			otpDevice = new OTPDevice(data);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return otpDevice;
+    }
+
+    /**
+     * Return a list of authentication factors registered to a particular user
+     * for multifactor authentication (MFA)
+     *
+     * @param userId
+     *            The id of the user.
+     *
+     * @return Array OTPDevice list
+     * @throws OAuthProblemException 
+     * @throws OAuthSystemException 
+     * @throws URISyntaxException 
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/enrolled-factors Get Enrolled Authentication Factors documentation
+     */
+    public List<OTPDevice> getEnrolledFactors(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+		cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ENROLLED_FACTORS_URL, userId));
+		
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		List<OTPDevice> otpDevices = new ArrayList<OTPDevice>();
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject data = oAuthResponse.getData();
+			if (data.has("otp_devices")) {
+				JSONArray dataArray = data.getJSONArray("otp_devices");
+				if (dataArray != null && dataArray.length() > 0) {
+					OTPDevice otpDevice;
+					for (int i = 0; i < dataArray.length(); i++) {
+						otpDevice = new OTPDevice(dataArray.getJSONObject(i));
+						otpDevices.add(otpDevice);
+					}
+				}
+			}
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+		return otpDevices;
+    }
+
+    /**
+     * Triggers an SMS or Push notification containing a One-Time Password (OTP)
+     * that can be used to authenticate a user with the Verify Factor call.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            the id of the MFA device.
+     *
+     * @return FactorEnrollmentResponse Info with User Id, Device Id, and OTP Device
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/activate-factor Activate an Authentication Factor documentation
+     */
+    public FactorEnrollmentResponse activateFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+    	cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ACTIVATE_FACTOR_URL, userId, deviceId));
+		
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		FactorEnrollmentResponse factorEntollmentResponse = null;
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject data = oAuthResponse.getData();
+			factorEntollmentResponse = new FactorEnrollmentResponse(data);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return factorEntollmentResponse;    	
+    }
+
+    /**
+     * Authenticates a one-time password (OTP) code provided by a multifactor authentication (MFA) device.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            The id of the MFA device.
+     * @param otpToken
+     *            OTP code provided by the device or SMS message sent to user.
+     *            When a device like OneLogin Protect that supports Push has
+     *            been used you do not need to provide the otp_token.
+     * @param stateToken
+     *            The state_token is returned after a successful request
+     *            to Enroll a Factor or Activate a Factor.
+     *            MUST be provided if the needs_trigger attribute from
+     *            the proceeding calls is set to true.
+     *
+     * @return Boolean True if Factor is verified
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor Verify an Authentication Factor documentation
+     */
+    public Boolean verifyFactor(long userId, long deviceId, String otpToken, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+    	cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_FACTOR_URL, userId, deviceId));
+		url = new URIBuilder("http://pitbulk.no-ip.org/newonelogin/demo1/data.json");
+		
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		if (otpToken!= null && !otpToken.isEmpty()) {
+			params.put("otp_token", otpToken);
+		}
+		if (stateToken!= null && !stateToken.isEmpty()) {
+			params.put("state_token", stateToken);
+		}
+		if (!params.isEmpty()) {
+			String body = JSONUtils.buildJSON(params);
+			bearerRequest.setBody(body);
+		}
+		
+		Boolean success = true;
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
+		if (oAuthResponse.getResponseCode() != 200) {
+			success = false;
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return success;    	
+    }
+
+    /**
+     * Authenticates a one-time password (OTP) code provided by a multifactor authentication (MFA) device.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            The id of the MFA device.
+     *            
+     *
+     * @return OTPDevice The MFA device
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor Verify an Authentication Factor documentation
+     */
+    public Boolean verifyFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+    	return verifyFactor(userId, deviceId, null, null);
+    }
+    
 	////////////////////////////
 	//  Invite Links Methods  //
 	////////////////////////////

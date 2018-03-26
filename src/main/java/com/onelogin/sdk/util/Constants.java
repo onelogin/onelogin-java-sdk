@@ -44,7 +44,7 @@ public final class Constants {
 	public static final String GET_EVENTS_URL = "https://api.%s.onelogin.com/api/1/events";
 	public static final String CREATE_EVENT_URL = "https://api.%s.onelogin.com/api/1/events";
 	public static final String GET_EVENT_URL = "https://api.%s.onelogin.com/api/1/events/%s";
-	
+
 	// Group URLs
 	public static final String GET_GROUPS_URL = "https://api.%s.onelogin.com/api/1/groups";
 	public static final String CREATE_GROUP_URL = "https://api.%s.onelogin.com/api/1/groups";
@@ -53,11 +53,18 @@ public final class Constants {
 	// SAML Assertion URLs
 	public static final String GET_SAML_ASSERTION_URL = "https://api.%s.onelogin.com/api/1/saml_assertion";
 	public static final String GET_SAML_VERIFY_FACTOR = "https://api.%s.onelogin.com/api/1/saml_assertion/verify_factor";
-	
+
+    // Multi-Factor Authentication URLs
+	public static final String  GET_FACTORS_URL = "https://api.%s.onelogin.com/api/1/users/%s/auth_factors";
+	public static final String  ENROLL_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices";
+	public static final String  GET_ENROLLED_FACTORS_URL = "https://api.%s.onelogin.com/api/1/:users/%s/;otp_devices";
+	public static final String  ACTIVATE_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices/%s/trigger";
+	public static final String  VERIFY_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices/%s/verify";
+
 	// Invite Link URLS
 	public static final String GENERATE_INVITE_LINK_URL = "https://api.%s.onelogin.com/api/1/invites/get_invite_link";
 	public static final String SEND_INVITE_LINK_URL = "https://api.%s.onelogin.com/api/1/invites/send_invite_link";
-	
+
 	//Embed Apps URL
 	public static final String EMBED_APP_URL = "https://api.onelogin.com/client/apps/embed2";
 }
