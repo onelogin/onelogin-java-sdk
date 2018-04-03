@@ -1385,9 +1385,7 @@ public class Client {
 				}
 
 				afterCursor = oAuthResponse.getAfterCursor();
-				if (afterCursor == "null") {
-					afterCursor = null;
-				} else if (!afterCursor.isEmpty()) {
+				if (afterCursor != null && !afterCursor.isEmpty()) {
 					url.setParameter("after_cursor", oAuthResponse.getAfterCursor());
 					bearerRequest.setLocationUri(url.toString());
 				}
