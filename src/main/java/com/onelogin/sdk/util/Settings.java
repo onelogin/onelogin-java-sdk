@@ -61,6 +61,36 @@ public class Settings {
 		return region;
 	}
 
+	public String getURL(String name, String id, String extraId) {
+		if (id == null) {
+			return String.format(name, this.region);			
+		} else if (extraId == null){
+			return String.format(name, this.region, id);
+		} else {
+			return String.format(name, this.region, id, extraId);
+		}
+	}
+
+	public String getURL(String name, int id, int extraId) {
+		if (id == 0) {
+			return String.format(name, this.region);			
+		} else if (extraId == 0){
+			return String.format(name, this.region, id);
+		} else {
+			return String.format(name, this.region, id, extraId);
+		}
+	}
+
+	public String getURL(String name, long id, long extraId) {
+		if (id == 0) {
+			return String.format(name, this.region);			
+		} else if (extraId == 0){
+			return String.format(name, this.region, id);
+		} else {
+			return String.format(name, this.region, id, extraId);
+		}
+	}
+
 	public String getURL(String name, String id) {
 		if (id != null) {
 			return String.format(name, this.region, id);
