@@ -12,6 +12,7 @@ public class UserData {
 	public String phone;
 	public String company;
 	public String department;
+	public String title;
 	public int status;
 	public int state;
 	public String memberOf;

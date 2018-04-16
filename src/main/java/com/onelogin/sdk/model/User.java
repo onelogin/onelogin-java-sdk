@@ -21,6 +21,7 @@ public class User {
 	public String phone;
 	public String company;
 	public String department;
+	public String title;
 	public int status;
 	public int state;
 	public String memberOf;
@@ -54,6 +55,7 @@ public class User {
 		phone = data.optString("phone", null);
 		company = data.optString("company", null);
 		department = data.optString("department", null);
+		title = data.optString("title", null);
 		status = data.optInt("status");
 		state = data.optInt("state");
 		memberOf = data.optString("member_of", null);
@@ -103,6 +105,7 @@ public class User {
 		userData.phone = phone;
 		userData.company = company;
 		userData.department = department;
+		userData.title = title;
 		userData.status = status;
 		userData.state = state;
 		userData.memberOf = memberOf;
@@ -144,6 +147,7 @@ public class User {
 		userParams.put("phone", phone);
 		userParams.put("company", company);
 		userParams.put("department", department);
+		userParams.put("title", title);
 		userParams.put("status", status);
 		userParams.put("state", state);
 		userParams.put("member_of", memberOf);
