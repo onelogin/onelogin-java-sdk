@@ -69,7 +69,7 @@ public class User {
 				roleIds.add(roleData.getLong(i));
 			}
 		}
-		customAttributes = (data.optJSONArray("custom_attributes") == null)? null : (Map) data.getJSONArray("custom_attributes") ;
+		customAttributes = readCustomAttributes(data);
 		openidName = data.optString("openid_name", null);
 		localeCode = data.optString("locale_code", null);
 		notes = data.optString("notes", null);
@@ -164,4 +164,15 @@ public class User {
 		
 		return userParams;
 	}
+	
+    private Map readCustomAttributes(JSONObject data) {
+        JSONObject jsonObject = (data.optJSONObject("custom_attributes") == null) ? null : data.getJSONObject("custom_attributes");
+        if (jsonObject == null) return null;
+
+        Map map = new HashMap();
+        for (Object key : jsonObject.keySet()) {
+            map.put(key, jsonObject.get(String.valueOf(key)));
+        }
+        return map;
+    }
 }
