@@ -9,9 +9,9 @@ package com.onelogin.sdk.util;
 public final class Constants {
 
 	// Oauth2 URLs
-	public static final String TOKEN_REQUEST_URL = "https://api.%s.onelogin.com/auth/oauth2/token";
-	public static final String TOKEN_REFRESH_URL = "https://api.%s.onelogin.com/auth/oauth2/token";
-	public static final String TOKEN_REVOKE_URL = "https://api.%s.onelogin.com/auth/oauth2/revoke";
+	public static final String TOKEN_REQUEST_URL = "https://api.%s.onelogin.com/auth/oauth2/v2/token";
+	public static final String TOKEN_REFRESH_URL = "https://api.%s.onelogin.com/auth/oauth2/v2/token";
+	public static final String TOKEN_REVOKE_URL = "https://api.%s.onelogin.com/auth/oauth2/v2/revoke";
 	public static final String GET_RATE_URL = "https://api.%s.onelogin.com/auth/rate_limit";
 
 	// User URLs

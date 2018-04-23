@@ -149,8 +149,7 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		//OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest request = OAuthClientRequest
-			.tokenLocation(settings.getURL(Constants.TOKEN_REQUEST_URL))            
-			//.setGrantType(GrantType.CLIENT_CREDENTIALS)
+			.tokenLocation(settings.getURL(Constants.TOKEN_REQUEST_URL))
 			.buildBodyMessage();
 
 		Map<String, String> headers = getAuthorizedHeader(false);
@@ -160,10 +159,6 @@ public class Client {
 		String body = JSONUtils.buildJSON(params);
 		request.setBody(body);
 
-		// I can't use because OAuthClient 1.0.2 Line 28 overrides Content-Type 
-		// request.setHeader(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.JSON);
-		// request.setHeader(OAuth.HeaderType.AUTHORIZATION, "client_id:"+this.settings.getClientId()+", client_secret:"+this.settings.getClientSecret());
-		// OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(request, OAuth.HttpMethod.POST, OAuthJSONAccessTokenResponse.class);
 		OneloginOAuthJSONAccessTokenResponse oAuthResponse = (OneloginOAuthJSONAccessTokenResponse) httpClient.execute(request, headers, OAuth.HttpMethod.POST, OneloginOAuthJSONAccessTokenResponse.class);
 		if (oAuthResponse.getResponseCode() == 200) {
 			accessToken = oAuthResponse.getAccessToken();
@@ -195,7 +190,7 @@ public class Client {
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClientRequest request = OAuthClientRequest
-			.tokenLocation(settings.getURL(Constants.TOKEN_REFRESH_URL))            
+			.tokenLocation(settings.getURL(Constants.TOKEN_REFRESH_URL))
 			.buildBodyMessage();
 
 		Map<String, String> headers = new HashMap<String, String>();

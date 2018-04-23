@@ -58,7 +58,7 @@ public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenRespon
 		try {
 			this.body = body;
 
-			this.parameters = this.transformOLData(JSONUtils.parseJSON(body));
+			this.parameters = JSONUtils.parseJSON(body);
 		} catch (Throwable e) {
 			throw OAuthProblemException.error("unsupported_response_type",
 					"Invalid response! Response body is not application/json encoded or has non expected values");
@@ -73,27 +73,4 @@ public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenRespon
 		this.responseCode = code;
 	}
 
-	protected Map<String, Object> transformOLData(Map<String, Object> map)
-	{
-		Map<String, Object> newmap = new HashMap<String, Object>();
-		if (map.keySet().contains("data")) {
-			JSONObject data = (JSONObject) ((Object[])map.get("data"))[0];
-			newmap.put("access_token", data.optString("access_token", null));
-			newmap.put("refresh_token", data.optString("refresh_token", null));
-			newmap.put("expires_in", data.get("expires_in"));
-			newmap.put("token_type", data.get("token_type"));
-			newmap.put("account_id", data.optInt("account_id"));
-			newmap.put("created_at", data.optString("created_at", null));
-		}
-		if (map.keySet().contains("status")) {
-			JSONObject status = (JSONObject) map.get("status");
-			Boolean error = status.getBoolean("error");
-			if (error) {
-				newmap.put("error", status.get("type"));
-				newmap.put("error_description", status.get("message"));
-				newmap.put("state", status.get("code"));
-			}
-		}
-		return newmap;
-	}
 }
