@@ -2156,7 +2156,7 @@ public class Client {
 		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.ENROLL_FACTOR_URL, userId));
-		
+
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
@@ -2171,7 +2171,7 @@ public class Client {
 		params.put("number", number);
 		String body = JSONUtils.buildJSON(params);
 		bearerRequest.setBody(body);
-		
+
 		OTPDevice otpDevice = null;
 		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
 		if (oAuthResponse.getResponseCode() == 200) {
@@ -2333,7 +2333,28 @@ public class Client {
 			errorDescription = oAuthResponse.getErrorDescription();
 		}
 
-		return success;    	
+		return success;
+    }
+
+    /**
+     * Authenticates a one-time password (OTP) code provided by a multifactor authentication (MFA) device.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            The id of the MFA device.
+     * @param otpToken
+     *            OTP code provided by the device or SMS message sent to user.
+     *            When a device like OneLogin Protect that supports Push has
+     *            been used you do not need to provide the otp_token.
+     *
+     * @return Boolean True if Factor is verified
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor Verify an Authentication Factor documentation
+     */
+    public Boolean verifyFactor(long userId, long deviceId, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+    	return verifyFactor(userId, deviceId, otpToken, null);
     }
 
     /**
@@ -2345,7 +2366,7 @@ public class Client {
      *            The id of the MFA device.
      *            
      *
-     * @return OTPDevice The MFA device
+     * @return Boolean True if Factor is verified
      *
      * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor Verify an Authentication Factor documentation
      */
@@ -2353,7 +2374,44 @@ public class Client {
     {
     	return verifyFactor(userId, deviceId, null, null);
     }
-    
+
+    /**
+     * Remove an enrolled factor from a user.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            The device_id of the MFA device.
+     *
+     * @return Boolean True if action succeed
+     *
+     * @see https://developers.onelogin.com/api-docs/1/multi-factor-authentication/remove-factor Remove a Factor documentation
+     */
+    public Boolean removeFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    {
+		cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_FACTOR_URL, userId, deviceId));
+
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		Boolean success = true;
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.DELETE, OneloginOAuthJSONResourceResponse.class);
+		if (oAuthResponse.getResponseCode() != 200) {
+			success = false;
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+		return success;
+    }
+
 	////////////////////////////
 	//  Invite Links Methods  //
 	////////////////////////////

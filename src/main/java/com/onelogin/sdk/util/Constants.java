@@ -58,10 +58,11 @@ public final class Constants {
     // Multi-Factor Authentication URLs
 	public static final String  GET_FACTORS_URL = "https://api.%s.onelogin.com/api/1/users/%s/auth_factors";
 	public static final String  ENROLL_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices";
-	public static final String  GET_ENROLLED_FACTORS_URL = "https://api.%s.onelogin.com/api/1/:users/%s/;otp_devices";
+	public static final String  GET_ENROLLED_FACTORS_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices";
 	public static final String  ACTIVATE_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices/%s/trigger";
 	public static final String  VERIFY_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices/%s/verify";
-
+	public static final String  REMOVE_FACTOR_URL = "https://api.%s.onelogin.com/api/1/users/%s/otp_devices/%s";
+	
 	// Invite Link URLS
 	public static final String GENERATE_INVITE_LINK_URL = "https://api.%s.onelogin.com/api/1/invites/get_invite_link";
 	public static final String SEND_INVITE_LINK_URL = "https://api.%s.onelogin.com/api/1/invites/send_invite_link";

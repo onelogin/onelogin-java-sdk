@@ -320,6 +320,9 @@ public class AppTest
         # Verify an Authentication Factor
         Boolean verified = client.verifyFactor(userId, deviceId, otpToken);
 
+        # Remove an Authentication Factor
+        Boolean removed = client.removeFactor(userId, deviceId);
+
         /* Generate Invite Link */
         String urlLink = client.generateInviteLink("user@example.com");
 
