@@ -47,6 +47,12 @@ public class Settings {
 		    this.region = regionValue;
 		}
 	}
+	
+	public Settings(String clientID, String clientSecret, String region){
+	    this.clientID = clientID;
+	    this.clientSecret = clientSecret;
+	    this.region = region;
+	}
 
 	public String getClientId() {
 		return clientID;
