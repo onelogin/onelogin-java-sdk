@@ -135,7 +135,7 @@ public class Settings {
 			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 			if (inputStream != null) {
 				this.prop.load(inputStream);
-				LOGGER.debug("properties file " + propFileName + "loaded succesfully");
+				LOGGER.debug("properties file " + propFileName + " loaded succesfully");
 			} else {
 				String errorMsg = "properties file '" + propFileName + "' not found in the classpath";
 				LOGGER.error(errorMsg);
