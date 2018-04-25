@@ -131,7 +131,7 @@ public class Client {
 	public Client() throws IOException, Error {
 		this(1000);
 	}
-	
+
     public Client(String clientID, String clientSecret, String region) {
         this.settings = new Settings(clientID, clientSecret, region);
         this.userAgent = CUSTOM_USER_AGENT;
