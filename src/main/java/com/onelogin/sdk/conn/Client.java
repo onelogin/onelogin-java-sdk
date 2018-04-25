@@ -338,14 +338,14 @@ public class Client {
 		List<User> users = new ArrayList<User>(maxResults);
 		while (oAuthResponse == null || (users.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-            if ((afterCursor = getUsersBatch(users, url, bearerRequest, oAuthResponse)) == null) {
-                break;
-            }
+			if ((afterCursor = getUsersBatch(users, url, bearerRequest, oAuthResponse)) == null) {
+				break;
+			}
 		}
 
 		return users;
 	}
-	
+
 	/**
 	 * Get a batch Users.
 	 * 
@@ -358,71 +358,73 @@ public class Client {
 	 * @throws URISyntaxException
 	 * 
 	 * @see com.onelogin.sdk.model.User
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
 	 */
-    public OneLoginResponse<User> getUsersBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getUsersBatch(batchSize, null);
-    }
-
-    /**
-     * Get a batch of Users.
-     * 
-     * @param batchSize
-     * @param afterCursor
-     * @return
-     * @throws OAuthSystemException
-     * @throws OAuthProblemException
-     * @throws URISyntaxException
-     * 
-     * @see com.onelogin.sdk.model.User
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
-     */
-    public OneLoginResponse<User> getUsersBatch(int batchSize, String afterCursor)
-            throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getUsersBatch(new HashMap<String, String>(), batchSize, afterCursor);
-    }
-    
-    /**
-     * Get a batch of Users.
-     * 
-     * @param queryParameters
-     * @param batchSize
-     * @param afterCursor 
-     * @return
-     * @throws OAuthSystemException
-     * @throws OAuthProblemException
-     * @throws URISyntaxException
-     * 
-     * @see com.onelogin.sdk.model.User
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
-     */
-	public OneLoginResponse<User> getUsersBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-	    cleanError();
-	    prepareToken();
-	    
-	    URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USERS_URL));
-	    for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-	        url.addParameter(parameter.getKey(), parameter.getValue());
-	    }
-        url.addParameter("limit", String.valueOf(batchSize));
-	    
-	    OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-	    OAuthClient oAuthClient = new OAuthClient(httpClient);
-	    OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
-	    if (afterCursor != null && !afterCursor.isEmpty()) {
-	        url.setParameter("after_cursor", afterCursor);
-	        bearerRequest.setLocationUri(url.toString());
-	    }
-	    
-	    Map<String, String> headers = getAuthorizedHeader();
-	    bearerRequest.setHeaders(headers);
-	    
-	    List<User> users = new ArrayList<User>(batchSize);
-        OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-        afterCursor = getUsersBatch(users, url, bearerRequest, oAuthResponse);
-        return new OneLoginResponse<User>(users, afterCursor);
+	public OneLoginResponse<User> getUsersBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getUsersBatch(batchSize, null);
 	}
-	
+
+	/**
+	 * Get a batch of Users.
+	 * 
+	 * @param batchSize
+	 * @param afterCursor
+	 * @return
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 * 
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 */
+	public OneLoginResponse<User> getUsersBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getUsersBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
+
+	/**
+	 * Get a batch of Users.
+	 * 
+	 * @param queryParameters
+	 * @param batchSize
+	 * @param afterCursor
+	 * @return
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 * 
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 */
+	public OneLoginResponse<User> getUsersBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USERS_URL));
+		for (Map.Entry<String, String> parameter : queryParameters.entrySet()) {
+			url.addParameter(parameter.getKey(), parameter.getValue());
+		}
+		url.addParameter("limit", String.valueOf(batchSize));
+
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			url.setParameter("after_cursor", afterCursor);
+			bearerRequest.setLocationUri(url.toString());
+		}
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		List<User> users = new ArrayList<User>(batchSize);
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
+				OneloginOAuthJSONResourceResponse.class);
+		afterCursor = getUsersBatch(users, url, bearerRequest, oAuthResponse);
+		return new OneLoginResponse<User>(users, afterCursor);
+	}
+
 	/**
 	 * Get a batch of Users.
 	 * 
@@ -433,24 +435,25 @@ public class Client {
 	 * @return
 	 * 
 	 * @see com.onelogin.sdk.model.User
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
 	 */
-    private String getUsersBatch(List<User> users, URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuthJSONResourceResponse oAuthResponse) {
-        if (oAuthResponse.getResponseCode() == 200) {
-            JSONObject[] dataArray = oAuthResponse.getDataArray();
-            if (dataArray != null && dataArray.length > 0) {
-                for (JSONObject data : dataArray) {
-                    users.add(new User(data));
-                }
-            }
+	private String getUsersBatch(List<User> users, URIBuilder url, OAuthClientRequest bearerRequest,
+			OneloginOAuthJSONResourceResponse oAuthResponse) {
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject[] dataArray = oAuthResponse.getDataArray();
+			if (dataArray != null && dataArray.length > 0) {
+				for (JSONObject data : dataArray) {
+					users.add(new User(data));
+				}
+			}
 
-            return collectAfterCursor(url, bearerRequest, oAuthResponse);
-        } else {
-            error = oAuthResponse.getError();
-            errorDescription = oAuthResponse.getErrorDescription();
-        }
-        return null;
-    }
+			return collectAfterCursor(url, bearerRequest, oAuthResponse);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+		return null;
+	}
 
 	/**
 	 * Gets a list of User resources.
@@ -1451,16 +1454,16 @@ public class Client {
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		List<Role> roles = new ArrayList<Role>(maxResults);
 		String afterCursor = null;
-        while (oAuthResponse == null || (roles.size() < maxResults && afterCursor != null)) {
-            oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-            if ((afterCursor = getRolesBatch(roles, url, bearerRequest, oAuthResponse)) == null) {
-                break;
-            }
-        }
+		while (oAuthResponse == null || (roles.size() < maxResults && afterCursor != null)) {
+			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+			if ((afterCursor = getRolesBatch(roles, url, bearerRequest, oAuthResponse)) == null) {
+				break;
+			}
+		}
 
-        return roles;
+		return roles;
 	}
-	
+
 	/**
 	 * Get a batch of Roles.
 	 * 
@@ -1471,11 +1474,11 @@ public class Client {
 	 * @throws URISyntaxException
 	 * 
 	 * @see com.onelogin.sdk.model.Role
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
 	 */
 	public OneLoginResponse<Role> getRolesBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getRolesBatch(batchSize, null);
-    }
+		return getRolesBatch(batchSize, null);
+	}
 
 	/**
 	 * Get a batch of Roles.
@@ -1488,74 +1491,74 @@ public class Client {
 	 * @throws URISyntaxException
 	 * 
 	 * @see com.onelogin.sdk.model.Role
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
 	 */
-    public OneLoginResponse<Role> getRolesBatch(int batchSize, String afterCursor)
-            throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getRolesBatch(new HashMap<String, String>(), batchSize, afterCursor);
-    }
-    
-    /**
-     * Get a batch of Roles.
-     * 
-     * @param queryParameters
-     * @param batchSize
-     * @param afterCursor
-     * @return
-     * @throws OAuthSystemException
-     * @throws OAuthProblemException
-     * @throws URISyntaxException
-     * 
-     * @see com.onelogin.sdk.model.Role
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
-     */
-    public OneLoginResponse<Role> getRolesBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
-            throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        cleanError();
-        prepareToken();
+	public OneLoginResponse<Role> getRolesBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getRolesBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
 
-        URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_URL));
-        for (Map.Entry<String, String> parameter : queryParameters.entrySet()) {
-            url.addParameter(parameter.getKey(), parameter.getValue());
-        }
-        url.addParameter("limit", String.valueOf(batchSize));
+	/**
+	 * Get a batch of Roles.
+	 * 
+	 * @param queryParameters
+	 * @param batchSize
+	 * @param afterCursor
+	 * @return
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 * 
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 */
+	public OneLoginResponse<Role> getRolesBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		cleanError();
+		prepareToken();
 
-        OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-        OAuthClient oAuthClient = new OAuthClient(httpClient);
-        OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
-        if (afterCursor != null && !afterCursor.isEmpty()) {
-            url.setParameter("after_cursor", afterCursor);
-            bearerRequest.setLocationUri(url.toString());
-        }
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_URL));
+		for (Map.Entry<String, String> parameter : queryParameters.entrySet()) {
+			url.addParameter(parameter.getKey(), parameter.getValue());
+		}
+		url.addParameter("limit", String.valueOf(batchSize));
 
-        Map<String, String> headers = getAuthorizedHeader();
-        bearerRequest.setHeaders(headers);
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			url.setParameter("after_cursor", afterCursor);
+			bearerRequest.setLocationUri(url.toString());
+		}
 
-        List<Role> users = new ArrayList<Role>(batchSize);
-        OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
-                OneloginOAuthJSONResourceResponse.class);
-        afterCursor = getRolesBatch(users, url, bearerRequest, oAuthResponse);
-        return new OneLoginResponse<Role>(users, afterCursor);
-    }
-	
-    private String getRolesBatch(List<Role> roles, URIBuilder url, OAuthClientRequest bearerRequest,
-            OneloginOAuthJSONResourceResponse oAuthResponse) {
-        if (oAuthResponse.getResponseCode() == 200) {
-            JSONObject[] dataArray = oAuthResponse.getDataArray();
-            if (dataArray != null && dataArray.length > 0) {
-                for (JSONObject data : dataArray) {
-                    roles.add(new Role(data));
-                }
-            }
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
 
-            return collectAfterCursor(url, bearerRequest, oAuthResponse);
-        } else {
-            error = oAuthResponse.getError();
-            errorDescription = oAuthResponse.getErrorDescription();
-        }
+		List<Role> users = new ArrayList<Role>(batchSize);
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
+				OneloginOAuthJSONResourceResponse.class);
+		afterCursor = getRolesBatch(users, url, bearerRequest, oAuthResponse);
+		return new OneLoginResponse<Role>(users, afterCursor);
+	}
 
-        return null;
-    }
+	private String getRolesBatch(List<Role> roles, URIBuilder url, OAuthClientRequest bearerRequest,
+			OneloginOAuthJSONResourceResponse oAuthResponse) {
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject[] dataArray = oAuthResponse.getDataArray();
+			if (dataArray != null && dataArray.length > 0) {
+				for (JSONObject data : dataArray) {
+					roles.add(new Role(data));
+				}
+			}
+
+			return collectAfterCursor(url, bearerRequest, oAuthResponse);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return null;
+	}
 
 	/**
 	 * Gets a list of Role resources.
@@ -1729,15 +1732,16 @@ public class Client {
 		while (oAuthResponse == null || (events.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
 			if ((afterCursor = getEventsBatch(events, url, bearerRequest, oAuthResponse)) == null) {
-                break;
-            }
+				break;
+			}
 		}
 
 		return events;
 	}
-	
+
 	/**
 	 * Get a batch of Events.
+	 * 
 	 * @param batchSize
 	 * @return
 	 * @throws OAuthSystemException
@@ -1745,11 +1749,11 @@ public class Client {
 	 * @throws URISyntaxException
 	 * 
 	 * @see com.onelogin.sdk.model.Event
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
 	public OneLoginResponse<Event> getEventsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getEventsBatch(batchSize, null);
-    }
+		return getEventsBatch(batchSize, null);
+	}
 
 	/**
 	 * Get a batch of Events.
@@ -1762,72 +1766,75 @@ public class Client {
 	 * @throws URISyntaxException
 	 * 
 	 * @see com.onelogin.sdk.model.Event
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
-    public OneLoginResponse<Event> getEventsBatch(int batchSize, String afterCursor)
-            throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getEventsBatch(new HashMap<String, String>(), batchSize, afterCursor);
-    }
-    
-    /**
-     * Get a batch of Events.
-     * 
-     * @param queryParameters
-     * @param batchSize
-     * @param afterCursor
-     * @return
-     * @throws OAuthSystemException
-     * @throws OAuthProblemException
-     * @throws URISyntaxException
-     * 
-     * @see com.onelogin.sdk.model.Event
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
-     */
-    public OneLoginResponse<Event> getEventsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        cleanError();
-        prepareToken();
-        
-        URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENTS_URL));
-        for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-            url.addParameter(parameter.getKey(), parameter.getValue());
-        }
-        url.addParameter("limit", String.valueOf(batchSize));
-        
-        OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-        OAuthClient oAuthClient = new OAuthClient(httpClient);
-        OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
-        if (afterCursor != null && !afterCursor.isEmpty()) {
-            url.setParameter("after_cursor", afterCursor);
-            bearerRequest.setLocationUri(url.toString());
-        }
-        
-        Map<String, String> headers = getAuthorizedHeader();
-        bearerRequest.setHeaders(headers);
-        
-        List<Event> events = new ArrayList<Event>(batchSize);
-        OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-        afterCursor = getEventsBatch(events, url, bearerRequest, oAuthResponse);
-        return new OneLoginResponse<Event>(events, afterCursor);
-    }
+	public OneLoginResponse<Event> getEventsBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getEventsBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
 
-    private String getEventsBatch(List<Event> events, URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuthJSONResourceResponse oAuthResponse) {
-        if (oAuthResponse.getResponseCode() == 200) {
-            JSONObject[] dataArray = oAuthResponse.getDataArray();
-            if (dataArray != null && dataArray.length > 0) {
-                for (JSONObject data : dataArray) {
-                    events.add(new Event(data));
-                }
-            }
+	/**
+	 * Get a batch of Events.
+	 * 
+	 * @param queryParameters
+	 * @param batchSize
+	 * @param afterCursor
+	 * @return
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 * 
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 */
+	public OneLoginResponse<Event> getEventsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		cleanError();
+		prepareToken();
 
-            return collectAfterCursor(url, bearerRequest, oAuthResponse);
-        } else {
-            error = oAuthResponse.getError();
-            errorDescription = oAuthResponse.getErrorDescription();
-        }
-        return null;
-    }
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENTS_URL));
+		for (Map.Entry<String, String> parameter : queryParameters.entrySet()) {
+			url.addParameter(parameter.getKey(), parameter.getValue());
+		}
+		url.addParameter("limit", String.valueOf(batchSize));
 
-    /**
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			url.setParameter("after_cursor", afterCursor);
+			bearerRequest.setLocationUri(url.toString());
+		}
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		List<Event> events = new ArrayList<Event>(batchSize);
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
+				OneloginOAuthJSONResourceResponse.class);
+		afterCursor = getEventsBatch(events, url, bearerRequest, oAuthResponse);
+		return new OneLoginResponse<Event>(events, afterCursor);
+	}
+
+	private String getEventsBatch(List<Event> events, URIBuilder url, OAuthClientRequest bearerRequest,
+			OneloginOAuthJSONResourceResponse oAuthResponse) {
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject[] dataArray = oAuthResponse.getDataArray();
+			if (dataArray != null && dataArray.length > 0) {
+				for (JSONObject data : dataArray) {
+					events.add(new Event(data));
+				}
+			}
+
+			return collectAfterCursor(url, bearerRequest, oAuthResponse);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+		return null;
+	}
+
+	   /**
 	 * Gets a list of Event resources.
 	 *
 	 * @param queryParameters
@@ -2001,9 +2008,9 @@ public class Client {
 		List<Group> groups = new ArrayList<Group>(maxResults);
 		while (oAuthResponse == null || (groups.size() < maxResults && afterCursor != null)) {
 			oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-            if ((afterCursor = getGroupsBatch(groups, url, bearerRequest, oAuthResponse)) == null) {
-                break;
-            }
+			if ((afterCursor = getGroupsBatch(groups, url, bearerRequest, oAuthResponse)) == null) {
+				break;
+			}
 		}
 
 		return groups;
@@ -2024,7 +2031,7 @@ public class Client {
 	public List<Group> getGroups() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getGroups(this.maxResults);
 	}
-	
+
 	/**
 	 * Get a batch of Groups.
 	 * 
@@ -2035,87 +2042,90 @@ public class Client {
 	 * @throws URISyntaxException
 	 * 
 	 * @see com.onelogin.sdk.model.Group
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
-    public OneLoginResponse<Group> getGroupsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getGroupsBatch(batchSize, null);
-    }
+	public OneLoginResponse<Group> getGroupsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getGroupsBatch(batchSize, null);
+	}
 
-    /**
-     * Get a batch of Groups.
-     * 
-     * @param batchSize
-     * @param afterCursor
-     * @return
-     * @throws OAuthSystemException
-     * @throws OAuthProblemException
-     * @throws URISyntaxException
-     * 
-     * @see com.onelogin.sdk.model.Group
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
-     */
-    public OneLoginResponse<Group> getGroupsBatch(int batchSize, String afterCursor)
-            throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        return getGroupsBatch(new HashMap<String, String>(), batchSize, afterCursor);
-    }
-    
-    /**
-     * Get a batch of Groups
-     * 
-     * @param queryParameters
-     * @param batchSize
-     * @param afterCursor
-     * @return
-     * @throws OAuthSystemException
-     * @throws OAuthProblemException
-     * @throws URISyntaxException
-     * 
-     * @see com.onelogin.sdk.model.Group
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
-     */
-    public OneLoginResponse<Group> getGroupsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-        cleanError();
-        prepareToken();
-        
-        URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_GROUPS_URL));
-        for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
-            url.addParameter(parameter.getKey(), parameter.getValue());
-        }
-        url.addParameter("limit", String.valueOf(batchSize));
-        
-        OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-        OAuthClient oAuthClient = new OAuthClient(httpClient);
-        OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
-        if (afterCursor != null && !afterCursor.isEmpty()) {
-            url.setParameter("after_cursor", afterCursor);
-            bearerRequest.setLocationUri(url.toString());
-        }
-        
-        Map<String, String> headers = getAuthorizedHeader();
-        bearerRequest.setHeaders(headers);
-        
-        List<Group> users = new ArrayList<Group>(batchSize);
-        OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-        afterCursor = getGroupsBatch(users, url, bearerRequest, oAuthResponse);
-        return new OneLoginResponse<Group>(users, afterCursor);
-    }
-    
-    private String getGroupsBatch(List<Group> groups, URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuthJSONResourceResponse oAuthResponse) {
-        if (oAuthResponse.getResponseCode() == 200) {
-            JSONObject[] dataArray = oAuthResponse.getDataArray();
-            if (dataArray != null && dataArray.length > 0) {
-                for (JSONObject data : dataArray) {
-                    groups.add(new Group(data));
-                }
-            }
+	/**
+	 * Get a batch of Groups.
+	 * 
+	 * @param batchSize
+	 * @param afterCursor
+	 * @return
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 * 
+	 * @see com.onelogin.sdk.model.Group
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
+	 */
+	public OneLoginResponse<Group> getGroupsBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getGroupsBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
 
-            return collectAfterCursor(url, bearerRequest, oAuthResponse);
-        } else {
-            error = oAuthResponse.getError();
-            errorDescription = oAuthResponse.getErrorDescription();
-        }
-        return null;
-    }
+	/**
+	 * Get a batch of Groups
+	 * 
+	 * @param queryParameters
+	 * @param batchSize
+	 * @param afterCursor
+	 * @return
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 * 
+	 * @see com.onelogin.sdk.model.Group
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
+	 */
+	public OneLoginResponse<Group> getGroupsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		cleanError();
+		prepareToken();
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_GROUPS_URL));
+		for (Map.Entry<String, String> parameter : queryParameters.entrySet()) {
+			url.addParameter(parameter.getKey(), parameter.getValue());
+		}
+		url.addParameter("limit", String.valueOf(batchSize));
+
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			url.setParameter("after_cursor", afterCursor);
+			bearerRequest.setLocationUri(url.toString());
+		}
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		List<Group> users = new ArrayList<Group>(batchSize);
+		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
+				OneloginOAuthJSONResourceResponse.class);
+		afterCursor = getGroupsBatch(users, url, bearerRequest, oAuthResponse);
+		return new OneLoginResponse<Group>(users, afterCursor);
+	}
+
+	private String getGroupsBatch(List<Group> groups, URIBuilder url, OAuthClientRequest bearerRequest,
+			OneloginOAuthJSONResourceResponse oAuthResponse) {
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject[] dataArray = oAuthResponse.getDataArray();
+			if (dataArray != null && dataArray.length > 0) {
+				for (JSONObject data : dataArray) {
+					groups.add(new Group(data));
+				}
+			}
+
+			return collectAfterCursor(url, bearerRequest, oAuthResponse);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+		return null;
+	}
 
 	/**
 	 * Gets Group by ID.
@@ -2969,15 +2979,15 @@ public class Client {
 	protected String getAuthorization() {
 		return getAuthorization(true);
 	}
-	
-    private String collectAfterCursor(URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuthJSONResourceResponse oAuthResponse) {
-        String afterCursor = oAuthResponse.getAfterCursor();
-        if (afterCursor != null && !afterCursor.isEmpty()) {
-            url.setParameter("after_cursor", afterCursor);
-            bearerRequest.setLocationUri(url.toString());
-        }
 
-        return afterCursor;
-    }
+	private String collectAfterCursor(URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuthJSONResourceResponse oAuthResponse) {
+		String afterCursor = oAuthResponse.getAfterCursor();
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			url.setParameter("after_cursor", afterCursor);
+			bearerRequest.setLocationUri(url.toString());
+		}
+
+		return afterCursor;
+	}
 }
 
