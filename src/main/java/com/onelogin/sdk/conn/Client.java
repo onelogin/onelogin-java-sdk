@@ -132,11 +132,11 @@ public class Client {
 		this(1000);
 	}
 
-    public Client(String clientID, String clientSecret, String region) {
-        this.settings = new Settings(clientID, clientSecret, region);
-        this.userAgent = CUSTOM_USER_AGENT;
-        this.maxResults = 1000;
-    }
+	public Client(String clientID, String clientSecret, String region) {
+		this.settings = new Settings(clientID, clientSecret, region);
+		this.userAgent = CUSTOM_USER_AGENT;
+		this.maxResults = 1000;
+	}
 
 	////////////////////////////////
 	//  OAuth 2.0 Tokens Methods  //
