@@ -16,7 +16,7 @@ public class TestUser {
         JSONArray jsonArray = new JSONArray(jsonBody);
 
         User user = new User(jsonArray.getJSONObject(0));
-        Map attributes = user.getUserCustomAttributes();
+        Map<String, String> attributes = user.getUserCustomAttributes();
         Assert.assertTrue("User isn't expected to have custom attributes", attributes == null || attributes.isEmpty());
 
         user = new User(jsonArray.getJSONObject(1));

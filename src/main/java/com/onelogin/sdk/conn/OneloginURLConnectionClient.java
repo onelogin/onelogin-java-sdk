@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
@@ -19,12 +20,11 @@ import org.apache.oltu.oauth2.common.utils.OAuthUtils;
 
 
 public class OneloginURLConnectionClient extends URLConnectionClient {
-		@SuppressWarnings("unchecked")
 		public <T extends OAuthClientResponse> T execute(OAuthClientRequest request, Map<String, String> headers,
 			String requestMethod, Class<T> responseClass) throws OAuthSystemException, OAuthProblemException {
 		InputStream responseBody = null;
 
-		Map responseHeaders = new HashMap();
+		Map<String, List<String>> responseHeaders = new HashMap<String, List<String>>();
 		URLConnection c;
 		int responseCode;
 		try {
@@ -36,13 +36,13 @@ public class OneloginURLConnectionClient extends URLConnectionClient {
 				HttpURLConnection httpURLConnection = (HttpURLConnection) c;
 
 				if ((headers != null) && (!(headers.isEmpty()))) {
-					for (Map.Entry header : headers.entrySet()) {
+					for (Map.Entry<String, String> header : headers.entrySet()) {
 						httpURLConnection.addRequestProperty((String) header.getKey(), (String) header.getValue());
 					}
 				}
 
 				if (request.getHeaders() != null) {
-					for (Map.Entry header : request.getHeaders().entrySet()) {
+					for (Map.Entry<String, String> header : request.getHeaders().entrySet()) {
 						httpURLConnection.addRequestProperty((String) header.getKey(), (String) header.getValue());
 					}
 				}

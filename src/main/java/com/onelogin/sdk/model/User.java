@@ -29,7 +29,7 @@ public class User {
 	public String userprincipalname;
 	public long groupId;
 	public List<Long> roleIds;
-	public Map customAttributes = new HashMap<String, String>();
+	public Map<String, String> customAttributes = new HashMap<String, String>();
 	public String openidName;
 	public String localeCode;
 	public String notes;
@@ -132,7 +132,7 @@ public class User {
 		return userMetaData;
 	}
 
-	public Map getUserCustomAttributes() {
+	public Map<String, String> getUserCustomAttributes() {
 		return customAttributes; 
 	}
 	
@@ -165,13 +165,13 @@ public class User {
 		return userParams;
 	}
 	
-    private Map readCustomAttributes(JSONObject data) {
+    private Map<String, String> readCustomAttributes(JSONObject data) {
         JSONObject jsonObject = (data.optJSONObject("custom_attributes") == null) ? null : data.getJSONObject("custom_attributes");
         if (jsonObject == null) return null;
 
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<String, String>();
         for (Object key : jsonObject.keySet()) {
-            map.put(key, jsonObject.get(String.valueOf(key)));
+            map.put((String)key, (String)jsonObject.get(String.valueOf(key)));
         }
         return map;
     }

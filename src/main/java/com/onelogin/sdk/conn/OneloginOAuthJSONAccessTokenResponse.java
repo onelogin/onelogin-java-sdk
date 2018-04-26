@@ -1,15 +1,11 @@
 package com.onelogin.sdk.conn;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.oltu.oauth2.client.response.OAuthAccessTokenResponse;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
 import org.apache.oltu.oauth2.common.token.OAuthToken;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
 import org.joda.time.DateTime;
-import org.json.JSONObject;
 
 public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenResponse {
 	public String getAccessToken() {

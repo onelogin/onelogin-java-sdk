@@ -176,6 +176,7 @@ public class Settings {
 	 *
 	 * @return the value
 	 */
+	@SuppressWarnings("unused")
 	private Boolean loadBooleanProperty(String propertyKey) {
 		String booleanPropValue = prop.getProperty(propertyKey);
 		if (booleanPropValue != null) {
@@ -193,6 +194,7 @@ public class Settings {
 	 *
 	 * @return the value
 	 */
+	@SuppressWarnings("unused")
 	private List<String> loadListProperty(String propertyKey) {
 		String arrayPropValue = prop.getProperty(propertyKey);
 		if (arrayPropValue != null && !arrayPropValue.isEmpty()) {
@@ -214,6 +216,7 @@ public class Settings {
 	 *
 	 * @return the value
 	 */
+	@SuppressWarnings("unused")
 	private URL loadURLProperty(String propertyKey) {
 
 		String urlPropValue = prop.getProperty(propertyKey);
