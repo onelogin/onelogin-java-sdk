@@ -20,7 +20,7 @@ public class UserData {
 	public String userprincipalname;
 	public String openidName;
 	public String localeCode;
-	public String notes;
+	public String comment;
 	public long directoryId;
 	public long managerAdId; 
 }

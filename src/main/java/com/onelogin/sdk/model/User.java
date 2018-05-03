@@ -32,7 +32,7 @@ public class User {
 	public Map<String, String> customAttributes = new HashMap<String, String>();
 	public String openidName;
 	public String localeCode;
-	public String notes;
+	public String comment;
 	public long directoryId;
 	public long managerAdId;
 	public DateTime activatedAt;
@@ -72,7 +72,7 @@ public class User {
 		customAttributes = readCustomAttributes(data);
 		openidName = data.optString("openid_name", null);
 		localeCode = data.optString("locale_code", null);
-		notes = data.optString("notes", null);
+		comment = data.optString("comment", null);
 		directoryId = data.optLong("directory_id");
 		managerAdId = data.optLong("manager_ad_id");
 		activatedAt = (data.optString("activated_at" , null) == null)? null : DateTime.parse(data.getString("activated_at"));
@@ -113,7 +113,7 @@ public class User {
 		userData.userprincipalname = userprincipalname;
 		userData.openidName = openidName;
 		userData.localeCode = localeCode;
-		userData.notes = notes;
+		userData.comment = comment;
 		userData.directoryId = directoryId;
 		userData.managerAdId = managerAdId;
 		return userData;
@@ -157,7 +157,7 @@ public class User {
 		userParams.put("group_id", (this.getClass().getField("groupId") == null)? null: Long.toString(groupId));
 		userParams.put("openid_name", openidName);
 		userParams.put("locale_code", localeCode);
-		userParams.put("notes", notes);
+		userParams.put("comment", comment);
 		userParams.put("openid_name", openidName);
 		userParams.put("directory_id", (this.getClass().getField("directoryId") == null)? null: Long.toString(directoryId));
 		userParams.put("manager_ad_id", (this.getClass().getField("managerAdId") == null)? null: Long.toString(managerAdId));
