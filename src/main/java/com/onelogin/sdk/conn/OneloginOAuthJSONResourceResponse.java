@@ -82,6 +82,12 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		if (this.parameters.containsKey("data")) {
 			ArrayList<JSONObject> data = new ArrayList<JSONObject>();
 			Object[] objArray = (Object[])this.parameters.get("data");
+
+			JSONArray emptyJsonArray = new JSONArray();
+			if (objArray.length == 1 && objArray[0].getClass().getName().equals("org.json.JSONArray") && ((JSONArray)objArray[0]).length() == 0) {
+				return jsonArray;
+			}
+
 			for (Object obj: objArray) {
 				JSONObject jobj = (JSONObject)obj;
 				data.add(jobj);
