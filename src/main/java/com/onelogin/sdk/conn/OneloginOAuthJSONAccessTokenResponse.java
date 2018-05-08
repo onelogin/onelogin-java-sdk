@@ -1,13 +1,29 @@
 package com.onelogin.sdk.conn;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.oltu.oauth2.client.response.OAuthAccessTokenResponse;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
 import org.apache.oltu.oauth2.common.token.OAuthToken;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 
 public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenResponse {
+	protected void init(String body, String contentType, int responseCode, Map<String, List<String>> headers)
+			throws OAuthProblemException {
+		setResponseCode(responseCode);
+		setBody(body);
+		setContentType(contentType);
+		setHeaders(headers);
+		// Try/Catch the validate call line to stop throwing OAuthProblemException and
+		// instead use client.getError() client.getErrorDescription() to retrieve what happened
+		validate();
+	}
+
 	public String getAccessToken() {
 		return getParam("access_token");
 	}
@@ -54,7 +70,7 @@ public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenRespon
 		try {
 			this.body = body;
 
-			this.parameters = JSONUtils.parseJSON(body);
+			this.parameters = this.transformOLData(JSONUtils.parseJSON(body));
 		} catch (Throwable e) {
 			throw OAuthProblemException.error("unsupported_response_type",
 					"Invalid response! Response body is not application/json encoded or has non expected values");
@@ -69,4 +85,28 @@ public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenRespon
 		this.responseCode = code;
 	}
 
+	protected Map<String, Object> transformOLData(Map<String, Object> map)
+	{
+		if (map.keySet().contains("status")) {
+			Map<String, Object> newmap = new HashMap<String, Object>();
+			JSONObject status = (JSONObject) map.get("status");
+			Boolean error = status.getBoolean("error");
+			if (error) {
+				newmap.put("error", status.get("type"));
+				newmap.put("error_description", status.get("message"));
+				newmap.put("state", status.get("code"));
+				this.setResponseCode((int)status.get("code"));
+			} else {
+				if (status.optString("type", null) != null) {
+					newmap.put("type", status.getString("type"));
+				}
+				if (status.optString("message", null) != null) {
+					newmap.put("message", status.getString("message"));
+				}
+			}
+			return newmap;
+		} else {
+			return map;
+		}
+	}
 }
