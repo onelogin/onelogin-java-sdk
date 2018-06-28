@@ -29,22 +29,29 @@ public class Settings {
 	public final static String CLIENT_SECRET_KEY = "onelogin.sdk.client_secret";
 	public final static String INSTANCE = "onelogin.sdk.instance";
 	public final static String REGION = "onelogin.sdk.region";
+	public final static String IP = "onelogin.sdk.ip";
 
 	private String clientID;
 	private String clientSecret;
 	private String region = "us";
+	private String ip;
 
 	public Settings() throws IOException, Error {
 		this.loadPropFile("onelogin.sdk.properties");
 		this.clientID = loadStringProperty(CLIENT_ID_KEY);
 		this.clientSecret = loadStringProperty(CLIENT_SECRET_KEY);
 		String regionValue = loadStringProperty(REGION);
+		String ip = loadStringProperty(IP);
 		if (regionValue == null || regionValue.isEmpty()) {			
 			regionValue = loadStringProperty(INSTANCE);
 		}
 
 		if (regionValue != null && !regionValue.isEmpty()) {
 		    this.region = regionValue;
+		}
+
+		if (ip != null && !ip.isEmpty()) {
+		    this.ip = ip;
 		}
 	}
 
@@ -62,9 +69,12 @@ public class Settings {
 		return clientSecret;
 	}
 
-	
 	public String getRegion() {
 		return region;
+	}
+
+	public String getIP() {
+		return ip;
 	}
 
 	public String getURL(String name, String id, String extraId) {

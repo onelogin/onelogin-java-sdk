@@ -2995,5 +2995,9 @@ public class Client {
 
 		return afterCursor;
 	}
+
+	public String getIP() {
+		return settings.getIP();
+	}
 }
 

@@ -79,6 +79,7 @@ The SDK has 3 settings parameters:
 * onelogin.sdk.client_id  Onelogin OAuth2 client ID
 * onelogin.sdk.client_secret  Onelogin OAuth2 client secret
 * onelogin.sdk.region  Indicates where the instance is hosted. Possible values: 'us' or 'eu'.
+* onelogin.sdk.ip  Set an ip address value that can later be retrieved with the getIP method and used on the getSAMLAssertion method to bypass MFA protection if that IP was whitelisted on the user's policy.
 
 Read more about Onelogin API credentials at:
 https://developers.onelogin.com/api-docs/1/getting-started/working-with-api-credentials
