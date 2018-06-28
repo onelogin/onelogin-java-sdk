@@ -12,10 +12,15 @@ import com.onelogin.sdk.util.Settings;
 
 public class TestClientSettings {
 	@Test
-	public void testValidSettings() throws IOException, Error, OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public void testFileSettings() throws IOException, Error, OAuthSystemException, OAuthProblemException, URISyntaxException {
 		Settings settings = new Settings();
 		Client client = new Client(settings.getClientId(), settings.getClientSecret(), settings.getRegion());
-		client.getUsers(1);
+	}
+
+	@Test
+	public void testParameterSettings() throws IOException, Error, OAuthSystemException, OAuthProblemException, URISyntaxException {
+		Settings settings = new Settings();
+		Client client = new Client("id", "secret", "us");
 	}
 
 	@Test(expected = OAuthProblemException.class)
