@@ -28,7 +28,6 @@
     <connection>scm:git:git@github.com:onelogin/onelogin-java-sdk.git</connection>
       <developerConnection>scm:git:git@github.com:onelogin/onelogin-java-sdk.git</developerConnection>
       <url>https://github.com/onelogin/onelogin-java-sdk</url>
-      <tag>1.2.0</tag>
   </scm>
 
   <licenses>
