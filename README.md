@@ -288,9 +288,6 @@ public class AppTest
         sessionLoginTokenParams.put("subdomain", "example-onelogin-subdomain");
         SessionTokenInfo sessionTokenData = (SessionTokenInfo) client.createSessionLoginToken(sessionLoginTokenParams);
 
-        /* Create Session Via API Token */
-        String cookieHeader = client.createSessionViaToken(sessionTokenData.sessionToken);
-
         /* Create Session Login Token MFA , after verify */
         Map<String, Object> sessionLoginTokenMFAParams = new HashMap<String, Object>();
         sessionLoginTokenMFAParams.put("username_or_email", "usermfa@example.com");

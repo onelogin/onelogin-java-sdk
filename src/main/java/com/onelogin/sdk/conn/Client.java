@@ -885,44 +885,6 @@ public class Client {
 	}
 	
 	/**
-	 * Post a session token to this API endpoint to start a session and set a cookie to log a user into an app.
-	 *
-	 * @param sessionToken
-	 *            The session token
-	 *
-	 * @return Header 'Set-Cookie' value
-	 *
-	 * @throws URISyntaxException
-	 * @throws IOException
-	 * @throws ClientProtocolException
-	 *
-	 * @see <a target="_blank" href="https://github.com/onelogin/onelogin-api-examples/blob/master/php/users/session_via_api_token.php">Create Session Via API Token documentation</a>
-	 */
-	public String createSessionViaToken(String sessionToken) throws URISyntaxException, ClientProtocolException, IOException {
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SESSION_API_TOKEN_URL));
-
-		CloseableHttpClient httpclient = HttpClients.createDefault(); 
-		HttpPost httpPost = new HttpPost(url.toString());
-		Map<String, Object> queryParams = new HashMap<String, Object>();
-		queryParams.put("session_token", sessionToken);
-		String body = JSONUtils.buildJSON(queryParams);
-		StringEntity input = new StringEntity(body);
-		input.setContentType("application/json;charset=UTF-8");
-		httpPost.setEntity(input);
-		input.setContentEncoding(new BasicHeader("Content-Type","application/json;charset=UTF-8"));
-		httpPost.setHeader("Accept", "application/json");
-		httpPost.setHeader("User-Agent", this.userAgent);
-		httpPost.setEntity(input); 
-		CloseableHttpResponse response = httpclient.execute(httpPost);
-		String cookieHeader = null;
-		if (response.getHeaders("Set-Cookie").length > 0) {
-			cookieHeader = response.getHeaders("Set-Cookie")[0].getValue();
-		}
-
-		return cookieHeader;
-	}
-
-	/**
 	 * Updates an user
 	 *
 	 * @param id

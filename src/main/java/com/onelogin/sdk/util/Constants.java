@@ -23,7 +23,6 @@ public final class Constants {
 	public static final String CREATE_USER_URL = "https://api.%s.onelogin.com/api/1/users";
 	public static final String SESSION_LOGIN_TOKEN_URL = "https://api.%s.onelogin.com/api/1/login/auth";
 	public static final String GET_TOKEN_VERIFY_FACTOR = "https://api.%s.onelogin.com/api/1/login/verify_factor";
-	public static final String SESSION_API_TOKEN_URL = "https://admin.%s.onelogin.com/session_via_api_token";
 	public static final String UPDATE_USER_URL = "https://api.%s.onelogin.com/api/1/users/%s";
 	public static final String DELETE_USER_URL = "https://api.%s.onelogin.com/api/1/users/%s";
 	public static final String ADD_ROLE_TO_USER_URL = "https://api.%s.onelogin.com/api/1/users/%s/add_roles";
