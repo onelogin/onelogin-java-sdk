@@ -19,6 +19,7 @@ public class Event {
 	public int roleId;
 	public String roleName;
 	public int appId;
+	public String appName;
 	public int groupId;
 	public String groupName;
 	public int otpDeviceId;
@@ -50,6 +51,7 @@ public class Event {
 		roleId = data.optInt("role_id");
 		roleName = data.optString("role_name", null);
 		appId = data.optInt("app_id");
+		appName = data.optString("app_name", null);
 		groupId = data.optInt("group_id");
 		groupName = data.optString("group_name", null);
 		otpDeviceId = data.optInt("otp_device_id");
