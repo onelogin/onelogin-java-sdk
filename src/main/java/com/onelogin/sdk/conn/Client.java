@@ -100,6 +100,11 @@ public class Client {
 	protected String errorDescription;
 
 	/**
+	 * The attribute that caused the last error found if declared
+	 */
+	protected String errorAttribute;
+
+	/**
 	 * Settings object
 	 */		
 	protected Settings settings;
@@ -726,6 +731,7 @@ public class Client {
 		} else {
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return user;
@@ -931,6 +937,7 @@ public class Client {
 		} else {
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return user;
@@ -978,6 +985,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1025,6 +1033,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1075,6 +1084,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1133,6 +1143,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1204,6 +1215,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1251,6 +1263,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1290,6 +1303,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1337,6 +1351,7 @@ public class Client {
 			success = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return success;
@@ -1376,6 +1391,7 @@ public class Client {
 			removed = false;
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 
 		return removed;
@@ -1935,6 +1951,7 @@ public class Client {
 		if (oAuthResponse.getResponseCode() != 200 || !oAuthResponse.getType().equals("success")) {
 			error = oAuthResponse.getError();
 			errorDescription = oAuthResponse.getErrorDescription();
+			errorAttribute = oAuthResponse.getErrorAttribute();
 		}
 	}
 
@@ -2915,11 +2932,19 @@ public class Client {
 	}
 
 	/**
+	 * @return the last error attribute
+	 */
+	public String getErrorAttribute() {
+		return errorAttribute;
+	}
+
+	/**
 	 * Clean error message 
 	 */
 	public void cleanError() {
 		error = null;
 		errorDescription = null;
+		errorAttribute = null;
 	}
 
 	protected Map<String, String> getAuthorizedHeader(Boolean bearer) {

@@ -182,6 +182,10 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		return getParam("error_description");
 	}
 
+	public String getErrorAttribute() {
+		return getParam("error_attribute");
+	}
+
 	public String getType() {
 		return getParam("type");
 	}
@@ -203,8 +207,18 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 			Boolean error = status.getBoolean("error");
 			if (error) {
 				newmap.put("error", status.get("type"));
-				newmap.put("error_description", status.get("message"));
 				newmap.put("state", status.get("code"));
+				if (status.get("message") instanceof JSONObject) {
+					if (((JSONObject)status.get("message")).optString("description", null) != null) {
+						newmap.put("error_description", ((JSONObject)status.get("message")).get("description"));
+					}
+					if (((JSONObject)status.get("message")).optString("attribute", null) != null) {
+						newmap.put("error_attribute", ((JSONObject)status.get("message")).get("attribute"));
+					}
+				} else {
+					newmap.put("error_description", status.get("message"));
+				}
+				
 			} else {
 				if (status.optString("type", null) != null) {
 					newmap.put("type", status.getString("type"));
