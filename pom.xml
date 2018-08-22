@@ -70,6 +70,7 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.2.0</version>
+      <optional>true</optional>
     </dependency>
     <!-- date and time library for Java -->
     <dependency>
