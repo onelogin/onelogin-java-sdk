@@ -31,12 +31,9 @@ import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -816,11 +813,15 @@ public class Client {
 	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
 	 *
 	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.  
+	 *            Provide the MFA device_id you are submitting for verification.
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 * @param doNotNotify
+	 *            When verifying MFA via Protect Push, set this to true to
 	 *
 	 * @return Session Token
 	 *
@@ -830,7 +831,7 @@ public class Client {
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
 	 */
-	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken, String allowedOrigin, Boolean doNotNotify) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
 		prepareToken();
 
@@ -842,11 +843,15 @@ public class Client {
 			.buildHeaderMessage();
 
 		Map<String, String> headers = getAuthorizedHeader();
+		if (allowedOrigin != null) {
+			headers.put("Custom-Allowed-Origin-Header-1", allowedOrigin);
+		}
 		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("device_id", devideId);
 		params.put("state_token", stateToken);
+		params.put("do_not_notify", doNotNotify);
 
 		if (otpToken != null && !otpToken.isEmpty()) {
 			params.put("otp_token", otpToken);
@@ -874,7 +879,53 @@ public class Client {
 	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
 	 *
 	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.  
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 *
+	 * @return Session Token
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(devideId, stateToken, otpToken, allowedOrigin, false);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 *
+	 * @return Session Token
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(devideId, stateToken, otpToken, null, false);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 *
@@ -889,7 +940,7 @@ public class Client {
 	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSessionTokenVerified(devideId, stateToken, null);
 	}
-	
+
 	/**
 	 * Updates an user
 	 *
@@ -2256,13 +2307,15 @@ public class Client {
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.  
+	 *            Provide the MFA device_id you are submitting for verification.
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
 	 *            Provide the OTP value for the MFA factor you are submitting for verification.
 	 * @param urlEndpoint
 	 *			  Specify an url where return the response.
+	 * @param doNotNotify
+	 *			  When verifying MFA via Protect Push, set this to true to stop additional push notifications being sent to the OneLogin Protect device
 	 *
 	 * @return SAMLEndpointResponse
 	 *
@@ -2273,7 +2326,7 @@ public class Client {
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
-	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint, Boolean doNotNotify) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		cleanError();
 		prepareToken();
 
@@ -2297,6 +2350,7 @@ public class Client {
 		params.put("app_id", appId);
 		params.put("device_id", devideId);
 		params.put("state_token", stateToken);
+		params.put("do_not_notify", doNotNotify);
 
 		if (otpToken != null && !otpToken.isEmpty()) {
 			params.put("otp_token", otpToken);
@@ -2326,7 +2380,34 @@ public class Client {
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.  
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param urlEndpoint
+	 *			  Specify an url where return the response.
+	 *
+	 * @return SAMLEndpointResponse
+	 *
+	 * @throws OAuthSystemException
+	 * @throws OAuthProblemException
+	 * @throws URISyntaxException
+	 *
+	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 */
+	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSAMLAssertionVerifying(appId, devideId, stateToken, otpToken, urlEndpoint, false);
+	}
+
+	/**
+	 * Verifies a one-time password (OTP) value provided for a second factor when multi-factor authentication (MFA) is required for SAML authentication.
+	 *
+	 * @param appId
+	 *            App ID of the app for which you want to generate a SAML token
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 * @param otpToken
@@ -2351,7 +2432,7 @@ public class Client {
 	 * @param appId
 	 *            App ID of the app for which you want to generate a SAML token
 	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.  
+	 *            Provide the MFA device_id you are submitting for verification.
 	 * @param stateToken
 	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
 	 *
