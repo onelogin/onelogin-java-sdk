@@ -2182,7 +2182,7 @@ public class Client {
 		cleanError();
 		prepareToken();
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_URL, Long.toString(id)));
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_GROUP_URL, Long.toString(id)));
 		
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
