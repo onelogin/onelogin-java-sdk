@@ -1651,7 +1651,7 @@ public class Client {
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
 	public List<Event> getEvents(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(queryParameters, Constants.GET_USERS_URL);
+		ExtractionContext context = getResource(queryParameters, Constants.GET_EVENTS_URL);
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = null;
 		String afterCursor = null;
