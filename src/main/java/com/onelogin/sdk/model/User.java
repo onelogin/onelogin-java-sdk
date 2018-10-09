@@ -35,6 +35,8 @@ public class User {
 	public String comment;
 	public long directoryId;
 	public long managerAdId;
+	public long trustedIdPId;
+	public long managerUserId;
 	public DateTime activatedAt;
 	public DateTime createdAt;
 	public DateTime updatedAt;
@@ -75,6 +77,8 @@ public class User {
 		comment = data.optString("comment", null);
 		directoryId = data.optLong("directory_id");
 		managerAdId = data.optLong("manager_ad_id");
+		trustedIdPId = data.optLong("trusted_idp_id");
+		managerUserId = data.optLong("manager_user_id");
 		activatedAt = (data.optString("activated_at" , null) == null)? null : DateTime.parse(data.getString("activated_at"));
 		createdAt = (data.optString("created_at", null) == null)? null : DateTime.parse(data.getString("created_at"));
 		updatedAt = (data.optString("updated_at", null) == null)? null : DateTime.parse(data.getString("updated_at"));
@@ -116,6 +120,8 @@ public class User {
 		userData.comment = comment;
 		userData.directoryId = directoryId;
 		userData.managerAdId = managerAdId;
+		userData.trustedIdPId = trustedIdPId;
+		userData.managerUserId = managerUserId;
 		return userData;
 	}
 
@@ -161,6 +167,8 @@ public class User {
 		userParams.put("openid_name", openidName);
 		userParams.put("directory_id", (this.getClass().getField("directoryId") == null)? null: Long.toString(directoryId));
 		userParams.put("manager_ad_id", (this.getClass().getField("managerAdId") == null)? null: Long.toString(managerAdId));
+		userParams.put("trusted_idp_id", (this.getClass().getField("trustedIdPId") == null)? null: Long.toString(trustedIdPId));
+		userParams.put("manager_user_id", (this.getClass().getField("managerUserId") == null)? null: Long.toString(managerUserId));
 		
 		return userParams;
 	}

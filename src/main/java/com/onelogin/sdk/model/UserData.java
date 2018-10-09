@@ -22,5 +22,7 @@ public class UserData {
 	public String localeCode;
 	public String comment;
 	public long directoryId;
-	public long managerAdId; 
+	public long managerAdId;
+	public long trustedIdPId;
+	public long managerUserId;
 }
