@@ -2949,10 +2949,12 @@ public class Client {
 		prepareToken();
 
 		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl));
+		if(!queryParameters.containsKey("limit")) {
+			url.addParameter("limit", String.valueOf(batchSize));
+		}
 		for (Map.Entry<String, String> parameter : queryParameters.entrySet()) {
 			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
-		url.addParameter("limit", String.valueOf(batchSize));
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
