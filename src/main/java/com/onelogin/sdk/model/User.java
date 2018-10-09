@@ -171,7 +171,11 @@ public class User {
 
         Map<String, String> map = new HashMap<String, String>();
         for (Object key : jsonObject.keySet()) {
-            map.put((String)key, (String)jsonObject.get(String.valueOf(key)));
+            if (!jsonObject.isNull(String.valueOf(key))) {
+                map.put((String)key, (String)jsonObject.get(String.valueOf(key)));
+            } else {
+                map.put((String)key, null);
+            }
         }
         return map;
     }
