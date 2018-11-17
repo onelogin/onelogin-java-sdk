@@ -141,8 +141,8 @@ public class Settings {
 	 * @param propFileName
 	 *            the name of the file
 	 *
-	 * @throws IOException
-	 * @throws Error
+	 * @throws IOException - if an error occurred when reading from the input stream.
+	 * @throws Error - If setting file not found
 	 */
 	private void loadPropFile(String propFileName) throws IOException, Error {
 
