@@ -126,14 +126,24 @@ public class Client {
 	 * @throws IOException - If Settings initialization raises that exception when calling loadPropFile to load the file
 	 * @throws Error  - If Settings initialization raises that exception when calling loadPropFile to load the file
 	 */
-	public Client(int maxResults) throws IOException, Error {
+	public Client(int maxResults, boolean throwOAuthProblemException) throws IOException, Error {
 		this.settings = new Settings();
 		this.userAgent = CUSTOM_USER_AGENT;
 		this.maxResults = maxResults;
+		OneloginOAuthJSONAccessTokenResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+	}
+
+	public Client(int maxResults) throws IOException, Error {
+		this(maxResults, true);
 	}
 
 	public Client() throws IOException, Error {
 		this(1000);
+	}
+
+	public Client(boolean throwOAuthProblemException) throws IOException, Error {
+		this(1000, true);
 	}
 
 	public Client(String clientID, String clientSecret, String region) {
