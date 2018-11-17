@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 
+	private static boolean throwOAuthProblemException = true;
+
 	public OneloginOAuthJSONResourceResponse() {
 		this.validator = new ResourceValidator();
 	}
@@ -24,9 +26,14 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		setContentType(contentType);
 		setResponseCode(responseCode);
 		setHeaders(headers);
-		// Try/Catch the validate call line to stop throwing OAuthProblemException and
-		// instead use client.getError() client.getErrorDescription() to retrieve what happened
-		validate();
+
+		try {
+			validate();
+		} catch (OAuthProblemException e) {
+			if (throwOAuthProblemException) {
+				throw e;
+			}
+		}
 	}	
 	
 	public String getBody() {
@@ -236,5 +243,9 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 			newmap.put("next_link", pagination.get("next_link"));
 		}
 		return newmap;
+	}
+
+	public static void enableThrowingOAuthProblemException(boolean value) {
+		throwOAuthProblemException = value;
 	}
 }

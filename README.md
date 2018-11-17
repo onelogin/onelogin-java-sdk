@@ -89,7 +89,7 @@ https://developers.onelogin.com/api-docs/1/getting-started/working-with-api-cred
 
 Onelogin's API can return 400, 401, 403 or 404 when there was any issue executing the action. When that happens, the methods of the SDK will raise an OAuthProblemException.
 
-If you want to avoid this kind of exceptions to be raised, you can edit the init method of the *main/java/com/onelogin/sdk/conn/OneloginOAuthJSONResourceResponse.java* file and try/catch the OAuthProblemException, then the error and description will be stored on the SDK Client object and you can retrieve them with *client.getError()* and *client.getErrorDescription()*.
+If you want to avoid this kind of exceptions to be raised, you can initialize the Client with the parameter throwOAuthProblemException = false.
 
 In some scenarios there is an attribute not provided or invalid that causes the error on the execution of the API call, when that happens is available a *client.getErrorAttribute()* method that contains the name of the attribute that caused the issue. See the API documentation to verify when this data is provided by the API.
 

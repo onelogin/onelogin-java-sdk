@@ -13,15 +13,23 @@ import org.joda.time.DateTime;
 import org.json.JSONObject;
 
 public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenResponse {
+
+	private static boolean throwOAuthProblemException = true;
+
 	protected void init(String body, String contentType, int responseCode, Map<String, List<String>> headers)
 			throws OAuthProblemException {
 		setResponseCode(responseCode);
 		setBody(body);
 		setContentType(contentType);
 		setHeaders(headers);
-		// Try/Catch the validate call line to stop throwing OAuthProblemException and
-		// instead use client.getError() client.getErrorDescription() to retrieve what happened
-		validate();
+
+		try {
+			validate();
+		} catch (OAuthProblemException e) {
+			if (throwOAuthProblemException) {
+				throw e;
+			}
+		}
 	}
 
 	public String getAccessToken() {
@@ -108,5 +116,9 @@ public class OneloginOAuthJSONAccessTokenResponse extends OAuthAccessTokenRespon
 		} else {
 			return map;
 		}
+	}
+
+	public static void enableThrowingOAuthProblemException(boolean value) {
+		throwOAuthProblemException = value;
 	}
 }

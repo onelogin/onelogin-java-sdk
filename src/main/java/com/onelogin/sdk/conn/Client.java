@@ -135,9 +135,15 @@ public class Client {
 	}
 
 	public Client(String clientID, String clientSecret, String region) {
+		this(clientID, clientSecret, region, true);
+	}
+
+	public Client(String clientID, String clientSecret, String region, boolean throwOAuthProblemException) {
 		this.settings = new Settings(clientID, clientSecret, region);
 		this.userAgent = CUSTOM_USER_AGENT;
 		this.maxResults = 1000;
+		OneloginOAuthJSONAccessTokenResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
 	}
 
 	////////////////////////////////
