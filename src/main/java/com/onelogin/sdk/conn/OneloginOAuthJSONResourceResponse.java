@@ -51,7 +51,7 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 	protected void setBody(String body) throws OAuthProblemException {
 		try {
 			this.body = body;
-			
+
 			this.parameters = this.transformOLData(JSONUtils.parseJSON(body));
 		} catch (Throwable e) {
 			throw OAuthProblemException.error("unsupported_response_type",
@@ -224,7 +224,6 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 				} else {
 					newmap.put("error_description", status.get("message"));
 				}
-				
 			} else {
 				if (status.optString("type", null) != null) {
 					newmap.put("type", status.getString("type"));
