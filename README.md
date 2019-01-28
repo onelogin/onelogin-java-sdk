@@ -332,6 +332,73 @@ public class AppTest
         /* Get Apps to Embed for a User */
         String embedToken = "30e256c101cd0d2e731de1ec222e93c4be8a1578"
         List<App> apps = client.getEmbedApps(embedToken, "user@example.com");
+
+        /* Get Privileges */
+        List<Privilege> privileges = client.getPrivileges();
+        /* Create Privilege */
+        String name = "privilege_example";
+        String version = "2018-05-18";
+        Statement statement1 = new Statement(
+            "Allow",
+            Arrays.asList(
+                "users:List",
+                "users:Get"
+            ),
+            Arrays.asList("*")
+        );
+        Statement statement2 = new Statement(
+            "Allow",
+            Arrays.asList(
+                "apps:List",
+                "apps:Get"
+            ),
+            Arrays.asList("*")
+        );
+        List<Statement> statements = Arrays.asList(statement1, statement2);
+
+        Privilege privilege = client.createPrivilege(name, version, statements);
+
+        /* Update Privilege */
+        name = "modified_privilege_example";
+        statement2.put("Action", Arrays.asList(
+                "apps:List"
+        ));
+        statements = Arrays.asList(statement1, statement2);
+        Privilege privilege2 = client.updatePrivilege(privilege.id, name, version, statements);
+
+        /* Get Privilege */
+        Privilege privilege3 = client.getPrivilege(privilege.id)
+
+        /* Delete Privilege */
+        Boolean privRemoved = client.deletePrivilege(privilege.id);
+
+        /* Gets a list of the roles assigned to a privilege */
+        List<Long> roleIds = client.getRolesAssignedToPrivileges(privilege.id);
+
+        /* Assign roles to a privilege */
+        List<Role> roles = client.getRoles();
+        List<Long> roleIds = new ArrayList<Long>();
+        for(Role role: roles) {
+            roleIds.add(role.getID());
+        }
+        Boolean roleAssigned = client.assignRolesToPrivilege(privilege.id, roleIds);
+
+        /* Remove role from a privilege */
+        Boolean roleRemoved = client.removeRoleFromPrivilege(privilege.id, roleIds.get(0));
+
+        /* Gets a list of the users assigned to a privilege */
+        List<Long> userIds = client.getUsersAssignedToPrivileges(privilege.id);
+
+        /* Assign users to a privilege */
+        List<User> users = client.getUsers();
+        List<Long> userIds = new ArrayList<Long>();
+        for(User user: users) {
+            userIds.add(user.id);
+        }
+        Boolean userAssigned = client.assignUsersToPrivilege(privilege.id, userIds);
+
+        /* Remove user from a privilege */
+        Boolean userRemoved = client.removeUserFromPrivilege(privilege.id, userIds.get(0));
     }
 }
 ```
