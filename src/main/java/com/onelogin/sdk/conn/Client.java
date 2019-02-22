@@ -54,14 +54,15 @@ import com.onelogin.sdk.model.EventType;
 import com.onelogin.sdk.model.FactorEnrollmentResponse;
 import com.onelogin.sdk.model.Group;
 import com.onelogin.sdk.model.MFA;
+import com.onelogin.sdk.model.MFAToken;
 import com.onelogin.sdk.model.OTPDevice;
 import com.onelogin.sdk.model.Privilege;
 import com.onelogin.sdk.model.RateLimit;
 import com.onelogin.sdk.model.Role;
 import com.onelogin.sdk.model.SAMLEndpointResponse;
-import com.onelogin.sdk.model.Statement;
 import com.onelogin.sdk.model.SessionTokenInfo;
 import com.onelogin.sdk.model.SessionTokenMFAInfo;
+import com.onelogin.sdk.model.Statement;
 import com.onelogin.sdk.model.User;
 import com.onelogin.sdk.util.Constants;
 import com.onelogin.sdk.util.Settings;
@@ -700,6 +701,98 @@ public class Client {
 		}
 
 		return user;
+	}
+
+	/**
+	 * Generates an access token for a user
+	 *
+	 * @param userId
+	 *            Id of the user
+	 * @param expiresIn
+	 *            Set the duration of the token in seconds. (default: 259200 seconds = 72h)
+	 *            72 hours is the max value.
+	 * @param reusable
+	 *            Defines if the token reusable. (default: false) If set to true, token can be used for multiple apps, until it expires.
+	 *
+	 * @return Created MFAToken
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 */
+	public MFAToken generateMFAToken(long userId,Integer expiresIn, Boolean reusable) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		cleanError();
+		prepareToken();
+
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GENERATE_MFA_TOKEN_URL, Long.toString(userId)));
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
+			.buildHeaderMessage();
+
+		Map<String, Object> mfaParams = new HashMap<String, Object>();
+		mfaParams.put("expires_in", expiresIn);
+		mfaParams.put("reusable", reusable);
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		String body = JSONUtils.buildJSON(mfaParams);
+		bearerRequest.setBody(body);
+
+		MFAToken mfaToken = null;
+		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class);
+		if (oAuth2Response.getResponseCode() == 201) {
+			JSONObject data = oAuth2Response.getJSONObjectFromContent();
+			mfaToken = new MFAToken(data);
+		} else {
+			error = oAuth2Response.getError();
+			errorDescription = oAuth2Response.getErrorDescription();
+		}
+
+		return mfaToken;
+	}
+
+	/**
+	 * Generates an access token for a user
+	 *
+	 * @param userId
+	 *            Id of the user
+	 * @param expiresIn
+	 *            Set the duration of the token in seconds. (default: 259200 seconds = 72h)
+	 *            72 hours is the max value.
+	 *
+	 * @return Created MFAToken
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 */
+	public MFAToken generateMFAToken(long userId,Integer expiresIn) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return generateMFAToken(userId, expiresIn, false);
+	}
+
+	/**
+	 * Generates an access token for a user
+	 *
+	 * @param userId
+	 *            Id of the user
+	 *
+	 * @return Created MFAToken
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 */
+	public MFAToken generateMFAToken(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return generateMFAToken(userId, 259200, false);
 	}
 
 	/**
@@ -3422,7 +3515,7 @@ public class Client {
 	 *
 	 * @return List of user Ids
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 *

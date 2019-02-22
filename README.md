@@ -105,6 +105,7 @@ package com.onelogin.sdk;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,15 +122,22 @@ import com.onelogin.sdk.conn.Client;
 import com.onelogin.sdk.exception.Error;
 
 import com.onelogin.sdk.model.App;
+import com.onelogin.sdk.model.AuthFactor;
+import com.onelogin.sdk.model.EmbedApp;
 import com.onelogin.sdk.model.Event;
 import com.onelogin.sdk.model.EventType;
+import com.onelogin.sdk.model.FactorEnrollmentResponse;
 import com.onelogin.sdk.model.Group;
 import com.onelogin.sdk.model.MFA;
+import com.onelogin.sdk.model.MFAToken;
+import com.onelogin.sdk.model.OTPDevice;
+import com.onelogin.sdk.model.Privilege
 import com.onelogin.sdk.model.RateLimit;
 import com.onelogin.sdk.model.Role;
 import com.onelogin.sdk.model.SAMLEndpointResponse;
 import com.onelogin.sdk.model.SessionTokenInfo;
 import com.onelogin.sdk.model.SessionTokenMFAInfo;
+import com.onelogin.sdk.model.Statement;
 import com.onelogin.sdk.model.User;
 
 
@@ -222,6 +230,9 @@ public class AppTest
 
         /* Get User Roles */
         List<Integer> userRolesIds = client.getUserRoles(user.id);
+
+        /* Generate MFA Token */
+        MFAToken mfaToken = client.generateMFAToken(user.id);
 
         /* Create user */
         Map<String, Object> newUserParams = new HashMap<String, Object>();
