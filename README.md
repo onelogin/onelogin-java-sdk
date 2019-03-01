@@ -18,7 +18,7 @@ Install it as a maven dependecy:
   <dependency>
       <groupId>com.onelogin</groupId>
       <artifactId>onelogin-java-sdk</artifactId>
-      <version>1.5.0</version>
+      <version>1.5.1</version>
   </dependency>
 ```
 
