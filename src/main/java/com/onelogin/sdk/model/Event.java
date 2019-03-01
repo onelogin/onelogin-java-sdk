@@ -35,6 +35,11 @@ public class Event {
 	public int clientId;
 	public int resourceTypeId;
 	public String errorDescription;
+	public String proxyIp;
+	public int riskScore;
+	public String riskReasons;
+	public String riskCookieId;
+	public String browserFingerprint;
 
 	public Event(JSONObject data) {
 		id = data.optLong("id");
@@ -67,6 +72,11 @@ public class Event {
 		clientId = data.optInt("client_id");
 		resourceTypeId = data.optInt("resource_type_id");
 		errorDescription = data.optString("error_description", null);
+		proxyIp = data.optString("proxy_ip", null);
+		riskScore = data.optInt("risk_score");;
+		riskReasons = data.optString("risk_reasons", null);
+		riskCookieId = data.optString("risk_cookie_id", null);
+		browserFingerprint = data.optString("browser_fingerprint", null);
 	}
 
 	public Role getRole() {
