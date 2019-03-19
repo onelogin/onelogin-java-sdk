@@ -55,6 +55,7 @@ import com.onelogin.sdk.model.FactorEnrollmentResponse;
 import com.onelogin.sdk.model.Group;
 import com.onelogin.sdk.model.MFA;
 import com.onelogin.sdk.model.MFAToken;
+import com.onelogin.sdk.model.OneLoginApp;
 import com.onelogin.sdk.model.OTPDevice;
 import com.onelogin.sdk.model.Privilege;
 import com.onelogin.sdk.model.RateLimit;
@@ -1507,6 +1508,181 @@ public class Client {
 		}
 
 		return removed;
+	}
+
+
+	/////////////////////////////
+	//  Onelogin Apps Methods  //
+	/////////////////////////////
+
+	/**
+	 * Gets a list of OneLoginApp resources.
+	 *
+	 * @param queryParameters Query parameters of the Resource
+	 *            Parameters to filter the result of the list
+	 * @param maxResults
+	 *            Limit the number of OneLoginApp returned (optional)
+	 *
+	 * @return List of OneLoginApp
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at getResource call
+	 *
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public List<OneLoginApp> getApps(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		ExtractionContext context = getResource(queryParameters, Constants.GET_APPS_URL);
+
+		OneloginOAuthJSONResourceResponse oAuthResponse = null;
+		String afterCursor = null;
+		List<OneLoginApp> apps = new ArrayList<OneLoginApp>(maxResults);
+		while (oAuthResponse == null || (apps.size() < maxResults && afterCursor != null)) {
+			oAuthResponse = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+			if ((afterCursor = getOneLoginAppsBatch(apps, context.url, context.bearerRequest, oAuthResponse)) == null) {
+				break;
+			}
+		}
+
+		return apps;
+	}
+
+	/**
+	 * Get a batch of OneLoginApps.
+	 * 
+	 * @param batchSize Size of the Batch
+	 *
+	 * @return OneLoginResponse of OneLoginApp (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * 
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getOneLoginAppsBatch(batchSize, null);
+	}
+
+	/**
+	 * Get a batch of OneLoginApps.
+	 * 
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of OneLoginApp (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * 
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getOneLoginAppsBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
+
+	/**
+	 * Get a batch of OneLoginApps.
+	 * 
+	 * @param queryParameters Query parameters of the Resource
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of OneLoginApp (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * 
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_APPS_URL);
+		List<OneLoginApp> apps = new ArrayList<OneLoginApp>(batchSize);
+		afterCursor = getOneLoginAppsBatch(apps, context.url, context.bearerRequest, context.oAuthResponse);
+		return new OneLoginResponse<OneLoginApp>(apps, afterCursor);
+	}
+
+	private String getOneLoginAppsBatch(List<OneLoginApp> apps, URIBuilder url, OAuthClientRequest bearerRequest,
+			OneloginOAuthJSONResourceResponse oAuthResponse) {
+		if (oAuthResponse.getResponseCode() == 200) {
+			JSONObject[] dataArray = oAuthResponse.getDataArray();
+			if (dataArray != null && dataArray.length > 0) {
+				for (JSONObject data : dataArray) {
+					apps.add(new OneLoginApp(data));
+				}
+			}
+
+			return collectAfterCursor(url, bearerRequest, oAuthResponse);
+		} else {
+			error = oAuthResponse.getError();
+			errorDescription = oAuthResponse.getErrorDescription();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Gets a list of OneLoginApp resources.
+	 *
+	 * @param queryParameters Query parameters of the Resource
+	 *            Parameters to filter the result of the list
+	 *
+	 * @return List of OneLoginApp
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public List<OneLoginApp> getApps(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getApps(queryParameters, this.maxResults);
+	}
+
+	/**
+	 * Gets a list of OneLoginApp resources.
+	 *
+	 * @param maxResults
+	 *            Limit the number of OneLoginApps returned (optional)
+	 *
+	 * @return List of OneLoginApp
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public List<OneLoginApp> getApps(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		HashMap<String, String> queryParameters = new HashMap<String, String>();
+		return getApps(queryParameters, maxResults);
+	}
+
+	/**
+	 * Gets a list of OneLoginApp resources
+	 *
+	 * @return List of OneLoginApp
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public List<OneLoginApp> getApps() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		HashMap<String, String> queryParameters = new HashMap<String, String>();
+		return getApps(queryParameters);
 	}
 
 	////////////////////

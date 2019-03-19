@@ -130,6 +130,7 @@ import com.onelogin.sdk.model.FactorEnrollmentResponse;
 import com.onelogin.sdk.model.Group;
 import com.onelogin.sdk.model.MFA;
 import com.onelogin.sdk.model.MFAToken;
+import com.onelogin.sdk.model.OneLoginApp;
 import com.onelogin.sdk.model.OTPDevice;
 import com.onelogin.sdk.model.Privilege
 import com.onelogin.sdk.model.RateLimit;
@@ -233,6 +234,9 @@ public class AppTest
 
         /* Generate MFA Token */
         MFAToken mfaToken = client.generateMFAToken(user.id);
+
+		/* Get all Apps in a OneLogin account */
+		List<OneLoginApp> = client.getApps();
 
         /* Create user */
         Map<String, Object> newUserParams = new HashMap<String, Object>();

@@ -35,6 +35,9 @@ public final class Constants {
 	public static final String LOCK_USER_URL = "https://api.%s.onelogin.com/api/1/users/%s/lock_user";
 	public static final String GENERATE_MFA_TOKEN_URL = "https://api.%s.onelogin.com/api/1/users/%s/mfa_token";
 
+	// Apps URL
+	public static final String GET_APPS_URL = "https://api.%s.onelogin.com/api/1/apps";
+
 	// Role URLs
 	public static final String GET_ROLES_URL = "https://api.%s.onelogin.com/api/1/roles";
 	public static final String CREATE_ROLE_URL = "https://api.%s.onelogin.com/api/1/roles";
