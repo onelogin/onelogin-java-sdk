@@ -75,11 +75,11 @@ https://onelogin.github.io/onelogin-java-sdk/index.html
 
 SDK settings are stored in a file named *onelogin.sdk.properties* that can be found at *src/resources* folder.
 
-The SDK has 3 settings parameters:
+The SDK has 4 settings parameters:
 * onelogin.sdk.client_id  Onelogin OAuth2 client ID
 * onelogin.sdk.client_secret  Onelogin OAuth2 client secret
-* onelogin.sdk.region  Indicates where the instance is hosted. Possible values: 'us' or 'eu'.
-* onelogin.sdk.ip  Set an ip address value that can later be retrieved with the getIP method and used on the getSAMLAssertion method to bypass MFA protection if that IP was whitelisted on the user's policy.
+* onelogin.sdk.region  Indicates the region of the Onelogin instance. Possible values: 'us' or 'eu'.
+* onelogin.sdk.ip  Set an ip address value that can later be retrieved with the getIP method and used on the getSAMLAssertion method to bypass MFA protection if that IP was whitelisted on the user's policy. For more info read the documentation of the ip_address parameter at the [Generate SAML Assertion](https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion) documentation.
 
 Read more about Onelogin API credentials at:
 https://developers.onelogin.com/api-docs/1/getting-started/working-with-api-credentials
