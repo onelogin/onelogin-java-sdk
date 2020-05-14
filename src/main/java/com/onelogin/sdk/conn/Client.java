@@ -3978,9 +3978,10 @@ public class Client {
 			accessToken = oAuthResponse.getAccessToken();
 			refreshToken = oAuthResponse.getRefreshToken();
 			Long expiresIn = oAuthResponse.getExpiresIn();
+			DateTime createdAt = oAuthResponse.getCreateAt();
 			expiration = null;
-			if (expiresIn != null) {
-				expiration = new DateTime(System.currentTimeMillis() + (expiresIn * 1000));
+			if (expiresIn != null && createdAt != null) {
+				expiration = createdAt.plusSeconds(expiresIn.intValue());
 			}
 		} else {
 			error = oAuthResponse.getError();
