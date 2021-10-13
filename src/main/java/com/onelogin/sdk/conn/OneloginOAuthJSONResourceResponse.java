@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.oltu.oauth2.client.response.OAuthClientResponse;
-import org.apache.oltu.oauth2.client.validator.ResourceValidator;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.utils.JSONUtils;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.response.OAuthClientResponse;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.validator.ResourceValidator;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.utils.JSONUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,7 +20,7 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		this.validator = new ResourceValidator();
 	}
 
-	protected void init(String body, String contentType, int responseCode, Map<String, List<String>> headers)
+	public void init(String body, String contentType, int responseCode, Map<String, List<String>> headers)
 			throws OAuthProblemException {
 		setBody(body);
 		setContentType(contentType);
@@ -34,8 +34,12 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 				throw e;
 			}
 		}
-	}	
-	
+	}
+
+    protected void validate() throws OAuthProblemException {
+        validator.validateParameters(this);
+    }
+
 	public String getBody() {
 		return this.body;
 	}
@@ -84,6 +88,19 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		return data;
 	}
 
+	public Integer getDataInteger() {
+		Integer data = null;
+		if (this.parameters.containsKey("data")) {
+			try {
+				data = (Integer) this.parameters.get("data");
+			} catch (Exception e){
+				Object[] objArray = (Object[])this.parameters.get("data");
+				data = (Integer) objArray[0];
+			}
+		}
+		return data;
+	}
+	
 	public JSONObject[] getDataArray() {
 		JSONObject[] jsonArray = null;
 		if (this.parameters.containsKey("data")) {
@@ -122,14 +139,14 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		return objArray;
 	}
 	
-	public List<Integer> getIdsFromData() {
-		List<Integer> idList = new ArrayList<Integer>();
+	public List<Long> getIdsFromData() {
+		List<Long> idList = new ArrayList<Long>();
 		if (this.parameters.containsKey("data")) {
 			Object[] objArray = (Object[])this.parameters.get("data");
 			for (Object obj: objArray) {
 				JSONArray array = (JSONArray)obj;
 				for(int n = 0; n < array.length(); n++) {
-				    Integer object = (Integer) array.getInt(n);
+				    Long object = array.getLong(n);
 				    idList.add(object);
 				}
 			}
@@ -212,8 +229,8 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 			JSONObject status = (JSONObject) map.get("status");
 			Boolean error = status.getBoolean("error");
 			if (error) {
-				newmap.put("error", status.get("type"));
-				newmap.put("state", status.get("code"));
+				newmap.put("error", status.get("code"));
+				newmap.put("type", status.get("type"));
 				if (status.get("message") instanceof JSONObject) {
 					if (((JSONObject)status.get("message")).optString("description", null) != null) {
 						newmap.put("error_description", ((JSONObject)status.get("message")).get("description"));

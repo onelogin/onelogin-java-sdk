@@ -2,7 +2,7 @@ package com.onelogin.sdk.model;
 
 import org.json.JSONObject;
 
-public class Group {
+public class Group extends OneLoginResource {
 
 	protected long id;
 	protected String name;

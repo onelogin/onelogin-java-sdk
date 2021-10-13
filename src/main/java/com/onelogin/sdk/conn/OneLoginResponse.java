@@ -11,16 +11,16 @@ import java.util.List;
  *            The entity type (User, Event, Group or Role) returned by the getResults method.
  */
 public class OneLoginResponse<T> {
-    private List<T> results;
+    private List<?> results;
     private String afterCursor;
 
-    public OneLoginResponse(List<T> results, String afterCursor) {
+    public OneLoginResponse(List<?> results, String afterCursor) {
         super();
         this.results = results;
         this.afterCursor = afterCursor;
     }
 
-    public List<T> getResults() {
+    public List<?> getResults() {
         return results;
     }
 

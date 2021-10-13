@@ -1,7 +1,7 @@
 package com.onelogin.sdk.model;
 
 
-public class SAMLEndpointResponse {
+public class SAMLEndpointResponse extends OneLoginResource{
 
 	protected String type;
 	protected String message;

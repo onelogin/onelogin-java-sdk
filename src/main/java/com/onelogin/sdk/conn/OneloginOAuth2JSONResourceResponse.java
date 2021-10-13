@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.oltu.oauth2.client.response.OAuthClientResponse;
-import org.apache.oltu.oauth2.client.validator.ResourceValidator;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.utils.JSONUtils;
+import org.apache.commons.lang3.StringUtils;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.response.OAuthClientResponse;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.validator.ResourceValidator;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.utils.JSONUtils;
+import com.onelogin.sdk.model.App;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,11 +26,12 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 		this.validator = new ResourceValidator();
 	}
 
-	protected void init(String body, String contentType, int responseCode, Map<String, List<String>> headers)
+	public void init(String body, String contentType, int responseCode, Map<String, List<String>> headers)
 			throws OAuthProblemException {
 		setContentType(contentType);
 		setResponseCode(responseCode);
 		setBody(body);
+		processHeaderPagination(headers);
 		setHeaders(headers);
 
 		try {
@@ -38,6 +42,21 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 			}
 		}
 	}	
+	
+    protected void validate() throws OAuthProblemException {
+        validator.validateParameters(this);
+    }
+	
+	protected void processHeaderPagination(Map<String, List<String>> headers) {
+		if (headers != null) {
+			if (headers.containsKey("before-cursor")) { 
+					this.parameters.put("before_cursor", headers.get("before-cursor"));
+			}
+			if (headers.containsKey("after-cursor")) { 
+				this.parameters.put("after_cursor", headers.get("after-cursor"));
+			}
+		}
+	}
 	
 	public String getBody() {
 		return this.body;
@@ -128,6 +147,22 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 		return getParam("next_link");
 	}
 
+	public String getTotalCount() {
+		return getParam("total_count");
+	}
+
+	public String getTotalPages() {
+		return getParam("total_pages");
+	}
+
+	public String getCurrentPage() {
+		return getParam("current_page");
+	}
+
+	public String getPageItems() {
+		return getParam("page_items");
+	}
+
 	public String getError() {
 		return getParam("error");
 	}
@@ -152,29 +187,51 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 	{
 		Map<String, Object> newmap = new HashMap<String, Object>();
 
-		if (hadSuccess()) {
-			if (map.keySet().contains("beforeCursor")) {
-				newmap.put("before_cursor", map.get("beforeCursor"));
-			}
-			if (map.keySet().contains("previousLink")) {
-				newmap.put("previous_link", map.get("previousLink"));
-			}
-			if (map.keySet().contains("afterCursor")) {
-				newmap.put("after_cursor", map.get("afterCursor"));
-			}
-			if (map.keySet().contains("nextLink")) {
-				newmap.put("next_link", map.get("nextLink"));
-			}
-		} else if (map.keySet().contains("statusCode")) {
-			newmap.put("error", map.get("statusCode"));
-
-			if (map.keySet().contains("message")) {
-			newmap.put("error_description", map.get("message"));
+		if (!hadSuccess()) {
+			if (map.containsKey("statusCode")) {
+				newmap.put("error", map.get("statusCode"));
+	
+				if (map.containsKey("message")) {
+				newmap.put("error_description", map.get("message"));
+				} else if (map.containsKey("name")) {
+					newmap.put("error_description", map.get("name"));
+				}
+			} else if (map.containsKey("status")) {
+				newmap.put("error", ((JSONObject)map.get("status")).get("code"));
+				newmap.put("error_description", ((JSONObject)map.get("status")).get("message"));
+			} else if (map.containsKey("message")) {
+				newmap.put("error_description", map.get("message"));
+				if (map.get("message").toString().contains("unknown attribute")) {
+					newmap.put("error_attribute", map.get("messages").toString().replace("unknown attribute", ""));
+				} else if (map.containsKey("errors")) {
+					// https://developers.onelogin.com/api-docs/2/user-mappings/create-mapping
+					Object[] message_errors =  (Object[])map.get("errors");
+					List<String> errors = new ArrayList<String>();
+					int i;
+					JSONObject errorJson;
+					JSONArray errorDetailJsonArray;
+					List<String> auxList;
+					String field, error_detail;
+					for (i=0; i < message_errors.length; i++) {
+						errorJson = (JSONObject)message_errors[i];
+						field = errorJson.get("field").toString();
+						errorDetailJsonArray = (JSONArray)errorJson.get("message");
+						auxList = new ArrayList<String>();
+						for (int j=0; j<errorDetailJsonArray.length(); j++) {
+							auxList.add( errorDetailJsonArray.getString(j) );
+						}
+						error_detail = StringUtils.join(auxList, ". ");
+						errors.add("Field: " + field + " - " + error_detail);
+					}
+					newmap.put("error_attribute", StringUtils.join(errors, ". "));
+				}
+		    } else if (map.keySet().contains("messages")) {
+		    	Object[] objArray = (Object[])map.get("messages");
+				newmap.put("error_description", StringUtils.join(objArray, " | "));                 
 			} else if (map.keySet().contains("name")) {
-				newmap.put("error_description", map.get("name"));
+				newmap.put("error_description", map.get("name"));                 
 			}
 		}
-
 		return newmap;
 	}
 

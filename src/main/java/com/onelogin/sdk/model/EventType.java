@@ -2,7 +2,7 @@ package com.onelogin.sdk.model;
 
 import org.json.JSONObject;
 
-public class EventType {
+public class EventType extends OneLoginResource {
 
 	public long id;
 	public String name;

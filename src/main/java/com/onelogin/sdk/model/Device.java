@@ -2,7 +2,7 @@ package com.onelogin.sdk.model;
 
 import org.json.JSONObject;
 
-public class Device {
+public class Device extends OneLoginResource {
 
 	protected long id;
 	protected String type;

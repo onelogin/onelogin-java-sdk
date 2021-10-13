@@ -7,7 +7,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Privilege {
+public class Privilege extends OneLoginResource {
 
 	public String id;
 	public String name;

@@ -1,7 +1,7 @@
 package com.onelogin.sdk.model;
 
 
-public class UserData {
+public class UserData extends OneLoginResource{
 	public long id;
 	public long externalId;
 	public String email;

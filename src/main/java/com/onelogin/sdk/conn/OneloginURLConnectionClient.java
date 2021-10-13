@@ -7,16 +7,17 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.oltu.oauth2.client.URLConnectionClient;
-import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.apache.oltu.oauth2.client.response.OAuthClientResponse;
-import org.apache.oltu.oauth2.client.response.OAuthClientResponseFactory;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.utils.OAuthUtils;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.URLConnectionClient;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.response.OAuthClientResponse;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.response.OAuthClientResponseFactory;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.utils.OAuthUtils;
 
 
 public class OneloginURLConnectionClient extends URLConnectionClient {
@@ -59,9 +60,10 @@ public class OneloginURLConnectionClient extends URLConnectionClient {
 				responseCode = httpURLConnection.getResponseCode();
 				InputStream inputStream;
 				//Modified line to extend the captured errors
-				if ((responseCode == 400) || (responseCode == 401) || (responseCode == 403) || (responseCode == 404))
+				List<Integer> errorCodes=Arrays.asList(400, 401, 403, 404, 422);
+				if (errorCodes.contains(responseCode)) {
 					inputStream = httpURLConnection.getErrorStream();
-				else {
+				} else {
 					inputStream = httpURLConnection.getInputStream();
 				}
 

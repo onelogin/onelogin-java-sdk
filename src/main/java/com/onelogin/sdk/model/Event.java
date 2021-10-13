@@ -3,7 +3,7 @@ package com.onelogin.sdk.model;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
-public class Event {
+public class Event extends OneLoginResource {
 
 	public long id;
 	public DateTime createdAt;

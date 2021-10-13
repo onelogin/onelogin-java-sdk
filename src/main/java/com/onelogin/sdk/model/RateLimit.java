@@ -2,7 +2,7 @@ package com.onelogin.sdk.model;
 
 import org.json.JSONObject;
 
-public class RateLimit {
+public class RateLimit extends OneLoginResource {
 
 	protected int limit;
 	protected int remaining;

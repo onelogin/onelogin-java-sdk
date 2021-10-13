@@ -1,7 +1,24 @@
 # OneLogin's Java SDK
 
-This SDK will let you execute all the API methods, version/1, described
-at https://developers.onelogin.com/api-docs/1/getting-started/dev-overview.
+## What's new on v2
+
+v2 is mostly backward compatible with v1, only some models where modified in order to be used for v1 and v2 at same time and some parameters types on methods could be modified.
+
+The code was deeply refactored to improve its maintainability.
+
+The SDK v1 only was able to interact with version/1 methods,
+the SDK v2 will let you execute all the API methods available at:
+- version/1, described at https://developers.onelogin.com/api-docs/1/getting-started/dev-overview.
+- version/2, described at https://developers.onelogin.com/api-docs/2/getting-started/dev-overview.
+
+V2 implements a flexible mechanism to decide what version use per resource
+(read more about this at the [Getting Started](https://github.com/onelogin/onelogin-java-sdk#getting-started) section, the `api_configuration` parameter).
+
+V2 also allows you to call urls using the generic domain: api.[region].onelogin.com (that was the unique way on SDK v1) or branded domain: [subdomain].onelogin.com (read more about this at the [Getting Started](https://github.com/onelogin/onelogin-python-sdk#getting-started) section, the `subdomain` parameter).
+
+The org.apache.oltu project was removed as dependency and since the project is abandoned, it was included in the SDK and we plan to patch
+it when necesary.
+
 
 ## Installation
 ### Hosting
@@ -9,6 +26,9 @@ at https://developers.onelogin.com/api-docs/1/getting-started/dev-overview.
 The toolkit is hosted on github. You can download it from:
 * Lastest release: https://github.com/onelogin/onelogin-java-sdk/releases/latest
 * Master repo: https://github.com/onelogin/onelogin-java-sdk/tree/master
+* V1: https://github.com/onelogin/onelogin-java-sdk/tree/v1
+* V2: https://github.com/onelogin/onelogin-java-sdk/tree/v2
+
 
 #### Maven
 The toolkit is hosted at [Sonatype OSSRH (OSS Repository Hosting)](http://central.sonatype.org/pages/ossrh-guide.html) that is synced to the Central Repository.
@@ -18,16 +38,17 @@ Install it as a maven dependecy:
   <dependency>
       <groupId>com.onelogin</groupId>
       <artifactId>onelogin-java-sdk</artifactId>
-      <version>1.6.1</version>
+      <version>1.6.0</version>
   </dependency>
 ```
+
+V2 is not currently available on Maven Central, you will need to provide it manually. At the github repo you can find the file
+bin/onelogin-java-sdk-v2.jar which contains the SDK
 
 ### Dependencies
 onelogin-java-sdk (com.onelogin:onelogin-java-sdk) has the following dependencies:
 
 *core:*
-* org.apache.oltu.oauth2.common
-* org.apache.oltu.oauth2.client
 * commons-code:commons
 * javax.servlet:servlet-api
 * org.apache.httpcomponents:httpclient
@@ -75,14 +96,21 @@ https://onelogin.github.io/onelogin-java-sdk/index.html
 
 SDK settings are stored in a file named *onelogin.sdk.properties* that can be found at *src/resources* folder.
 
-The SDK has 4 settings parameters:
+The SDK V1 has 4 settings parameters:
 * onelogin.sdk.client_id  Onelogin OAuth2 client ID
 * onelogin.sdk.client_secret  Onelogin OAuth2 client secret
-* onelogin.sdk.region  Indicates the region of the Onelogin instance. Possible values: 'us' or 'eu'.
-* onelogin.sdk.ip  Set an ip address value that can later be retrieved with the getIP method and used on the getSAMLAssertion method to bypass MFA protection if that IP was whitelisted on the user's policy. For more info read the documentation of the ip_address parameter at the [Generate SAML Assertion](https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion) documentation.
+* onelogin.sdk.region  Indicates where the instance is hosted. Possible values: 'us' or 'eu'.
+* onelogin.sdk.ip  Set an ip address value that can later be retrieved with the getIP method and used on the getSAMLAssertion method to bypass MFA protection if that IP was whitelisted on the user's policy.
+
+An additonal parameter was added on V2:
+* onelogin.sdk.subdomain   (Optional) A valid OneLogin subdomain. When provided the API endpoint calls gonna be done to the specific subdomain `<subdomain>.onelogin.com` instead to `api.<region>.onelogin.com`|
 
 Read more about Onelogin API credentials at:
 https://developers.onelogin.com/api-docs/1/getting-started/working-with-api-credentials
+
+There is another parameter that was introduced on V2, not supported
+at *onelogin.sdk.properties*, but that can provided at the Client
+constructor or later defined with the setApiConfiguration method.
 
 
 ### Errors and exceptions
@@ -146,7 +174,15 @@ public class AppTest
 {
     public static void main( String[] args ) throws IOException, Error, OAuthSystemException, OAuthProblemException, URISyntaxException, XPathExpressionException, ParserConfigurationException, SAXException, NoSuchFieldException
     {
+        /* Initialize Client using settings from onelogin.sdk.properties */
         Client client = new Client();
+
+        // By default Client will work with the default endpoints
+        // but you can customize them with the api_configuration param
+        Map<String, Integer> api_configuration = new HashMap<String, Integer>();
+        api_configuration.put("role", 2);
+        api_configuration.put("user", 1);
+        client.setApiConfiguration(api_configuration)
 
         /* Get an AccessToken */
         client.getAccessToken();
@@ -416,4 +452,14 @@ public class AppTest
         Boolean userRemoved = client.removeUserFromPrivilege(privilege.id, userIds.get(0));
     }
 }
+```
+
+But the SDK settings could be provided directly to the constructor, for example:
+
+```java
+        Map<String, Integer> api_configuration = new HashMap<String, Integer>();
+        api_configuration.put("user", 1);
+        api_configuration.put("mfa", 1);
+
+    Client client = new Client("<client_id>", "<client_secret>", "<subdomain>", api_configuration, false);
 ```

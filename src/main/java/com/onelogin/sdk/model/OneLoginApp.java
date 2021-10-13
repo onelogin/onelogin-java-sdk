@@ -2,7 +2,7 @@ package com.onelogin.sdk.model;
 
 import org.json.JSONObject;
 
-public class OneLoginApp {
+public class OneLoginApp extends OneLoginResource {
 
 	public long id;
 	public long connectorId;

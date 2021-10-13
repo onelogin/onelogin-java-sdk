@@ -2,7 +2,7 @@ package com.onelogin.sdk.model;
 
 import org.joda.time.DateTime;
 
-public class UserMetaData {
+public class UserMetaData extends OneLoginResource{
 	public DateTime activatedAt;
 	public DateTime createdAt;
 	public DateTime updatedAt;

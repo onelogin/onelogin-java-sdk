@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class User {
+public class User extends OneLoginResource{
 
 	public long id;
 	public long externalId;
@@ -46,7 +46,7 @@ public class User {
 	public DateTime lastLogin;
 	public DateTime lockedUntil;
 
-	public User(JSONObject data) {
+	public void init(JSONObject data) {
 		id = data.optLong("id");
 		externalId = data.optLong("external_id");
 		email = data.optString("email", null);
@@ -64,9 +64,15 @@ public class User {
 		samaccountname = data.optString("samaccountname", null);
 		userprincipalname = data.optString("userprincipalname", null);
 		groupId = data.optLong("group_id");
-		if (!data.isNull("role_id")) {
+		JSONArray roleData = null;
+		if (data.has("role_ids") && !data.isNull("role_ids")) {
+			roleData = data.getJSONArray("role_ids");
+		} else if (data.has("role_id") && !data.isNull("role_id")) {
+			roleData = data.getJSONArray("role_id");
+		}
+
+		if (roleData != null) {
 			roleIds = new ArrayList<Long>();
-			JSONArray roleData = data.getJSONArray("role_id"); 
 			for (int i = 0; i < roleData.length(); i++) {
 				roleIds.add(roleData.getLong(i));
 			}
@@ -87,6 +93,10 @@ public class User {
 		invitationSentAt = (data.optString("invitation_sent_at", null) == null)? null : DateTime.parse(data.getString("invitation_sent_at"));
 		lastLogin = (data.optString("last_login", null) == null)? null : DateTime.parse(data.getString("last_login"));
 		lockedUntil = (data.optString("locked_until", null) == null)? null : DateTime.parse(data.getString("locked_until"));
+	}
+	
+	public User(JSONObject data) {
+		init(data);
 	}
 	
 	public List<Long> getRoleIDs() {
@@ -169,10 +179,10 @@ public class User {
 		userParams.put("manager_ad_id", (this.getClass().getField("managerAdId") == null)? null: Long.toString(managerAdId));
 		userParams.put("trusted_idp_id", (this.getClass().getField("trustedIdPId") == null)? null: Long.toString(trustedIdPId));
 		userParams.put("manager_user_id", (this.getClass().getField("managerUserId") == null)? null: Long.toString(managerUserId));
-		
+
 		return userParams;
 	}
-	
+
     private Map<String, String> readCustomAttributes(JSONObject data) {
         JSONObject jsonObject = (data.optJSONObject("custom_attributes") == null) ? null : data.getJSONObject("custom_attributes");
         if (jsonObject == null) return null;
@@ -187,7 +197,7 @@ public class User {
         }
         return map;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;

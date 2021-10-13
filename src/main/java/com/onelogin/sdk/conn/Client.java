@@ -2,6 +2,8 @@ package com.onelogin.sdk.conn;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,15 +21,18 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.oltu.oauth2.client.OAuthClient;
-import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.exception.OAuthRuntimeException;
-import org.apache.oltu.oauth2.common.message.types.GrantType;
-import org.apache.oltu.oauth2.common.utils.JSONUtils;
-import org.apache.oltu.oauth2.common.OAuth;
+// Abandoned apache.oltu project
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.OAuthClient;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.response.OAuthClientResponse;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthRuntimeException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.message.types.GrantType;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.utils.JSONUtils;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.OAuth;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -46,6 +51,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.onelogin.sdk.exception.Error;
+import com.onelogin.sdk.exception.ErrorResourceInitialization;
 import com.onelogin.sdk.model.App;
 import com.onelogin.sdk.model.AuthFactor;
 import com.onelogin.sdk.model.EmbedApp;
@@ -54,13 +60,17 @@ import com.onelogin.sdk.model.EventType;
 import com.onelogin.sdk.model.FactorEnrollmentResponse;
 import com.onelogin.sdk.model.Group;
 import com.onelogin.sdk.model.MFA;
+import com.onelogin.sdk.model.MFACheckStatus;
 import com.onelogin.sdk.model.MFAToken;
+import com.onelogin.sdk.model.Mapping;
 import com.onelogin.sdk.model.OneLoginApp;
+import com.onelogin.sdk.model.OneLoginResource;
 import com.onelogin.sdk.model.OTPDevice;
 import com.onelogin.sdk.model.Privilege;
 import com.onelogin.sdk.model.RateLimit;
 import com.onelogin.sdk.model.Role;
 import com.onelogin.sdk.model.SAMLEndpointResponse;
+import com.onelogin.sdk.model.SessionToken;
 import com.onelogin.sdk.model.SessionTokenInfo;
 import com.onelogin.sdk.model.SessionTokenMFAInfo;
 import com.onelogin.sdk.model.Statement;
@@ -71,7 +81,7 @@ import com.onelogin.sdk.util.Settings;
 
 public class Client {
 
-	public static final String VERSION = "1.6.0";
+	public static final String VERSION = "2.0.0";
 
 	public static final String CUSTOM_USER_AGENT = "onelogin-java-sdk " + VERSION;
 
@@ -143,11 +153,11 @@ public class Client {
 	}
 
 	public Client() throws IOException, Error {
-		this(1000);
+		this(1000, true);
 	}
 
 	public Client(boolean throwOAuthProblemException) throws IOException, Error {
-		this(1000, true);
+		this(1000, throwOAuthProblemException);
 	}
 
 	public Client(String clientID, String clientSecret, String region) {
@@ -160,6 +170,34 @@ public class Client {
 		this.maxResults = 1000;
 		OneloginOAuthJSONAccessTokenResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
 		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+	}
+
+	public Client(String clientID, String clientSecret, String region, String subdomain, boolean throwOAuthProblemException) {
+		this.settings = new Settings(clientID, clientSecret, region, subdomain);
+		this.userAgent = CUSTOM_USER_AGENT;
+		this.maxResults = 1000;
+		OneloginOAuthJSONAccessTokenResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+	}
+
+	public Client(String clientID, String clientSecret, String subdomain, Map<String, Integer> api_configuration, boolean throwOAuthProblemException) {
+		this.settings = new Settings(clientID, clientSecret, subdomain, api_configuration);
+		this.userAgent = CUSTOM_USER_AGENT;
+		this.maxResults = 1000;
+		OneloginOAuthJSONAccessTokenResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+	}
+
+	public void setApiConfiguration(Map<String, Integer> api_configuration) {
+		this.settings.setApiConfiguration(api_configuration);
+	}
+
+	public Map<String, Integer> getApiConfiguration(Map<String, Integer> api_configuration) {
+		return this.settings.getApiConfiguration();
+	}
+
+	public Map<String, Integer> getDefaultApiConfiguration() {
+		return this.settings.getDefaultApiConfiguration();
 	}
 
 	////////////////////////////////
@@ -177,7 +215,6 @@ public class Client {
 	public void getAccessToken() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		//OAuthClient oAuthClient = new OAuthClient(httpClient);
 		OAuthClientRequest request = OAuthClientRequest
 			.tokenLocation(settings.getURL(Constants.TOKEN_REQUEST_URL))
 			.buildBodyMessage();
@@ -241,7 +278,7 @@ public class Client {
 
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClientRequest request = OAuthClientRequest
-			.tokenLocation(settings.getURL(Constants.TOKEN_REVOKE_URL))            
+			.tokenLocation(settings.getURL(Constants.TOKEN_REVOKE_URL))
 			.buildBodyMessage();
 
 		Map<String, String> headers = getAuthorizedHeader(false);
@@ -258,8 +295,7 @@ public class Client {
 			refreshToken = null;
 			expiration = null;
 		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+			setResponseError(oAuthResponse);
 		}
 	}
 
@@ -270,35 +306,17 @@ public class Client {
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.RateLimit
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/get-rate-limit">Get Rate Limit documentation</a>
 	 */
-	public RateLimit getRateLimit() throws OAuthSystemException, OAuthProblemException {
-		cleanError();
-		prepareToken();
+	public RateLimit getRateLimit() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = 1;
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_RATE_URL));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(settings.getURL(Constants.GET_RATE_URL))
-			//.setAccessToken(accessToken) // 'Authorization' => 'Bearer xxxx' not accepted right now
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		RateLimit ratelimit = null;
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			if (data != null) {
-				ratelimit = new RateLimit(data);
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return ratelimit;
+		return (RateLimit)getResource(RateLimit.class, url, versionId);
 	}
 
 	////////////////////
@@ -317,120 +335,20 @@ public class Client {
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+     * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.User
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
 	 */
-	public List<User> getUsers(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(queryParameters, Constants.GET_USERS_URL);
+	public List<User> getUsers(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_USERS_URL");
+		ExtractionContext context = getResourceContext(queryParameters, Constants.GET_USERS_URL, versionId);
 
-		OneloginOAuthJSONResourceResponse oAuthResponse = null;
-		String afterCursor = null;
-		List<User> users = new ArrayList<User>(maxResults);
-		while (oAuthResponse == null || (users.size() < maxResults && afterCursor != null)) {
-			oAuthResponse = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-			if ((afterCursor = getUsersBatch(users, context.url, context.bearerRequest, oAuthResponse)) == null) {
-				break;
-			}
-		}
-
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>)iterateResourceCollector(User.class, context, maxResults, versionId);
 		return users;
-	}
-	
-	/**
-	 * Get a batch Users.
-	 * 
-	 * This is usually the first version of the user batching methods to call as it requires no after-cursor information.
-	 * 
-	 * @param batchSize Size of the Batch
-	 *
-	 * @return OneLoginResponse of User (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
-	 *
-	 * @see com.onelogin.sdk.model.User
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
-	 */
-	public OneLoginResponse<User> getUsersBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getUsersBatch(batchSize, null);
-	}
-
-	/**
-	 * Get a batch of Users.
-	 * 
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of User (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
-	 * 
-	 * @see com.onelogin.sdk.model.User
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
-	 */
-	public OneLoginResponse<User> getUsersBatch(int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getUsersBatch(new HashMap<String, String>(), batchSize, afterCursor);
-	}
-
-	/**
-	 * Get a batch of Users.
-	 * 
-	 * @param queryParameters Query parameters of the Resource
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of User (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
-	 * 
-	 * @see com.onelogin.sdk.model.User
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
-	 */
-	public OneLoginResponse<User> getUsersBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_USERS_URL);
-		List<User> users = new ArrayList<User>(batchSize);
-		afterCursor = getUsersBatch(users, context.url, context.bearerRequest, context.oAuthResponse);
-		return new OneLoginResponse<User>(users, afterCursor);
-	}
-	
-	/**
-	 * Get a batch of Users.
-	 * 
-	 * @param users
-	 * @param url
-	 * @param bearerRequest
-	 * @param oAuthResponse
-	 *
-	 * @return The Batch reference
-	 * 
-	 * @see com.onelogin.sdk.model.User
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
-	 */
-	private String getUsersBatch(List<User> users, URIBuilder url, OAuthClientRequest bearerRequest,
-			OneloginOAuthJSONResourceResponse oAuthResponse) {
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject[] dataArray = oAuthResponse.getDataArray();
-			if (dataArray != null && dataArray.length > 0) {
-				for (JSONObject data : dataArray) {
-					users.add(new User(data));
-				}
-			}
-
-			return collectAfterCursor(url, bearerRequest, oAuthResponse);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return null;
 	}
 
 	/**
@@ -443,12 +361,14 @@ public class Client {
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.User
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
 	 */
-	public List<User> getUsers(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<User> getUsers(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getUsers(queryParameters, this.maxResults);
 	}
 
@@ -462,14 +382,15 @@ public class Client {
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.User
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
 	 */
-	public List<User> getUsers(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		HashMap<String, String> queryParameters = new HashMap<String, String>();
-		return getUsers(queryParameters, maxResults);
+	public List<User> getUsers(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getUsers(new HashMap<String, String>(), maxResults);
 	}
 
 	/**
@@ -479,14 +400,114 @@ public class Client {
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.User
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
 	 */
-	public List<User> getUsers() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<User> getUsers() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getUsers(new HashMap<String, String>());
+	}
+
+	/**
+	 * Get a batch Users.
+	 * 
+	 * This is usually the first version of the user batching methods to call as it requires no after-cursor information.
+	 * 
+	 * @param batchSize Size of the Batch
+	 *
+	 * @return OneLoginResponse of User (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
+	 * @throws NoSuchMethodException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
+	 */
+	public OneLoginResponse<User> getUsersBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException, NoSuchMethodException, ErrorResourceInitialization  {
+		return getUsersBatch(batchSize, null);
+	}
+
+	/**
+	 * Get a batch Users.
+	 * 
+	 * This is usually the first version of the user batching methods to call as it requires no after-cursor information.
+	 * 
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of User (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
+	 * @throws NoSuchMethodException
+	 *
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
+	 */
+	public OneLoginResponse<User> getUsersBatch(int batchSize, String afterCursor) throws OAuthSystemException, OAuthProblemException, URISyntaxException, NoSuchMethodException, ErrorResourceInitialization  {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
-		return getUsers(queryParameters);
+		return getUsersBatch(queryParameters, batchSize, afterCursor);
+	}
+
+	/**
+	 * Get a batch of Users.
+	 * 
+	 * @param batchSize Size of the Batch
+	 * @param queryParameters Query parameters of the Resource
+	 *
+	 * @return OneLoginResponse of User (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
+	 */
+	public OneLoginResponse<User> getUsersBatch(HashMap<String, String> queryParameters, int batchSize) throws NoSuchMethodException, OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getUsersBatch(queryParameters, batchSize, null);
+	}
+
+	/**
+	 * Get a batch of Users.
+	 *
+	 * @deprecated This method will be private in future releases, you don't need to provide the queryParameters because its value is already contained in the afterCursor value
+	 * 
+	 * @param queryParameters Query parameters of the Resource
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of User (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.User
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-users">Get Users documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/list-users">List Users documentation</a>
+	 */
+	@Deprecated
+	public OneLoginResponse<User> getUsersBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_USERS_URL");
+		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_USERS_URL, versionId);
+		List<OneLoginResource> resourceList = new ArrayList<OneLoginResource>();
+		afterCursor = getResourceListBatch(resourceList, User.class, context, versionId);
+		return new OneLoginResponse<User>(resourceList, afterCursor);
 	}
 
 	/**
@@ -500,34 +521,49 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.User
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-user-by-id">Get User by ID documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/get-user">Get User documentation</a>
 	 */
-	public User getUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public User getUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USER_URL, Long.toString(id), versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_USER_URL, Long.toString(id)));
+		return (User)getResource(User.class, url, versionId);
+	}
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		User user = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			user = new User(data);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+	/**
+	 * Gets a list of apps accessible by a user, not including personal apps.
+	 *
+	 * @param id
+	 *            Id of the user
+	 * @param ignore_visibility
+	 *            Defaults to `false`. When `true` will all apps that are assigned to a user regardless of their portal visibility setting.
+	 *
+	 * @return List of App
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see com.onelogin.sdk.model.UserApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-apps-for-user">Get Apps for a User documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/get-user-apps">Get User Apps documentation</a>
+	 */
+	public List<App> getUserApps(long id, boolean ignore_visibility) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_APPS_FOR_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_APPS_FOR_USER_URL, Long.toString(id), versionId));
+		HashMap<String, Object> queryParameters = new HashMap<String, Object>();
+		if (versionId != 1) {
+			queryParameters.put("ignore_visibility", String.valueOf(ignore_visibility));
 		}
-		return user;
+
+		@SuppressWarnings("unchecked")
+		List<App> apps = (List<App>) retrieveResourceList(App.class, url, queryParameters, versionId);
+		return apps;
 	}
 
 	/**
@@ -536,45 +572,19 @@ public class Client {
 	 * @param id
 	 *            Id of the user
 	 *
-	 * @return List of Apps
+	 * @return List of App
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
-	 * @see com.onelogin.sdk.model.App
+	 * @see com.onelogin.sdk.model.UserApp
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-apps-for-user">Get Apps for a User documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/get-user-apps">Get User Apps documentation</a>
 	 */
-	public List<App> getUserApps(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_APPS_FOR_USER_URL, Long.toString(id)));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		List<App> apps = new ArrayList<App>();
-		App app = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject[] dataArray = oAuthResponse.getDataArray();
-			if (dataArray != null && dataArray.length > 0) {
-				for (JSONObject data: dataArray) {
-					app = new App(data);
-					apps.add(app);
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return apps;
+	public List<App> getUserApps(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getUserApps(id, false);
 	}
 
 	/**
@@ -588,33 +598,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-roles-for-user">Get Roles for a User documentation</a>
 	 */
-	public List<Integer> getUserRoles(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public List<Long> getUserRoles(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		int versionId = settings.getVersionId("GET_ROLES_FOR_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_FOR_USER_URL, Long.toString(id), versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLES_FOR_USER_URL, Long.toString(id)));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		List<Integer> roles = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			roles = oAuthResponse.getIdsFromData();
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return roles;
+		return getIdList(url, versionId);
 	}
 
 	/**
@@ -629,28 +622,10 @@ public class Client {
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-custom-attributes">Get Custom Attributes documentation</a>
 	 */
 	public List<String> getCustomAttributes() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+		int versionId = settings.getVersionId("GET_CUSTOM_ATTRIBUTES_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_CUSTOM_ATTRIBUTES_URL, versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_CUSTOM_ATTRIBUTES_URL));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		List<String> customAttributes = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			customAttributes = oAuthResponse.getValuesFromData();
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return customAttributes;
+		return retrieveList(url, versionId);
 	}
 
 	/**
@@ -666,341 +641,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-user">Create User documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/create-user">Create User documentation</a>
 	 */
-	public User createUser(Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public User createUser(Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("CREATE_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_USER_URL, versionId));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_USER_URL));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		String body = JSONUtils.buildJSON(userParams);
-		bearerRequest.setBody(body);
-
-		User user = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			if (oAuthResponse.getType().equals("success")) {
-				if (oAuthResponse.getMessage().equals("Success")) {
-					JSONObject data = oAuthResponse.getData();
-					user = new User(data);
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return user;
-	}
-
-	/**
-	 * Generates an access token for a user
-	 *
-	 * @param userId
-	 *            Id of the user
-	 * @param expiresIn
-	 *            Set the duration of the token in seconds. (default: 259200 seconds = 72h)
-	 *            72 hours is the max value.
-	 * @param reusable
-	 *            Defines if the token reusable. (default: false) If set to true, token can be used for multiple apps, until it expires.
-	 *
-	 * @return Created MFAToken
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
-	 */
-	public MFAToken generateMFAToken(long userId,Integer expiresIn, Boolean reusable) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GENERATE_MFA_TOKEN_URL, Long.toString(userId)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, Object> mfaParams = new HashMap<String, Object>();
-		mfaParams.put("expires_in", expiresIn);
-		mfaParams.put("reusable", reusable);
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		String body = JSONUtils.buildJSON(mfaParams);
-		bearerRequest.setBody(body);
-
-		MFAToken mfaToken = null;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 201) {
-			JSONObject data = oAuth2Response.getJSONObjectFromContent();
-			mfaToken = new MFAToken(data);
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
-		return mfaToken;
-	}
-
-	/**
-	 * Generates an access token for a user
-	 *
-	 * @param userId
-	 *            Id of the user
-	 * @param expiresIn
-	 *            Set the duration of the token in seconds. (default: 259200 seconds = 72h)
-	 *            72 hours is the max value.
-	 *
-	 * @return Created MFAToken
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
-	 */
-	public MFAToken generateMFAToken(long userId,Integer expiresIn) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return generateMFAToken(userId, expiresIn, false);
-	}
-
-	/**
-	 * Generates an access token for a user
-	 *
-	 * @param userId
-	 *            Id of the user
-	 *
-	 * @return Created MFAToken
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
-	 */
-	public MFAToken generateMFAToken(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return generateMFAToken(userId, 259200, false);
-	}
-
-	/**
-	 * Generates a session login token in scenarios in which MFA may or may not be required.
-	 * A session login token expires two minutes after creation.
-	 *
-	 * @param queryParams
-	 *            Query Parameters (username_or_email, password, subdomain, return_to_url, ip_address, browser_id)
-	 * @param allowedOrigin
-	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
-	 *
-	 * @return SessionTokenInfo or SessionTokenMFAInfo object if success
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
-	 */
-	public Object createSessionLoginToken(Map<String, Object> queryParams, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SESSION_LOGIN_TOKEN_URL));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		if (allowedOrigin != null) {
-			headers.put("Custom-Allowed-Origin-Header-1", allowedOrigin);
-		}
-		bearerRequest.setHeaders(headers);
-
-		String body = JSONUtils.buildJSON(queryParams);
-		bearerRequest.setBody(body);
-
-		Object sessionToken = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			if (oAuthResponse.getType().equals("success")) {
-				JSONObject data = oAuthResponse.getData();
-				if (oAuthResponse.getMessage().equals("Success")) {
-					sessionToken = new SessionTokenInfo(data);
-				} else if (oAuthResponse.getMessage().equals("MFA is required for this user")) {
-					sessionToken = new SessionTokenMFAInfo(data);
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-
-		return sessionToken;
-	}
-
-	/**
-	 * Generate a session login token in scenarios in which MFA may or may not be required.
-	 * A session login token expires two minutes after creation.
-	 *
-	 * @param queryParams
-	 *            Query Parameters (username_or_email, password, subdomain, return_to_url, ip_address, browser_id)
-	 *
-	 * @return SessionTokenInfo or SessionTokenMFAInfo object if success
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
-	 */
-	public Object createSessionLoginToken(Map<String, Object> queryParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return createSessionLoginToken(queryParams, null);
-	}
-
-	/**
-	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
-	 *
-	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.
-	 * @param stateToken
-	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-	 * @param otpToken
-	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-	 * @param allowedOrigin
-	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
-	 * @param doNotNotify
-	 *            When verifying MFA via Protect Push, set this to true to
-	 *
-	 * @return Session Token
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
-	 */
-	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken, String allowedOrigin, Boolean doNotNotify) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_TOKEN_VERIFY_FACTOR));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		if (allowedOrigin != null) {
-			headers.put("Custom-Allowed-Origin-Header-1", allowedOrigin);
-		}
-		bearerRequest.setHeaders(headers);
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("device_id", devideId);
-		params.put("state_token", stateToken);
-		params.put("do_not_notify", doNotNotify);
-
-		if (otpToken != null && !otpToken.isEmpty()) {
-			params.put("otp_token", otpToken);
-		}
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		SessionTokenInfo sessionToken = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			if (oAuthResponse.getType().equals("success")) {
-				if (oAuthResponse.getMessage().equals("Success")) {
-					JSONObject data = oAuthResponse.getData();
-					sessionToken = new SessionTokenInfo(data);
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return sessionToken;
-	}
-
-	/**
-	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
-	 *
-	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.
-	 * @param stateToken
-	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-	 * @param otpToken
-	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-	 * @param allowedOrigin
-	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
-	 *
-	 * @return Session Token
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
-	 */
-	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getSessionTokenVerified(devideId, stateToken, otpToken, allowedOrigin, false);
-	}
-
-	/**
-	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
-	 *
-	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.
-	 * @param stateToken
-	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-	 * @param otpToken
-	 *            Provide the OTP value for the MFA factor you are submitting for verification.
-	 *
-	 * @return Session Token
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
-	 */
-	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getSessionTokenVerified(devideId, stateToken, otpToken, null, false);
-	}
-
-	/**
-	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
-	 *
-	 * @param devideId
-	 *            Provide the MFA device_id you are submitting for verification.
-	 * @param stateToken
-	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
-	 *
-	 * @return Session Token
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 *
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
-	 */
-	public SessionTokenInfo getSessionTokenVerified(String devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getSessionTokenVerified(devideId, stateToken, null);
+		return (User) createResource(User.class, userParams, url, versionId);
 	}
 
 	/**
@@ -1018,42 +668,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/update-user">Update User by ID documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/update-user">Update User documentation</a>
 	 */
-	public User updateUser(long id, Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public User updateUser(long id, Map<String, Object> userParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("UPDATE_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_USER_URL, Long.toString(id), versionId));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_USER_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		String body = JSONUtils.buildJSON(userParams);
-		bearerRequest.setBody(body);
-
-		User user = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			if (oAuthResponse.getType().equals("success")) {
-				if (oAuthResponse.getMessage().equals("Success")) {
-					JSONObject data = oAuthResponse.getData();
-					user = new User(data);
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return user;
+		return (User) updateResource(User.class, userParams, url, versionId);
 	}
 
 	/**
@@ -1062,46 +686,25 @@ public class Client {
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param roleIds
-	 *            Set to an array of one or more role IDs.
+	 *            Array of one or more role IDs to be added.
 	 *
 	 * @return true if success
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/assign-role-to-user">Assign Role to User documentation</a>
 	 */
-	public Boolean assignRoleToUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.ADD_ROLE_TO_USER_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean assignRoleToUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("ADD_ROLE_TO_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ADD_ROLE_TO_USER_URL, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("role_id_array", roleIds);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
 
 	/**
@@ -1110,46 +713,25 @@ public class Client {
 	 * @param id
 	 *            Id of the user to be modified
 	 * @param roleIds
-	 *            Set to an array of one or more role IDs.
+	 *            An array of one or more role IDs to be removed.
 	 *
 	 * @return true if success
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/remove-role-from-user">Remove Role from User documentation</a>
 	 */
-	public Boolean removeRoleFromUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_ROLE_TO_USER_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean removeRoleFromUser(long id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("DELETE_ROLE_TO_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_ROLE_TO_USER_URL, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("role_id_array", roleIds);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
 
 	/**
@@ -1167,40 +749,19 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-in-cleartext">Set Password by ID Using Cleartext documentation</a>
 	 */
-	public Boolean setPasswordUsingClearText(long id, String password, String passwordConfirmation) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_PW_CLEARTEXT, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean setPasswordUsingClearText(long id, String password, String passwordConfirmation) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("SET_PW_CLEARTEXT");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_PW_CLEARTEXT, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("password", password);
 		params.put("password_confirmation", passwordConfirmation);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
 
 	/**
@@ -1215,29 +776,20 @@ public class Client {
 	 * @param passwordAlgorithm
 	 *            Set to salt+sha256.
 	 * @param passwordSalt
-	 *            To provide your own salt value.            
+	 *            To provide your own salt value.
 	 *
 	 * @return true if success
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-using-sha-256">Set Password by ID Using Salt and SHA-256 documentation</a>
 	 */
-	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm, String passwordSalt) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_PW_SALT, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm, String passwordSalt) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("SET_PW_SALT");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_PW_SALT, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("password", password);
@@ -1247,19 +799,7 @@ public class Client {
 			params.put("password_salt", passwordSalt);
 		}
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
 
 	/**
@@ -1279,10 +819,11 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-password-using-sha-256">Set Password by ID Using Salt and SHA-256 documentation</a>
 	 */
-	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public Boolean setPasswordUsingHashSalt(long id, String password, String passwordConfirmation, String passwordAlgorithm) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return setPasswordUsingHashSalt(id, password, passwordConfirmation, passwordAlgorithm, null);
 	}
 
@@ -1299,41 +840,21 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-state">Set User State documentation</a>
 	 */
-	public Boolean setStateToUser(long id, int state) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Boolean setStateToUser(long id, int state) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_USER_STATE_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		int versionId = settings.getVersionId("SET_STATE_TO_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_STATE_TO_USER_URL, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("state", state);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
-	
+
 	/**
 	 * Set Custom Attribute Value
 	 *
@@ -1347,39 +868,18 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/set-custom-attribute">Set Custom Attribute Value documentation</a>
 	 */
-	public Boolean setCustomAttributeToUser(long id, Map<String, Object> customAttributes) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_CUSTOM_ATTRIBUTE_TO_USER_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean setCustomAttributeToUser(long id, Map<String, Object> customAttributes) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("SET_CUSTOM_ATTRIBUTE_TO_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_CUSTOM_ATTRIBUTE_TO_USER_URL, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("custom_attributes", (Object)customAttributes);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
 
 	/**
@@ -1393,33 +893,17 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/log-user-out">Log User Out documentation</a>
 	 */
-	public Boolean logUserOut(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.LOG_USER_OUT_URL, Long.toString(id)));
+	public Boolean logUserOut(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("LOG_USER_OUT_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.LOG_USER_OUT_URL, Long.toString(id), versionId));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
 			.buildHeaderMessage();
 
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(null, url, versionId);
 	}
 
 	/**
@@ -1436,38 +920,18 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/lock-user-account">Lock User Account documentation</a>
 	 */
-	public Boolean lockUser(long id, int minutes) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.LOCK_USER_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean lockUser(long id, int minutes) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("LOCK_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.LOCK_USER_URL, Long.toString(id), versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("locked_until", minutes);
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
 
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return success;
+		return updateOperation(params, url, versionId);
 	}
 
 	/**
@@ -1481,35 +945,260 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/delete-user">Delete User by ID documentation</a>
 	 */
-	public Boolean deleteUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Boolean deleteUser(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("DELETE_USER_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_USER_URL, Long.toString(id), versionId));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_USER_URL, Long.toString(id)));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Boolean removed = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.DELETE, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			removed = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
-		}
-
-		return removed;
+		return deleteResource(url, versionId);
 	}
 
+
+	//////////////////////////////
+	//  Onelogin Login Methods  //
+	//////////////////////////////
+
+	/**
+	 * Generates a session login token in scenarios in which MFA may or may not be required.
+	 * A session login token expires two minutes after creation.
+	 *
+	 * @param params
+	 *            Parameters (username_or_email, password, subdomain, return_to_url, ip_address, browser_id)
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
+	 */
+	public SessionToken createSessionLoginToken(Map<String, Object> params, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		int versionId = settings.getVersionId("SESSION_LOGIN_TOKEN_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SESSION_LOGIN_TOKEN_URL, versionId));
+
+		return processLogin(url, versionId, params, allowedOrigin);
+	}
+
+	/**
+	 * Generate a session login token in scenarios in which MFA may or may not be required.
+	 * A session login token expires two minutes after creation.
+	 *
+	 * @param params
+	 *            Parameters (username_or_email, password, subdomain, return_to_url, ip_address, browser_id)
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/create-session-login-token">Create Session Login Token documentation</a>
+	 */
+	public SessionToken createSessionLoginToken(Map<String, Object> params) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return createSessionLoginToken(params, null);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 * @param doNotNotify
+	 *            When verifying MFA via Protect Push, set this to true to
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken getSessionTokenVerified(String devideId, String stateToken, String otpToken, String allowedOrigin, Boolean doNotNotify) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		int versionId = settings.getVersionId("GET_TOKEN_VERIFY_FACTOR");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_TOKEN_VERIFY_FACTOR, versionId));
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("device_id", devideId);
+		params.put("state_token", stateToken);
+		params.put("do_not_notify", doNotNotify);
+
+		if (otpToken != null && !otpToken.isEmpty()) {
+			params.put("otp_token", otpToken);
+		}
+
+		return processLogin(url, versionId, params, allowedOrigin);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 * @param doNotNotify
+	 *            When verifying MFA via Protect Push, set this to true to
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken getSessionTokenVerified(long devideId, String stateToken, String otpToken, String allowedOrigin, Boolean doNotNotify) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(Long.toString(devideId), stateToken, otpToken, allowedOrigin, doNotNotify);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken  getSessionTokenVerified(String devideId, String stateToken, String otpToken, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(devideId, stateToken, otpToken, allowedOrigin, false);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 * @param allowedOrigin
+	 *            Custom-Allowed-Origin-Header. Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken  getSessionTokenVerified(long devideId, String stateToken, String otpToken, String allowedOrigin) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(Long.toString(devideId), stateToken, otpToken, allowedOrigin, false);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken getSessionTokenVerified(String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(devideId, stateToken, otpToken, null, false);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 * @param otpToken
+	 *            Provide the OTP value for the MFA factor you are submitting for verification.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken getSessionTokenVerified(long devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(Long.toString(devideId), stateToken, otpToken, null, false);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken getSessionTokenVerified(String devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(devideId, stateToken, null);
+	}
+
+	/**
+	 * Verify a one-time password (OTP) value provided for multi-factor authentication (MFA).
+	 *
+	 * @param devideId
+	 *            Provide the MFA device_id you are submitting for verification.
+	 * @param stateToken
+	 *            Provide the state_token associated with the MFA device_id you are submitting for verification.
+	 *
+	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/verify-factor">Verify Factor documentation</a>
+	 */
+	public SessionToken getSessionTokenVerified(long devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		return getSessionTokenVerified(Long.toString(devideId), stateToken, null);
+	}
 
 	/////////////////////////////
 	//  Onelogin Apps Methods  //
@@ -1528,105 +1217,18 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at getResource call
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.OneLoginApp
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
 	 */
-	public List<OneLoginApp> getApps(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(queryParameters, Constants.GET_APPS_URL);
+	public List<OneLoginApp> getApps(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_APPS_URL");
+		ExtractionContext context = getResourceContext(queryParameters, Constants.GET_APPS_URL, versionId);
 
-		OneloginOAuthJSONResourceResponse oAuthResponse = null;
-		String afterCursor = null;
-		List<OneLoginApp> apps = new ArrayList<OneLoginApp>(maxResults);
-		while (oAuthResponse == null || (apps.size() < maxResults && afterCursor != null)) {
-			oAuthResponse = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-			if ((afterCursor = getOneLoginAppsBatch(apps, context.url, context.bearerRequest, oAuthResponse)) == null) {
-				break;
-			}
-		}
-
+		@SuppressWarnings("unchecked")
+		List<OneLoginApp> apps = (List<OneLoginApp>) iterateResourceCollector(OneLoginApp.class, context, maxResults, versionId);
 		return apps;
-	}
-
-	/**
-	 * Get a batch of OneLoginApps.
-	 * 
-	 * @param batchSize Size of the Batch
-	 *
-	 * @return OneLoginResponse of OneLoginApp (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.OneLoginApp
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
-	 */
-	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getOneLoginAppsBatch(batchSize, null);
-	}
-
-	/**
-	 * Get a batch of OneLoginApps.
-	 * 
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of OneLoginApp (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.OneLoginApp
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
-	 */
-	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getOneLoginAppsBatch(new HashMap<String, String>(), batchSize, afterCursor);
-	}
-
-	/**
-	 * Get a batch of OneLoginApps.
-	 * 
-	 * @param queryParameters Query parameters of the Resource
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of OneLoginApp (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.OneLoginApp
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
-	 */
-	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_APPS_URL);
-		List<OneLoginApp> apps = new ArrayList<OneLoginApp>(batchSize);
-		afterCursor = getOneLoginAppsBatch(apps, context.url, context.bearerRequest, context.oAuthResponse);
-		return new OneLoginResponse<OneLoginApp>(apps, afterCursor);
-	}
-
-	private String getOneLoginAppsBatch(List<OneLoginApp> apps, URIBuilder url, OAuthClientRequest bearerRequest,
-			OneloginOAuthJSONResourceResponse oAuthResponse) {
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject[] dataArray = oAuthResponse.getDataArray();
-			if (dataArray != null && dataArray.length > 0) {
-				for (JSONObject data : dataArray) {
-					apps.add(new OneLoginApp(data));
-				}
-			}
-
-			return collectAfterCursor(url, bearerRequest, oAuthResponse);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-
-		return null;
 	}
 
 	/**
@@ -1640,11 +1242,12 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.OneLoginApp
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
 	 */
-	public List<OneLoginApp> getApps(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<OneLoginApp> getApps(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getApps(queryParameters, this.maxResults);
 	}
 
@@ -1659,13 +1262,13 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.OneLoginApp
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
 	 */
-	public List<OneLoginApp> getApps(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		HashMap<String, String> queryParameters = new HashMap<String, String>();
-		return getApps(queryParameters, maxResults);
+	public List<OneLoginApp> getApps(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getApps(new HashMap<String, String>(), maxResults);
 	}
 
 	/**
@@ -1676,13 +1279,83 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.OneLoginApp
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
 	 */
-	public List<OneLoginApp> getApps() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		HashMap<String, String> queryParameters = new HashMap<String, String>();
-		return getApps(queryParameters);
+	public List<OneLoginApp> getApps() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getApps(new HashMap<String, String>());
+	}
+
+	/**
+	 * Get a batch of OneLoginApps.
+	 * 
+	 * @param batchSize Size of the Batch
+	 *
+	 * @return OneLoginResponse of OneLoginApp (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getOneLoginAppsBatch(batchSize, null);
+	}
+
+	/**
+	 * Get a batch of OneLoginApps.
+	 * 
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of OneLoginApp (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getOneLoginAppsBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
+
+	/**
+	 * Get a batch of OneLoginApps.
+	 *
+	 * @deprecated This method will be private in future releases, you don't need to provide the queryParameters because its value is already contained in the afterCursor value
+	 *
+	 * @param queryParameters Query parameters of the Resource
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of OneLoginApp (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.OneLoginApp
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/apps/get-apps">Get Apps documentation</a>
+	 */
+	@Deprecated
+	public OneLoginResponse<OneLoginApp> getOneLoginAppsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_APPS_URL");
+		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_APPS_URL, versionId);
+
+		List<OneLoginResource> resourceList = new ArrayList<OneLoginResource>();
+		afterCursor = getResourceListBatch(resourceList, OneLoginApp.class, context, versionId);
+		return new OneLoginResponse<OneLoginApp>(resourceList, afterCursor);
 	}
 
 	////////////////////
@@ -1702,105 +1375,19 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at getResource call
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
 	 */
-	public List<Role> getRoles(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(queryParameters, Constants.GET_ROLES_URL);
+	public List<Role> getRoles(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLES_URL");
+		ExtractionContext context = getResourceContext(queryParameters, Constants.GET_ROLES_URL, versionId);
 
-		OneloginOAuthJSONResourceResponse oAuthResponse = null;
-		String afterCursor = null;
-		List<Role> roles = new ArrayList<Role>(maxResults);
-		while (oAuthResponse == null || (roles.size() < maxResults && afterCursor != null)) {
-			oAuthResponse = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-			if ((afterCursor = getRolesBatch(roles, context.url, context.bearerRequest, oAuthResponse)) == null) {
-				break;
-			}
-		}
-
+		@SuppressWarnings("unchecked")
+		List<Role> roles = (List<Role>)iterateResourceCollector(Role.class, context, maxResults, versionId);
 		return roles;
-	}
-
-	/**
-	 * Get a batch of Roles.
-	 * 
-	 * @param batchSize Size of the Batch
-	 *
-	 * @return OneLoginResponse of Role (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.Role
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
-	 */
-	public OneLoginResponse<Role> getRolesBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getRolesBatch(batchSize, null);
-	}
-
-	/**
-	 * Get a batch of Roles.
-	 * 
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of Role (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.Role
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
-	 */
-	public OneLoginResponse<Role> getRolesBatch(int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getRolesBatch(new HashMap<String, String>(), batchSize, afterCursor);
-	}
-
-	/**
-	 * Get a batch of Roles.
-	 * 
-	 * @param queryParameters Query parameters of the Resource
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of Role (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.Role
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
-	 */
-	public OneLoginResponse<Role> getRolesBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_ROLES_URL);
-		List<Role> roles = new ArrayList<Role>(batchSize);
-		afterCursor = getRolesBatch(roles, context.url, context.bearerRequest, context.oAuthResponse);
-		return new OneLoginResponse<Role>(roles, afterCursor);
-	}
-
-	private String getRolesBatch(List<Role> roles, URIBuilder url, OAuthClientRequest bearerRequest,
-			OneloginOAuthJSONResourceResponse oAuthResponse) {
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject[] dataArray = oAuthResponse.getDataArray();
-			if (dataArray != null && dataArray.length > 0) {
-				for (JSONObject data : dataArray) {
-					roles.add(new Role(data));
-				}
-			}
-
-			return collectAfterCursor(url, bearerRequest, oAuthResponse);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-
-		return null;
 	}
 
 	/**
@@ -1814,11 +1401,13 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
 	 */
-	public List<Role> getRoles(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Role> getRoles(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getRoles(queryParameters, this.maxResults);
 	}
 
@@ -1833,13 +1422,14 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
 	 */
-	public List<Role> getRoles(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		HashMap<String, String> queryParameters = new HashMap<String, String>();
-		return getRoles(queryParameters, maxResults);
+	public List<Role> getRoles(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getRoles(new HashMap<String, String>(), maxResults);
 	}
 
 	/**
@@ -1850,13 +1440,87 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
 	 */
-	public List<Role> getRoles() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Role> getRoles() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
 		return getRoles(queryParameters);
+	}
+
+	/**
+	 * Get a batch of Roles.
+	 * 
+	 * @param batchSize Size of the Batch
+	 *
+	 * @return OneLoginResponse of Role (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
+	 */
+	public OneLoginResponse<Role> getRolesBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getRolesBatch(batchSize, null);
+	}
+
+	/**
+	 * Get a batch of Roles.
+	 * 
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of Role (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
+	 */
+	public OneLoginResponse<Role> getRolesBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getRolesBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
+
+	/**
+	 * Get a batch of Roles.
+	 * 
+	 * @deprecated This method will be private in future releases, you don't need to provide the queryParameters because its value is already contained in the afterCursor value
+	 * 
+	 * @param queryParameters Query parameters of the Resource
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of Role (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.Role
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-roles">Get Roles documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/list-roles">List Roles documentation</a>
+	 */
+	@Deprecated
+	public OneLoginResponse<Role> getRolesBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLES_URL");
+		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_ROLES_URL, versionId);
+		List<OneLoginResource> resourceList = new ArrayList<OneLoginResource>();
+		afterCursor = getResourceListBatch(resourceList, Role.class, context, versionId);
+		return new OneLoginResponse<Role>(resourceList, afterCursor);
 	}
 
 	/**
@@ -1870,34 +1534,17 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/roles/get-role-by-id">Get Role by ID documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/get-role">Get Role documentation</a>
 	 */
-	public Role getRole(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Role getRole(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_URL, Long.toString(id), versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_URL, Long.toString(id)));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Role role = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			role = new Role(data);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return role;
+		return (Role) getResource(Role.class, url, versionId);
 	}
 
 	/////////////////////
@@ -1912,26 +1559,18 @@ public class Client {
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws IOException - if CloseableHttpClient raises the exception
 	 * @throws ClientProtocolException - if CloseableHttpClient raises the exception
+	 * @throws ErrorResourceInitialization
+	 * @throws OAuthProblemException 
+	 * @throws OAuthSystemException 
 	 *
 	 * @see com.onelogin.sdk.model.EventType
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/event-types">Get Event Types documentation</a>
 	 */
-	public List<EventType> getEventTypes() throws URISyntaxException, ClientProtocolException, IOException {
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_TYPES_URL));
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpGet httpGet = new HttpGet(url.toString());
-		httpGet.setHeader("Accept", "application/json");
-		CloseableHttpResponse response = httpclient.execute(httpGet);
-		String json_string = EntityUtils.toString(response.getEntity());
-		JSONObject json_object = new JSONObject(json_string);
-		JSONArray data = json_object.getJSONArray("data");
-		List<EventType> eventTypes = new ArrayList<EventType>();
-		for (int i = 0; i < data.length(); i++) {
-			JSONObject j_object = data.getJSONObject(i);
-			EventType eventType = new EventType(j_object);
-			eventTypes.add(eventType);
-		}
+	public List<EventType> getEventTypes() throws URISyntaxException, ClientProtocolException, IOException, OAuthSystemException, OAuthProblemException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_EVENT_TYPES_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_TYPES_URL, versionId));
 
+		List<EventType> eventTypes = (List<EventType>) retrieveResourceList(EventType.class, url, new HashMap<String, Object>(), versionId); 
 		return eventTypes;
 	}
 
@@ -1948,104 +1587,18 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitializationd
 	 *
 	 * @see com.onelogin.sdk.model.Event
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
-	public List<Event> getEvents(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(queryParameters, Constants.GET_EVENTS_URL);
+	public List<Event> getEvents(HashMap<String, String> queryParameters, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_EVENTS_URL");
+		ExtractionContext context = getResourceContext(queryParameters, Constants.GET_EVENTS_URL, versionId);
 
-		OneloginOAuthJSONResourceResponse oAuthResponse = null;
-		String afterCursor = null;
-		List<Event> events = new ArrayList<Event>(maxResults);
-		while (oAuthResponse == null || (events.size() < maxResults && afterCursor != null)) {
-			oAuthResponse = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-			if ((afterCursor = getEventsBatch(events, context.url, context.bearerRequest, oAuthResponse)) == null) {
-				break;
-			}
-		}
-
+		@SuppressWarnings("unchecked")
+		List<Event> events = (List<Event>)iterateResourceCollector(Event.class, context, maxResults, versionId);
 		return events;
-	}
-
-	/**
-	 * Get a batch of Events.
-	 * 
-	 * @param batchSize Size of the Batch
-	 *
-	 * @return OneLoginResponse of Event (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.Event
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
-	 */
-	public OneLoginResponse<Event> getEventsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getEventsBatch(batchSize, null);
-	}
-
-	/**
-	 * Get a batch of Events.
-	 * 
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of Event (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.Event
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
-	 */
-	public OneLoginResponse<Event> getEventsBatch(int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		return getEventsBatch(new HashMap<String, String>(), batchSize, afterCursor);
-	}
-
-	/**
-	 * Get a batch of Events.
-	 * 
-	 * @param queryParameters Query parameters of the Resource
-	 * @param batchSize Size of the Batch
-	 * @param afterCursor Reference to continue collecting items of next page
-	 *
-	 * @return OneLoginResponse of Event (Batch)
-	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
-	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
-	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * 
-	 * @see com.onelogin.sdk.model.Event
-	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
-	 */
-	public OneLoginResponse<Event> getEventsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_EVENTS_URL);
-		List<Event> events = new ArrayList<Event>(batchSize);
-		afterCursor = getEventsBatch(events, context.url, context.bearerRequest, context.oAuthResponse);
-		return new OneLoginResponse<Event>(events, afterCursor);
-	}
-
-	private String getEventsBatch(List<Event> events, URIBuilder url, OAuthClientRequest bearerRequest,
-			OneloginOAuthJSONResourceResponse oAuthResponse) {
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject[] dataArray = oAuthResponse.getDataArray();
-			if (dataArray != null && dataArray.length > 0) {
-				for (JSONObject data : dataArray) {
-					events.add(new Event(data));
-				}
-			}
-
-			return collectAfterCursor(url, bearerRequest, oAuthResponse);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return null;
 	}
 
 	/**
@@ -2059,11 +1612,12 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Event
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
-	public List<Event> getEvents(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Event> getEvents(HashMap<String, String> queryParameters) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getEvents(queryParameters, this.maxResults);
 	}
 
@@ -2078,11 +1632,12 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Event
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
-	public List<Event> getEvents(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Event> getEvents(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
 		return getEvents(queryParameters, maxResults);
 	}
@@ -2095,15 +1650,87 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Event
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
 	 */
-	public List<Event> getEvents() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Event> getEvents() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		HashMap<String, String> queryParameters = new HashMap<String, String>();
 		return getEvents(queryParameters);
 	}
-	
+
+	/**
+	 * Get a batch of Events.
+	 * 
+	 * @param batchSize Size of the Batch
+	 *
+	 * @return OneLoginResponse of Event (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 */
+	public OneLoginResponse<Event> getEventsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getEventsBatch(batchSize, null);
+	}
+
+	/**
+	 * Get a batch of Events.
+	 * 
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of Event (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 */
+	public OneLoginResponse<Event> getEventsBatch(int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getEventsBatch(new HashMap<String, String>(), batchSize, afterCursor);
+	}
+
+	/**
+	 * Get a batch of Events.
+	 *
+	 * @deprecated This method will be private in future releases, you don't need to provide the queryParameters because its value is already contained in the afterCursor value
+	 *
+	 * @param queryParameters Query parameters of the Resource
+	 * @param batchSize Size of the Batch
+	 * @param afterCursor Reference to continue collecting items of next page
+	 *
+	 * @return OneLoginResponse of Event (Batch)
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 * 
+	 * @see com.onelogin.sdk.model.Event
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
+	 */
+	@Deprecated
+	public OneLoginResponse<Event> getEventsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_EVENTS_URL");
+		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_EVENTS_URL, versionId);
+
+		List<OneLoginResource> resourceList = new ArrayList<OneLoginResource>();
+		afterCursor = getResourceListBatch(resourceList, Event.class, context, versionId);
+		return new OneLoginResponse<Event>(resourceList, afterCursor);
+
+	}
+
 	/**
 	 * Gets Event by ID.
 	 *
@@ -2115,38 +1742,22 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Event
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-event-by-id">Get Event by ID documentation</a>
 	 */
-	public Event getEvent(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Event getEvent(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_EVENT_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_URL, Long.toString(id), versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_EVENT_URL, Long.toString(id)));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Event event = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			event = new Event(data);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return event;
+		return (Event)getResource(Event.class, url, versionId);
 	}
 
 	/**
 	 * Create an event in the OneLogin event log.
+     *
+	 * @deprecated This method should not be used anymore, the API call will be deprecated in the platform
 	 *
 	 * @param eventParams
 	 *            Event Data (event_type_id, account_id, actor_system, actor_user_id, actor_user_name, app_id,
@@ -2167,7 +1778,8 @@ public class Client {
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
 		OAuthClient oAuthClient = new OAuthClient(httpClient);
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_EVENT_URL));
+		int versionId = settings.getVersionId("CREATE_EVENT_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_EVENT_URL, versionId));
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
 			.buildHeaderMessage();
 
@@ -2179,9 +1791,7 @@ public class Client {
 
 		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
 		if (oAuthResponse.getResponseCode() != 200 || !oAuthResponse.getType().equals("success")) {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-			errorAttribute = oAuthResponse.getErrorAttribute();
+			setResponseError(oAuthResponse, true);
 		}
 	}
 
@@ -2200,23 +1810,17 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Group
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
-	public List<Group> getGroups(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(new HashMap<String, String>(), Constants.GET_GROUPS_URL);
+	public List<Group> getGroups(int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_GROUPS_URL");
+		ExtractionContext context = getResourceContext(new HashMap<String, String>(), Constants.GET_GROUPS_URL, versionId);
 
-		OneloginOAuthJSONResourceResponse oAuthResponse = null;
-		String afterCursor = null;
-		List<Group> groups = new ArrayList<Group>(maxResults);
-		while (oAuthResponse == null || (groups.size() < maxResults && afterCursor != null)) {
-			oAuthResponse = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-			if ((afterCursor = getGroupsBatch(groups, context.url, context.bearerRequest, oAuthResponse)) == null) {
-				break;
-			}
-		}
-
+		@SuppressWarnings("unchecked")
+		List<Group> groups = (List<Group>)iterateResourceCollector(Group.class, context, maxResults, versionId);
 		return groups;
 	}
 
@@ -2228,11 +1832,12 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Group
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
-	public List<Group> getGroups() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Group> getGroups() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getGroups(this.maxResults);
 	}
 
@@ -2246,17 +1851,20 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 * 
 	 * @see com.onelogin.sdk.model.Group
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
-	public OneLoginResponse<Group> getGroupsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public OneLoginResponse<Group> getGroupsBatch(int batchSize) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getGroupsBatch(batchSize, null);
 	}
 
 	/**
 	 * Get a batch of Groups.
-	 * 
+	 *
+	 * @deprecated This method will be private in future releases, you don't need to provide the queryParameters because its value is already contained in the afterCursor value
+     *
 	 * @param batchSize Size of the Batch
 	 * @param afterCursor Reference to continue collecting items of next page
 	 *
@@ -2265,18 +1873,21 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 * 
 	 * @see com.onelogin.sdk.model.Group
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
 	public OneLoginResponse<Group> getGroupsBatch(int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return getGroupsBatch(new HashMap<String, String>(), batchSize, afterCursor);
 	}
 
 	/**
 	 * Get a batch of Groups
-	 * 
+	 *
+	 * @deprecated This method will be private in future releases, you don't need to provide the queryParameters because its value is already contained in the afterCursor value
+	 *
 	 * @param queryParameters Query parameters of the Resource
 	 * @param batchSize Size of the Batch
 	 * @param afterCursor Reference to continue collecting items of next page
@@ -2286,34 +1897,20 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 * 
 	 * @see com.onelogin.sdk.model.Group
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-groups">Get Groups documentation</a>
 	 */
+	@Deprecated
 	public OneLoginResponse<Group> getGroupsBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor)
-			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_GROUPS_URL);
-		List<Group> groups = new ArrayList<Group>(batchSize);
-		afterCursor = getGroupsBatch(groups, context.url, context.bearerRequest, context.oAuthResponse);
-		return new OneLoginResponse<Group>(groups, afterCursor);
-	}
+			throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_GROUPS_URL");
+		ExtractionContext context = extractResourceBatch(queryParameters, batchSize, afterCursor, Constants.GET_GROUPS_URL, versionId);
 
-	private String getGroupsBatch(List<Group> groups, URIBuilder url, OAuthClientRequest bearerRequest,
-			OneloginOAuthJSONResourceResponse oAuthResponse) {
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject[] dataArray = oAuthResponse.getDataArray();
-			if (dataArray != null && dataArray.length > 0) {
-				for (JSONObject data : dataArray) {
-					groups.add(new Group(data));
-				}
-			}
-
-			return collectAfterCursor(url, bearerRequest, oAuthResponse);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return null;
+		List<OneLoginResource> resourceList = new ArrayList<OneLoginResource>();
+		afterCursor = getResourceListBatch(resourceList, Group.class, context, versionId);
+		return new OneLoginResponse<Group>(resourceList, afterCursor);
 	}
 
 	/**
@@ -2327,34 +1924,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Group
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/groups/get-group-by-id">Get Group by ID documentation</a>
 	 */
-	public Group getGroup(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Group getGroup(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_GROUP_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_GROUP_URL, Long.toString(id), versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_GROUP_URL, Long.toString(id)));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Group group = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			group = new Group(data);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return group;
+		return (Group)getResource(Group.class, url, versionId);
 	}
 
 	//////////////////////////////
@@ -2383,21 +1962,11 @@ public class Client {
 	 *
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertion(String usernameOrEmail, String password, String appId, String subdomain, String ipAddress) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_SAML_ASSERTION_URL));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-				//.setAccessToken(accessToken) // 'Authorization' => 'Bearer xxxx' not accepted
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		int versionId = settings.getVersionId("GET_SAML_ASSERTION_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_SAML_ASSERTION_URL, versionId));
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username_or_email", usernameOrEmail);
@@ -2408,25 +1977,8 @@ public class Client {
 			params.put("ip_address", ipAddress);
 		}
 		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
 
-		SAMLEndpointResponse samlEndpointResponse = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			samlEndpointResponse = new SAMLEndpointResponse(oAuthResponse.getType(), oAuthResponse.getMessage());
-			if (oAuthResponse.getType().equals("success")) {
-				if (oAuthResponse.getMessage().equals("Success")) {
-					samlEndpointResponse.setSAMLResponse((String)oAuthResponse.getStringFromData());
-				} else {
-					MFA mfa = new MFA(oAuthResponse.getData());
-					samlEndpointResponse.setMFA(mfa);
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return samlEndpointResponse;
+		return retrieveSamlAssertion(url, versionId, params);
 	}
 
 	/**
@@ -2449,6 +2001,7 @@ public class Client {
 	 *
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/saml-assertions/generate-saml-assertion">Generate SAML Assertion documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertion(String usernameOrEmail, String password, String appId, String subdomain) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertion(usernameOrEmail, password, appId, subdomain, null);
@@ -2478,26 +2031,17 @@ public class Client {
 	 *
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint, Boolean doNotNotify) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+		int versionId = settings.getVersionId("GET_SAML_VERIFY_FACTOR");
 
-		String target;
+		URIBuilder url;
 		if (urlEndpoint != null && !urlEndpoint.isEmpty()) {
-			target = urlEndpoint;
+			url = new URIBuilder(urlEndpoint);
 		} else {
-			URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_SAML_VERIFY_FACTOR));
-			target = url.toString();
+			url = new URIBuilder(settings.getURL(Constants.GET_SAML_VERIFY_FACTOR, versionId));
 		}
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(target)
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("app_id", appId);
@@ -2508,23 +2052,8 @@ public class Client {
 		if (otpToken != null && !otpToken.isEmpty()) {
 			params.put("otp_token", otpToken);
 		}
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
 
-		SAMLEndpointResponse samlEndpointResponse = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			samlEndpointResponse = new SAMLEndpointResponse(oAuthResponse.getType(), oAuthResponse.getMessage());
-			if (oAuthResponse.getType().equals("success")) {
-				if (oAuthResponse.getMessage().equals("Success")) {
-					samlEndpointResponse.setSAMLResponse((String)oAuthResponse.getStringFromData());
-				}
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-		return samlEndpointResponse;
+		return retrieveSamlAssertion(url, versionId, params);
 	}
 
 	/**
@@ -2549,6 +2078,7 @@ public class Client {
 	 *
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken, String urlEndpoint) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertionVerifying(appId, devideId, stateToken, otpToken, urlEndpoint, false);
@@ -2574,6 +2104,7 @@ public class Client {
 	 *
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertionVerifying(appId, devideId, stateToken, otpToken, null);
@@ -2597,6 +2128,7 @@ public class Client {
 	 *
 	 * @see com.onelogin.sdk.model.SAMLEndpointResponse
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/saml-assertions/verify-factor">Verify Factor documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/saml-assertions/verify-factor">Verify Factor documentation</a>
 	 */
 	public SAMLEndpointResponse getSAMLAssertionVerifying(String appId, String devideId, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
 		return getSAMLAssertionVerifying(appId, devideId, stateToken, null, null);
@@ -2618,44 +2150,25 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/available-factors">Get Available Authentication Factors documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/available-factors">Get Available Authentication Factors documentation</a> 
      */
-    public List<AuthFactor> getFactors(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public List<AuthFactor> getFactors(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_FACTORS_URL, userId));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		List<AuthFactor> authFactors = new ArrayList<AuthFactor>();
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			if (data.has("auth_factors")) {
-				JSONArray dataArray = data.getJSONArray("auth_factors");
-				if (dataArray != null && dataArray.length() > 0) {
-					AuthFactor authFactor;
-					for (int i = 0; i < dataArray.length(); i++) {
-						authFactor = new AuthFactor(dataArray.getJSONObject(i));
-						authFactors.add(authFactor);
-					}
-				}
-			}
+		int versionId = settings.getVersionId("GET_FACTORS_URL");
+		URIBuilder url = null;
+		String index = null;
+		if (versionId == 1) {
+			url = new URIBuilder(settings.getURL(Constants.GET_FACTORS_URL, userId, versionId));
+			index = "auth_factors";
 		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+			url = new URIBuilder(settings.getURL(Constants.V2_GET_FACTORS_URL, userId, versionId));
 		}
 
+		@SuppressWarnings("unchecked")
+		List<AuthFactor> authFactors = (List<AuthFactor>) retrieveResourceList(AuthFactor.class, url, null, index, versionId);
 		return authFactors;
     }
 
@@ -2669,50 +2182,133 @@ public class Client {
      * @param displayName
      *            A name for the users device.
      * @param number
-     *            The phone number of the user in E.164 format.
+     *            The phone number of the user in E.164 format.   (V1 only)
+     * @param verified
+     *            Default false. Pre-verified and can be immediately activated.
+                                 (OL Voice requires verified = true)
+     * @param expiresIn  Only applies to SMS factor (V2 only)
+     *
+     * @param customMessage
+     *            The phone number of the user in E.164 format.   (V1 only)
+     *
      *
      * @return OTPDevice The MFA device
      *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/enroll-factor">Enroll an Authentication Factor documentation</a>
+     * @see <a target="_blank" https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor">Enroll an Authentication Factor documentation</a>
      */
-    public OTPDevice enrollFactor(long userId, long factorId, String displayName, String number) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public OTPDevice enrollFactor(long userId, long factorId, String displayName, String number, Boolean verified, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-		cleanError();
-		prepareToken();
+		int versionId = settings.getVersionId("ENROLL_FACTOR_URL");
+		URIBuilder url;
+		if (versionId == 1) {
+			url = new URIBuilder(settings.getURL(Constants.ENROLL_FACTOR_URL, userId, versionId));
+		} else {
+			url = new URIBuilder(settings.getURL(Constants.V2_ENROLL_FACTOR_URL, userId, versionId));
+		}
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.ENROLL_FACTOR_URL, userId));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		if (versionId == 1) {
+			if (customMessage != null) {
+				error = "422";
+				errorDescription = "V1 does not support customMessage param";
+				return null;
+			}
+			if (expiresIn != null) {
+				error = "422";
+				errorDescription = "V1 does not support expiresIn param";
+				return null;
+			}
+		} else {
+			if (number != null) {
+				error = "422";
+				errorDescription = "V2 does not support number param";
+				return null;
+			}
+		}
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("factor_id", factorId);
 		params.put("display_name", displayName);
 		params.put("number", number);
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
+		params.put("verified", verified);
+		params.put("expires_in", expiresIn);
+		params.put("custom_message", customMessage);
 
-		OTPDevice otpDevice = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			otpDevice = new OTPDevice(data);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-
-		return otpDevice;
+		return (OTPDevice) createResource(OTPDevice.class, params, url, versionId);
     }
+
+    public OTPDevice enrollFactor(long userId, long factorId, String displayName, String number, Boolean verified) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return enrollFactor(userId, factorId, displayName, number, verified, null, null);
+    }
+
+    public OTPDevice enrollFactor(long userId, long factorId, String displayName, String number) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	  return enrollFactor(userId, factorId, displayName, number, false);
+    }
+
+    public OTPDevice enrollFactor(long userId, long factorId, String displayName, Boolean verified, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return enrollFactor(userId, factorId, displayName, null, verified, expiresIn, customMessage);    	
+    }
+
+    /**
+     * Verify enrollment for OneLogin SMS, OneLogin Email, OneLogin Protect and Authenticator authentication factors.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param registrationId
+     *            uuid of the registration process (enroll factor)
+     * @param otp
+     *            One-Time-Password
+     *
+     * @return MFACheckStatus Enrollment status
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor-verify-otp">Verify Enrollment of Authentication Factors documentation</a>
+     */
+    public MFACheckStatus verifyEnrollFactorOtp(long userId, String registrationId, String otp) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+	    int versionId = settings.getVersionId("VERIFY_ENROLLMENT_SMS_EMAIL_PROTECT_AUTH_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_ENROLLMENT_SMS_EMAIL_PROTECT_AUTH_URL, userId, registrationId, versionId));
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("otp", otp);
+
+		return (MFACheckStatus) updateResource(MFACheckStatus.class, params, url, versionId);
+	}
+
+    /**
+     * Verify enrollment for OneLogin Voice & Protect Push authentication factors.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param registrationId
+     *            uuid of the registration process (enroll factor)
+     *
+     * @return MFACheckStatus Enrollment status
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor-verify-poll">Verify Enrollment of OneLogin Voice & Protect documentation</a>
+     */
+    public MFACheckStatus verifyEnrollFactorPoll(long userId, String registrationId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+	    int versionId = settings.getVersionId("VERIFY_ENROLLMENT__PROTECTPUSH_VOICE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_ENROLLMENT__PROTECTPUSH_VOICE_URL, userId, registrationId, versionId));
+
+		return (MFACheckStatus)getResource(MFACheckStatus.class, url, versionId);
+	}
 
     /**
      * Return a list of authentication factors registered to a particular user
@@ -2726,43 +2322,75 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/enrolled-factors">Get Enrolled Authentication Factors documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enrolled-factors">Get Enrolled Authentication Factors documentation</a>
      */
-    public List<OTPDevice> getEnrolledFactors(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public List<OTPDevice> getEnrolledFactors(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ENROLLED_FACTORS_URL, userId));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		List<OTPDevice> otpDevices = new ArrayList<OTPDevice>();
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			if (data.has("otp_devices")) {
-				JSONArray dataArray = data.getJSONArray("otp_devices");
-				if (dataArray != null && dataArray.length() > 0) {
-					OTPDevice otpDevice;
-					for (int i = 0; i < dataArray.length(); i++) {
-						otpDevice = new OTPDevice(dataArray.getJSONObject(i));
-						otpDevices.add(otpDevice);
-					}
-				}
-			}
+		int versionId = settings.getVersionId("GET_ENROLLED_FACTORS_URL");
+		URIBuilder url;
+		String index = null;
+		if (versionId == 1) {
+			url = new URIBuilder(settings.getURL(Constants.GET_ENROLLED_FACTORS_URL, userId, versionId));
+			index = "otp_devices";
 		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+			url = new URIBuilder(settings.getURL(Constants.V2_GET_ENROLLED_FACTORS_URL, userId, versionId));
 		}
-		return otpDevices;
+
+		@SuppressWarnings("unchecked")
+		List<OTPDevice> otp_devices = (List<OTPDevice>) retrieveResourceList(OTPDevice.class, url, null, index, versionId);
+		return otp_devices;
+    }
+
+    /**
+     * Triggers an SMS or Push notification containing a One-Time Password (OTP)
+     * that can be used to authenticate a user with the Verify Factor call.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            the id of the MFA device.
+     * @param expiresIn
+     *            Sets the window of time in seconds that the factor must be verified within. Default 120. Valid range 120-900  (V2 Only).
+     * @param customMessage
+     *            Only applies to SMS factor (V2 only)
+     *
+     * @return FactorEnrollmentResponse Info with User Id, Device Id, and OTP Device
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
+     */
+    public FactorEnrollmentResponse activateFactor(long userId, String deviceId, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+		int versionId = settings.getVersionId("ACTIVATE_FACTOR_URL");
+		URIBuilder url;
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (versionId == 1) {
+			url = new URIBuilder(settings.getURL(Constants.ACTIVATE_FACTOR_URL, userId, deviceId, versionId));
+		} else {
+			url = new URIBuilder(settings.getURL(Constants.V2_ACTIVATE_FACTOR_URL, userId, versionId));
+
+			params.put("device_id", deviceId);
+			if (expiresIn == null) {
+				expiresIn = 120;
+			}
+			params.put("expires_in", expiresIn);
+			params.put("custom_message", customMessage);
+		}
+
+		return (FactorEnrollmentResponse) createResource(FactorEnrollmentResponse.class, params, url, versionId);
+    }
+
+    public FactorEnrollmentResponse activateFactor(long userId, long deviceId, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return activateFactor(userId, Long.toString(deviceId), expiresIn, customMessage);
     }
 
     /**
@@ -2779,35 +2407,19 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
      */
-    public FactorEnrollmentResponse activateFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public FactorEnrollmentResponse activateFactor(long userId, String deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-    	cleanError();
-		prepareToken();
+    	return activateFactor(userId, deviceId, null, null);
+    }
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.ACTIVATE_FACTOR_URL, userId, deviceId));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		FactorEnrollmentResponse factorEntollmentResponse = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			JSONObject data = oAuthResponse.getData();
-			factorEntollmentResponse = new FactorEnrollmentResponse(data);
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-
-		return factorEntollmentResponse;    	
+    public FactorEnrollmentResponse activateFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return activateFactor(userId, Long.toString(deviceId), null, null);
     }
 
     /**
@@ -2832,24 +2444,14 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor">Verify an Authentication Factor documentation</a>
      */
-    public Boolean verifyFactor(long userId, long deviceId, String otpToken, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public Boolean verifyFactor(long userId, String deviceId, String otpToken, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-    	cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_FACTOR_URL, userId, deviceId));
-		url = new URIBuilder("http://pitbulk.no-ip.org/newonelogin/demo1/data.json");
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		int versionId = settings.getVersionId("VERIFY_FACTOR_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_FACTOR_URL, userId, deviceId, versionId));
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		if (otpToken!= null && !otpToken.isEmpty()) {
@@ -2858,20 +2460,13 @@ public class Client {
 		if (stateToken!= null && !stateToken.isEmpty()) {
 			params.put("state_token", stateToken);
 		}
-		if (!params.isEmpty()) {
-			String body = JSONUtils.buildJSON(params);
-			bearerRequest.setBody(body);
-		}
 
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
+		return createOperation(params, url, versionId);
+    }
 
-		return success;
+    public Boolean verifyFactor(long userId, long deviceId, String otpToken, String stateToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return verifyFactor(userId, Long.toString(deviceId), otpToken, stateToken);
     }
 
     /**
@@ -2891,10 +2486,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor">Verify an Authentication Factor documentation</a>
      */
-    public Boolean verifyFactor(long userId, long deviceId, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public Boolean verifyFactor(long userId, String deviceId, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return verifyFactor(userId, deviceId, otpToken, null);
+    }
+
+    public Boolean verifyFactor(long userId, long deviceId, String otpToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
     	return verifyFactor(userId, deviceId, otpToken, null);
     }
@@ -2906,19 +2507,87 @@ public class Client {
      *            The id of the user.
      * @param deviceId
      *            The id of the MFA device.
-     *            
+     *
      *
      * @return Boolean True if Factor is verified
      *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/verify-factor">Verify an Authentication Factor documentation</a>
      */
-    public Boolean verifyFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public Boolean verifyFactor(long userId, String deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
     	return verifyFactor(userId, deviceId, null, null);
+    }
+
+    public Boolean verifyFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return verifyFactor(userId, deviceId, null, null);
+    }
+
+    /**
+     * Verify an OTP code provided by SMS, Email, OneLogin Protect or Authenticator
+     *
+     * @param userId
+     *            The id of the user.
+     * @param verificationId
+     *            uuid of the verification process (activate factor)
+     * @param otp
+     *            One-Time-Password
+     * @param deviceId
+     *            The device_id of the enrolled factors (No required on OL SMS and OL Email)
+     *
+     * @return Boolean True if Factor is verified
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/verify-factor">Verify an Authentication Factor documentation</a>
+     */
+    public Boolean verifyFactorOtp(long userId, String verificationId, String otp, String deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+		int versionId = settings.getVersionId("VERIFY_FACTOR_SMS_EMAIL_PROTECT_AUTH_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_FACTOR_SMS_EMAIL_PROTECT_AUTH_URL, userId, verificationId, versionId));
+
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("otp", otp);
+		params.put("device_id", deviceId);
+		
+		return updateOperation(params, url, versionId);
+    }
+    
+    public Boolean verifyFactorOtp(long userId, String verificationId, String otp, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+    	return verifyFactorOtp(userId, verificationId, otp, Long.toString(deviceId));
+    }
+
+    /**
+     * Verify completion of OneLogin Push or OneLogin Voice factors.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param verificationId
+     *            uuid of the verification process (activate factor)
+     *
+     * @return MFACheckStatus Enrollment status
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/verify-factor">Verify an Authentication Factor documentation</a>
+     */
+    public MFACheckStatus verifyFactorPoll(long userId, String verificationId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+		int versionId = settings.getVersionId("VERIFY_FACTOR_PROTECTPUSH_VOICE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.VERIFY_FACTOR_PROTECTPUSH_VOICE_URL, userId, verificationId, versionId));
+
+		return (MFACheckStatus)getResource(MFACheckStatus.class, url, versionId);
     }
 
     /**
@@ -2934,33 +2603,135 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/remove-factor">Remove a Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/remove-factor">Remove a Factor documentation</a>
      */
-    public Boolean removeFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException
+    public Boolean removeFactor(long userId, String deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_FACTOR_URL, userId, deviceId));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Boolean success = true;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.DELETE, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() != 200) {
-			success = false;
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+		int versionId = settings.getVersionId("DELETE_FACTOR_URL");
+		URIBuilder url;
+		if (versionId == 1) {
+			url = new URIBuilder(settings.getURL(Constants.DELETE_FACTOR_URL, userId, deviceId, versionId));
+		} else {
+			url = new URIBuilder(settings.getURL(Constants.V2_DELETE_FACTOR_URL, userId, deviceId, versionId));
 		}
-		return success;
+
+		return deleteResource(url, versionId);
     }
+
+    /**
+     * Remove an enrolled factor from a user.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            The device_id of the MFA device.
+     *
+     * @return Boolean True if action succeed
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/remove-factor">Remove a Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/remove-factor">Remove a Factor documentation</a>
+     */
+    public Boolean removeFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return removeFactor(userId, Long.toString(deviceId));
+    }
+
+    /**
+	 * Generates an access token for a user
+	 *
+	 * @param userId
+	 *            Id of the user
+	 * @param expiresIn
+	 *            Set the duration of the token in seconds. (default: 259200 seconds = 72h)
+	 *            72 hours is the max value.
+	 * @param reusable
+	 *            Defines if the token reusable. (default: false) If set to true, token can be used for multiple apps, until it expires.
+	 *
+	 * @return Created MFAToken
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 */
+	public MFAToken generateMFAToken(long userId, Integer expiresIn, Boolean reusable) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GENERATE_MFA_TOKEN_URL");
+		URIBuilder url = null;
+		if (versionId == 1) {
+			url = new URIBuilder(settings.getURL(Constants.GENERATE_MFA_TOKEN_URL, Long.toString(userId), versionId));
+		} else {
+			url = new URIBuilder(settings.getURL(Constants.V2_GENERATE_MFA_TOKEN_URL, Long.toString(userId), versionId));
+		}
+
+		Map<String, Object> mfaParams = new HashMap<String, Object>();
+		if (expiresIn != null) {
+			if (expiresIn < 120 || expiresIn > 259200) {
+				error = "422";
+				errorDescription = "expiresIn needs to be an integer between 120 and 259200";
+				errorAttribute = "expiresIn";
+				return null;
+			}
+			mfaParams.put("expires_in", expiresIn);
+		}
+		if (reusable != null) {
+			mfaParams.put("reusable", reusable);
+		}
+
+		// It has version 2 result
+		return (MFAToken) createResource(MFAToken.class, mfaParams, url, 2);
+	}
+
+	/**
+	 * Generates an access token for a user
+	 *
+	 * @param userId
+	 *            Id of the user
+	 * @param expiresIn
+	 *            Set the duration of the token in seconds. (default: 259200 seconds = 72h)
+	 *            72 hours is the max value.
+	 *
+	 * @return Created MFAToken
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 */
+	public MFAToken generateMFAToken(long userId,Integer expiresIn) throws OAuthSystemException, OAuthProblemException, URISyntaxException , ErrorResourceInitialization{
+		return generateMFAToken(userId, expiresIn, false);
+	}
+
+	/**
+	 * Generates an access token for a user
+	 *
+	 * @param userId
+	 *            Id of the user
+	 *
+	 * @return Created MFAToken
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/generate-mfa-token">Generate MFA Token documentation</a>
+	 */
+	public MFAToken generateMFAToken(long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return generateMFAToken(userId, 259200, false);
+	}
 
 	////////////////////////////
 	//  Invite Links Methods  //
@@ -2981,26 +2752,16 @@ public class Client {
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/generate-invite-link">Generate Invite Link documentation</a>
 	 */
 	public String generateInviteLink(String email) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GENERATE_INVITE_LINK_URL));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		int versionId = settings.getVersionId("GENERATE_INVITE_LINK_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GENERATE_INVITE_LINK_URL, versionId));
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("email", email);
 		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
+
+		OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body);
 
 		String urlLink = null;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
 		if (oAuthResponse.getResponseCode() == 200) {
 			if (oAuthResponse.getType().equals("success")) {
 				if (oAuthResponse.getMessage().equals("Success")) {
@@ -3009,8 +2770,7 @@ public class Client {
 				}
 			}
 		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+			setResponseError(oAuthResponse, false);
 		}
 
 		return urlLink;
@@ -3030,43 +2790,21 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
 	 */
-	public Boolean sendInviteLink(String email, String personalEmail) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.SEND_INVITE_LINK_URL));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean sendInviteLink(String email, String personalEmail) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("SEND_INVITE_LINK_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SEND_INVITE_LINK_URL, versionId));
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("email", email);
 		if (personalEmail != null) {
 			params.put("personal_email", personalEmail);
 		}
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
 
-		Boolean sent = false;
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class);
-		if (oAuthResponse.getResponseCode() == 200) {
-			if (oAuthResponse.getType().equals("success")) {
-				sent = true;
-			}
-		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
-		}
-
-		return sent;
+		return createOperation(params, url, versionId);
 	}
 
 	/**
@@ -3080,10 +2818,11 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/invite-links/send-invite-link">Send Invite Link documentation</a>
 	 */
-	public Boolean sendInviteLink(String email) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public Boolean sendInviteLink(String email) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		return sendInviteLink(email, null);
 	}
 
@@ -3108,7 +2847,7 @@ public class Client {
 	 * @throws SAXException - If any parse errors occur when calling parse method of DocumentBuilder
 	 * @throws XPathExpressionException - If XPathExpression cannot be evaluated.
 	 *
-	 * @see com.onelogin.sdk.model.App
+	 * @see com.onelogin.sdk.model.EmbedApp
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/embed-apps/get-apps-to-embed-for-a-user">Get Apps to Embed for a User documentation</a>
 	 */
 	public List<EmbedApp> getEmbedApps(String token, String email) throws URISyntaxException, ClientProtocolException, IOException, ParserConfigurationException, SAXException, XPathExpressionException {
@@ -3163,39 +2902,18 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+     * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Privileges
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/list-privileges">Get Privileges documentation</a>
 	 */
-	public List<Privilege> getPrivileges() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public List<Privilege> getPrivileges() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("LIST_PRIVILEGES_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.LIST_PRIVILEGES_URL, versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.LIST_PRIVILEGES_URL));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		List<Privilege> privileges = new ArrayList<Privilege>(maxResults);
-
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 200) {
-			JSONArray jsonArray = oAuth2Response.getJSONArrayFromContent();
-			if (jsonArray != null && jsonArray.length() > 0) {
-				for (int i = 0; i < jsonArray.length(); i++) {
-					privileges.add(new Privilege(jsonArray.getJSONObject(i)));
-				}
-			}
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
+		// It has version 2 result
+		@SuppressWarnings("unchecked")
+		List<Privilege> privileges = (List<Privilege>) retrieveResourceList(Privilege.class, url, null, 2);
 		return privileges;
 	}
 
@@ -3218,22 +2936,13 @@ public class Client {
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/create-privilege">Create Privilege documentation</a>
 	 */
 	public Privilege createPrivilege(String name, String version, List<?> statements) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_PRIVILEGE_URL));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		int versionId = settings.getVersionId("CREATE_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_PRIVILEGE_URL, versionId));
 
 		List<HashMap<String, Object>> statementData = new ArrayList<HashMap<String, Object>>();
 		if (!statements.isEmpty()) {
 			if (statements.get(0) instanceof Statement) {
+				@SuppressWarnings("unchecked")
 				List<Statement> data = (List<Statement>) statements;
 				HashMap<String, Object> dataObj;
 				for (Statement statement: data) {
@@ -3244,6 +2953,7 @@ public class Client {
 					statementData.add(dataObj);
 				}
 			} else if (statements.get(0) instanceof HashMap) {
+				@SuppressWarnings("unchecked")
 				List<HashMap<String, Object>> data = (List<HashMap<String, Object>>) statements;
 				for (HashMap<String, Object> statement: data) {
 					statementData.add(statement);
@@ -3255,25 +2965,26 @@ public class Client {
 		privilegeData.put("Version", version);
 		privilegeData.put("Statement", statementData);
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("name", name);
-		params.put("privilege", privilegeData);
+		Map<String, Object> privilegeParams = new HashMap<String, Object>();
+		privilegeParams.put("name", name);
+		privilegeParams.put("privilege", privilegeData);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
+		String body = null;
+		if (!privilegeParams.isEmpty()) {
+			body = JSONUtils.buildJSON(privilegeParams);
+		}
+		
 		Privilege privilege = null;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class);
+		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
 		if (oAuth2Response.getResponseCode() == 201) {
 			String id = (String) oAuth2Response.getFromContent("id");
 			if (id != null &&  !id.isEmpty()) {
 				privilege = new Privilege(id, name, version, statements);
 			}
 		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
+			setResponseError(oAuth2Response, false);
 		}
-
+		
 		return privilege;
 	}
 
@@ -3288,34 +2999,17 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Privilege
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/get-privilege">Get Privilege documentation</a>
 	 */
-	public Privilege getPrivilege(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Privilege getPrivilege(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_PRIVILEGE_URL, id, versionId));
 
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_PRIVILEGE_URL, id));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Privilege privilege = null;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 200) {
-			JSONObject data = oAuth2Response.getJSONObjectFromContent();
-			privilege = new Privilege(data);
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-		return privilege;
+		// It has version 2 result
+		return (Privilege) getResource(Privilege.class, url, 2);
 	}
 
 	/**
@@ -3340,22 +3034,13 @@ public class Client {
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/update-privilege">Update Privilege documentation</a>
 	 */
 	public Privilege updatePrivilege(String id, String name, String version, List<?> statements) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_PRIVILEGE_URL, id));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-				.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+		int versionId = settings.getVersionId("UPDATE_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_PRIVILEGE_URL, id, versionId));
 
 		List<HashMap<String, Object>> statementData = new ArrayList<HashMap<String, Object>>();
 		if (!statements.isEmpty()) {
 			if (statements.get(0) instanceof Statement) {
+				@SuppressWarnings("unchecked")
 				List<Statement> data = (List<Statement>) statements;
 				HashMap<String, Object> dataObj;
 				for (Statement statement: data) {
@@ -3366,6 +3051,7 @@ public class Client {
 					statementData.add(dataObj);
 				}
 			} else if (statements.get(0) instanceof HashMap) {
+				@SuppressWarnings("unchecked")
 				List<HashMap<String, Object>> data = (List<HashMap<String, Object>>) statements;
 				for (HashMap<String, Object> statement: data) {
 					statementData.add(statement);
@@ -3377,23 +3063,24 @@ public class Client {
 		privilegeData.put("Version", version);
 		privilegeData.put("Statement", statementData);
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("name", name);
-		params.put("privilege", privilegeData);
+		Map<String, Object> privilegeParams = new HashMap<String, Object>();
+		privilegeParams.put("name", name);
+		privilegeParams.put("privilege", privilegeData);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
+		String body = null;
+		if (!privilegeParams.isEmpty()) {
+			body = JSONUtils.buildJSON(privilegeParams);
+		}
 
 		Privilege privilege = null;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class);
+		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class, body);
 		if (oAuth2Response.getResponseCode() == 200) {
 			String privilegeId = (String) oAuth2Response.getFromContent("id");
 			if (privilegeId != null &&  !privilegeId.isEmpty()) {
 				privilege = new Privilege(privilegeId, name, version, statements);
 			}
 		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
+			setResponseError(oAuth2Response, false);
 		}
 
 		return privilege;
@@ -3410,33 +3097,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/delete-privilege">Delete Privilege documentation</a>
 	 */
-	public Boolean deletePrivilege(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Boolean deletePrivilege(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("DELETE_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_PRIVILEGE_URL, id, versionId));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_PRIVILEGE_URL, id));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Boolean removed = false;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.DELETE, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 204) {
-			removed = true;
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
-		return removed;
+		// Version 2 result, no content
+		return deleteResource(url, 2);
 	}
 
     /**
@@ -3452,23 +3122,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+     * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/get-roles">Get Assigned Roles documentation</a>
 	 */
-	public List<Long> getRolesAssignedToPrivileges(String id, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(Constants.GET_ROLES_ASSIGNED_TO_PRIVILEGE_URL, id);
+	public List<Long> getRolesAssignedToPrivileges(String id, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLES_ASSIGNED_TO_PRIVILEGE_URL");
+		ExtractionContext context = getResourceContext(Constants.GET_ROLES_ASSIGNED_TO_PRIVILEGE_URL, id, versionId);
 
-		OneloginOAuth2JSONResourceResponse oAuth2Response = null;
-		String afterCursor = null;
-		List<Long> roleIds = new ArrayList<Long>(maxResults);
-		while (oAuth2Response == null || (roleIds.size() < maxResults && afterCursor != null)) {
-			oAuth2Response = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
-			if ((afterCursor = getRolesAssignedToPrivilegesBatch(roleIds, context.url, context.bearerRequest, oAuth2Response)) == null) {
-				break;
-			}
-		}
-
-		return roleIds;
+		// Version 2 result
+		return iterateIdsCollector(context, maxResults, 2, "roles");
 	}
 
     /**
@@ -3482,10 +3145,11 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+     * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/get-roles">Get Assigned Roles documentation</a>
 	 */
-	public List<Long> getRolesAssignedToPrivileges(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Long> getRolesAssignedToPrivileges(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		int maxResults = this.maxResults > 1000? this.maxResults : 1000;
 
 		return getRolesAssignedToPrivileges(id, maxResults);
@@ -3528,7 +3192,8 @@ public class Client {
 	 */
 	public OneLoginResponse<Long> getRolesAssignedToPrivilegesBatch(String id, int batchSize, String afterCursor)
 			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch((Object)id, batchSize, afterCursor, Constants.GET_ROLES_ASSIGNED_TO_PRIVILEGE_URL);
+		int versionId = settings.getVersionId("GET_ROLES_ASSIGNED_TO_PRIVILEGE_URL");
+		ExtractionContext context = extractResourceBatch((Object)id, batchSize, afterCursor, Constants.GET_ROLES_ASSIGNED_TO_PRIVILEGE_URL, 2);
 		List<Long> roleIds = new ArrayList<Long>(batchSize);
 		afterCursor = getRolesAssignedToPrivilegesBatch(roleIds, context.url, context.bearerRequest, context.oAuth2Response);
 		return new OneLoginResponse<Long>(roleIds, afterCursor);
@@ -3555,8 +3220,7 @@ public class Client {
 			}
 			return collectAfterCursor(url, bearerRequest, oAuth2Response);
 		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
+			setResponseError(oAuth2Response, false);
 		}
 		return null;
 	}
@@ -3574,39 +3238,19 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/assign-role">Assign Roles documentation</a>
 	 */
-	public Boolean assignRolesToPrivilege(String id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.ASSIGN_ROLES_TO_PRIVILEGE_URL, id));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
+	public Boolean assignRolesToPrivilege(String id, List<Long> roleIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("ASSIGN_ROLES_TO_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ASSIGN_ROLES_TO_PRIVILEGE_URL, id, versionId));
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("roles", roleIds);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean added = false;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 201) {
-			added = true;
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
-		return added;
+		// Version 2 result
+		return createOperation(params, url, 2);
 	}
 
 	/**
@@ -3622,33 +3266,17 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/remove-role">Remove Role documentation</a>
 	 */
-	public Boolean removeRoleFromPrivilege(String id, Long roleId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public Boolean removeRoleFromPrivilege(String id, Long roleId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		cleanError();
-		prepareToken();
+		int versionId = settings.getVersionId("REMOVE_ROLE_FROM_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_ROLE_FROM_PRIVILEGE_URL, id, roleId.toString(), versionId));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_ROLE_FROM_PRIVILEGE_URL, id, roleId.toString()));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Boolean removed = false;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.DELETE, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 204) {
-			removed = true;
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
-		return removed;
+		// Version 2 result, no content
+		return deleteResource(url, 2);
 	}
 
     /**
@@ -3664,23 +3292,16 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+     * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/get-users">Get Assigned Users documentation</a>
 	 */
-	public List<Long> getUsersAssignedToPrivileges(String id, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = getResource(Constants.GET_USERS_ASSIGNED_TO_PRIVILEGE_URL, id);
+	public List<Long> getUsersAssignedToPrivileges(String id, int maxResults) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_USERS_ASSIGNED_TO_PRIVILEGE_URL");
+		ExtractionContext context = getResourceContext(Constants.GET_USERS_ASSIGNED_TO_PRIVILEGE_URL, id, versionId);
 
-		OneloginOAuth2JSONResourceResponse oAuth2Response = null;
-		String afterCursor = null;
-		List<Long> userIds = new ArrayList<Long>(maxResults);
-		while (oAuth2Response == null || (userIds.size() < maxResults && afterCursor != null)) {
-			oAuth2Response = context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
-			if ((afterCursor = getUsersAssignedToPrivilegesBatch(userIds, context.url, context.bearerRequest, oAuth2Response)) == null) {
-				break;
-			}
-		}
-
-		return userIds;
+		// Version 2 result
+		return iterateIdsCollector(context, maxResults, 2, "users");
 	}
 
     /**
@@ -3694,10 +3315,11 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
+     * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/get-users">Get Assigned Users documentation</a>
 	 */
-	public List<Long> getUsersAssignedToPrivileges(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	public List<Long> getUsersAssignedToPrivileges(String id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		int maxResults = this.maxResults > 1000? this.maxResults : 1000;
 
 		return getUsersAssignedToPrivileges(id, maxResults);
@@ -3740,7 +3362,8 @@ public class Client {
 	 */
 	public OneLoginResponse<Long> getUsersAssignedToPrivilegesBatch(String id, int batchSize, String afterCursor)
 			throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		ExtractionContext context = extractResourceBatch((Object)id, batchSize, afterCursor, Constants.GET_USERS_ASSIGNED_TO_PRIVILEGE_URL);
+		int versionId = settings.getVersionId("GET_USERS_ASSIGNED_TO_PRIVILEGE_URL");
+		ExtractionContext context = extractResourceBatch((Object)id, batchSize, afterCursor, Constants.GET_USERS_ASSIGNED_TO_PRIVILEGE_URL, 2);
 		List<Long> userIds = new ArrayList<Long>(batchSize);
 		afterCursor = getUsersAssignedToPrivilegesBatch(userIds, context.url, context.bearerRequest, context.oAuth2Response);
 		return new OneLoginResponse<Long>(userIds, afterCursor);
@@ -3767,8 +3390,7 @@ public class Client {
 			}
 			return collectAfterCursor(url, bearerRequest, oAuth2Response);
 		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
+			setResponseError(oAuth2Response, false);
 		}
 		return null;
 	}
@@ -3786,39 +3408,19 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization 
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/assign-users">Assign Users documentation</a>
 	 */
-	public Boolean assignUsersToPrivilege(String id, List<Long> userIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.ASSIGN_USERS_TO_PRIVILEGE_URL, id));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
+	public Boolean assignUsersToPrivilege(String id, List<Long> userIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("ASSIGN_USERS_TO_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ASSIGN_USERS_TO_PRIVILEGE_URL, id, versionId));
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("users", userIds);
 
-		String body = JSONUtils.buildJSON(params);
-		bearerRequest.setBody(body);
-
-		Boolean added = false;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 201) {
-			added = true;
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
-		return added;
+		// Version 2 result
+		return createOperation(params, url, 2);
 	}
 
 	/**
@@ -3834,34 +3436,44 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/remove-user">Remove User documentation</a>
 	 */
-	public Boolean removeUserFromPrivilege(String id, Long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
+	public Boolean removeUserFromPrivilege(String id, Long userId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("REMOVE_USER_FROM_PRIVILEGE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_USER_FROM_PRIVILEGE_URL, id, userId.toString(), versionId));
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-
-		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_USER_FROM_PRIVILEGE_URL, id, userId.toString()));
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		Boolean removed = false;
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.DELETE, OneloginOAuth2JSONResourceResponse.class);
-		if (oAuth2Response.getResponseCode() == 204) {
-			removed = true;
-		} else {
-			error = oAuth2Response.getError();
-			errorDescription = oAuth2Response.getErrorDescription();
-		}
-
-		return removed;
+		// Version 2 result, no content
+		return deleteResource(url, 2);
 	}
+
+	////////////////////////////
+	// User Mappings Methods  //
+	////////////////////////////
+	/**
+	 * Creates Mapping
+     *
+	 * @param mappingParams Mapping data (name, enabled, match, position
+                                          conditions[source, operator,value],
+                                          actions[action, value])
+	 *
+	 *
+	 * @return Mapping 
+	 * 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/user-mappings/create-mapping">Create Mapping documentation</a>
+	 */
+	 public Mapping createMapping(Map<String, Object> mappingParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+			int versionId = settings.getVersionId("CREATE_MAPPING_URL");
+			URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_MAPPING_URL, versionId));
+
+			return (Mapping) createResource(Mapping.class, mappingParams, url, versionId);
+	 } 
 
 	/////////////////////////
 	//  Auxiliary methods  //
@@ -3874,7 +3486,7 @@ public class Client {
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONAccessTokenResponse and throwOAuthProblemException is enabled
 	 *
 	 */
-	public void prepareToken() throws OAuthSystemException, OAuthProblemException {	
+	public void prepareToken() throws OAuthSystemException, OAuthProblemException {
 		if (accessToken == null) {
 			getAccessToken();
 		} else if (this.isExpired()) {
@@ -3935,7 +3547,6 @@ public class Client {
 
 	protected String getAuthorization(Boolean bearer) {
 		if (bearer == true) {
-			// Removed the :
 			return "bearer " + accessToken;
 		} else {
 			return "client_id:" + settings.getClientId() + ", client_secret:" + settings.getClientSecret();
@@ -3946,29 +3557,13 @@ public class Client {
 		return getAuthorization(true);
 	}
 
-	private String collectAfterCursor(URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuthJSONResourceResponse oAuthResponse) {
-		String afterCursor = oAuthResponse.getAfterCursor();
-		if (afterCursor != null && !afterCursor.isEmpty()) {
-			url.setParameter("after_cursor", afterCursor);
-			bearerRequest.setLocationUri(url.toString());
-		}
-
-		return afterCursor;
-	}
-
-	private String collectAfterCursor(URIBuilder url, OAuthClientRequest bearerRequest, OneloginOAuth2JSONResourceResponse oAuth2Response) {
-		String afterCursor = oAuth2Response.getAfterCursor();
-		if (afterCursor != null && !afterCursor.isEmpty()) {
-			url.setParameter("after_cursor", afterCursor);
-			bearerRequest.setLocationUri(url.toString());
-		}
-
-		return afterCursor;
-	}
-	
 	public String getIP() {
 		return settings.getIP();
 	}
+
+	//////////////////////////////////
+	//  Auxiliary private methods   //   
+	//////////////////////////////////
 
 	private void updateTokens(OneloginURLConnectionClient httpClient, OAuthClientRequest request, Map<String, String> headers)
 			throws OAuthSystemException, OAuthProblemException {
@@ -3984,56 +3579,596 @@ public class Client {
 				expiration = createdAt.plusSeconds(expiresIn.intValue());
 			}
 		} else {
-			error = oAuthResponse.getError();
-			errorDescription = oAuthResponse.getErrorDescription();
+			setResponseError(oAuthResponse);
 		}
 	}
 
-	private ExtractionContext getResource(String resourceUrl) throws URISyntaxException, OAuthSystemException, OAuthProblemException {
-		return getResource(new HashMap<String, String>(), resourceUrl);
-	}	
-	
-	private ExtractionContext getResource(HashMap<String, String> queryParameters, String resourceUrl) throws URISyntaxException, OAuthSystemException, OAuthProblemException {
-		cleanError();
-		prepareToken();
+	@SuppressWarnings("rawtypes")
+	private List<? extends OneLoginResource> iterateResourceCollector(Class clazz, ExtractionContext context, int maxResults, int versionId) throws ErrorResourceInitialization, OAuthSystemException, OAuthProblemException {
+		List<OneLoginResource> resourceList = new ArrayList<OneLoginResource>();
+		String afterCursor = null;
 
-		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl));
+		while ((context.oAuthResponse == null && context.oAuth2Response == null) || (resourceList.size() < maxResults && afterCursor != null)) {
+			if (versionId == 1) {
+				context.response(context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class));
+			} else {
+				context.response(context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class));
+			}
+
+			afterCursor = getResourceListBatch(resourceList, clazz, context, versionId);
+		}
+		return resourceList;
+	}
+
+	private List<Long> iterateIdsCollector(ExtractionContext context, int maxResults, int versionId, String index) throws ErrorResourceInitialization, OAuthSystemException, OAuthProblemException {
+		List<Long> resourceList = new ArrayList<Long>();
+		String afterCursor = null;
+
+		while ((context.oAuthResponse == null && context.oAuth2Response == null) || (resourceList.size() < maxResults && afterCursor != null)) {
+			if (versionId == 1) {
+				context.response(context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class));
+			} else {
+				context.response(context.oAuthClient.resource(context.bearerRequest, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class));
+			}
+
+			afterCursor = getIdsListBatch(resourceList, context, versionId, index);
+		}
+		return resourceList;
+	}
+	
+	
+	@SuppressWarnings("rawtypes")
+	private String getResourceListBatch(List<OneLoginResource> resourceList, Class clazz, ExtractionContext context, int versionId) throws ErrorResourceInitialization {
+		Constructor<?> clazzConstructor = getClassConstructor(clazz);
+		if (versionId == 1) {
+			if (context.oAuthResponse.getResponseCode() == 200) {
+				JSONObject[] dataArray = context.oAuthResponse.getDataArray();
+				if (dataArray != null && dataArray.length > 0) {
+					for (JSONObject data : dataArray) {
+						resourceList.add(getOneLoginResource(clazzConstructor, data));
+					}
+				}
+
+				return collectAfterCursor(context, versionId);
+			} else {
+				setResponseError(context.oAuthResponse, false);
+			}
+		} else {
+			if (context.oAuth2Response.getResponseCode() == 200) {
+				JSONArray dataArray = context.oAuth2Response.getJSONArrayFromContent();
+				JSONObject data;
+				for (int i = 0, size = dataArray.length(); i < size; i++) {
+					data = dataArray.getJSONObject(i);
+					resourceList.add(getOneLoginResource(clazzConstructor, data));
+				}
+
+				return collectAfterCursor(context, versionId);
+			} else {
+				setResponseError(context.oAuth2Response, false);
+			}
+		}
+		return null;
+	}
+
+	private String getIdsListBatch(List<Long> resourceList, ExtractionContext context, int versionId, String index) throws ErrorResourceInitialization {
+		if (versionId == 1) {
+			if (context.oAuthResponse.getResponseCode() == 200) {
+				JSONObject[] dataArray = context.oAuthResponse.getDataArray();
+				if (dataArray != null && dataArray.length > 0) {
+					for (Object data : dataArray) {
+						resourceList.add((Long) data);
+					}
+				}
+				return collectAfterCursor(context, versionId);
+			} else {
+				setResponseError(context.oAuthResponse, false);
+			}
+		} else {
+			if (context.oAuth2Response.getResponseCode() == 200) {
+				JSONArray dataArray = null;
+				if (index == null) {
+					dataArray = context.oAuth2Response.getJSONArrayFromContent();
+				} else {
+					dataArray = (JSONArray) context.oAuth2Response.getFromContent(index);
+				}
+
+				if (dataArray != null) {
+					for (int i = 0, size = dataArray.length(); i < size; i++) {
+						resourceList.add(dataArray.optLong(i));
+					}
+				}
+
+				return collectAfterCursor(context, versionId);
+			} else {
+				setResponseError(context.oAuth2Response, false);
+			}
+		}
+		return null;
+	}
+	
+	private List<String> retrieveList(URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException {
+		List<String> strList = new ArrayList<String>();
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class); 
+			if (oAuthResponse.getResponseCode() == 200) {
+				strList = oAuthResponse.getValuesFromData();
+			} else {
+				setResponseError(oAuthResponse, false);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+			if (oAuth2Response.getResponseCode() == 200) {
+				JSONArray dataArray = oAuth2Response.getJSONArrayFromContent();
+				for(int i = 0; i < dataArray.length(); i++) {
+					strList.add(dataArray.optString(i));
+				}
+			} else {
+				setResponseError(oAuth2Response, false);
+			}
+		}
+
+		return strList;
+	}
+
+	private List<Long> getIdList(URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException {
+		List<Long> ids = new ArrayList<Long>();
+		if (versionId == 1) { 
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+			if (oAuthResponse.getResponseCode() == 200) {
+				ids = (List<Long>) oAuthResponse.getIdsFromData();
+			} else {
+				setResponseError(oAuthResponse, false);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
+			if (oAuth2Response.getResponseCode() == 200) {
+				JSONArray dataArray = oAuth2Response.getJSONArrayFromContent();
+				if (dataArray != null) {
+					for(int i = 0; i < dataArray.length(); i++) {
+						ids.add(dataArray.getLong(i));
+					}
+				}
+			} else {
+				setResponseError(oAuth2Response, false);
+			}
+		}
+		return ids;
+	}
+
+	private List<? extends OneLoginResource> retrieveResourceList(Class<? extends OneLoginResource> clazz, URIBuilder url, HashMap<String, Object> params, int versionId) throws OAuthSystemException, OAuthProblemException, ErrorResourceInitialization {
+		return retrieveResourceList(clazz, url, params, null, versionId);
+	}
+	
+	private List<? extends OneLoginResource> retrieveResourceList(Class<? extends OneLoginResource> clazz, URIBuilder url, HashMap<String, Object> params, String index, int versionId) throws OAuthSystemException, OAuthProblemException, ErrorResourceInitialization {
+		OneLoginResource resource = null;
+		Constructor<?> clazzConstructor = getClassConstructor(clazz);
+
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		List<OneLoginResource> resources = new ArrayList<OneLoginResource>();
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200) {
+				if (index != null) {
+					JSONObject data = oAuthResponse.getData();
+					if (data.has(index)) {
+						JSONArray dataArray = data.getJSONArray(index);
+						if (dataArray != null && dataArray.length() > 0) {
+							AuthFactor authFactor;
+							for (int i = 0; i < dataArray.length(); i++) {
+								resource = getOneLoginResource(clazzConstructor, dataArray.getJSONObject(i));
+								resources.add(resource);
+							}
+						}
+					} else {
+						error = "500";
+						errorDescription = "Wrong index provided to the retrieveResourceList method: "+ index;
+					}
+				} else {
+					JSONObject[] dataArray = oAuthResponse.getDataArray();
+					if (dataArray != null) {
+						for (JSONObject dataObj: dataArray) {
+							resource = getOneLoginResource(clazzConstructor, dataObj);
+							resources.add(resource);
+						}
+					}
+				}
+			} else {
+				setResponseError(oAuthResponse, false);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 200) {
+				JSONArray dataArray = oAuth2Response.getJSONArrayFromContent();
+				if (dataArray != null) {
+					for(int i = 0; i < dataArray.length(); i++) {
+						resource = getOneLoginResource(clazzConstructor, dataArray.optJSONObject(i));
+						resources.add(resource);
+					}
+				}
+			} else {
+				setResponseError(oAuth2Response, false);
+			}
+		}
+
+		return resources;
+	}
+
+	private OneLoginResource getResource(Class<? extends OneLoginResource> clazz, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, ErrorResourceInitialization {
+		OneLoginResource resource = null;
+		Constructor<?> clazzConstructor = getClassConstructor(clazz);
+
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+			if (oAuthResponse.getResponseCode() == 200) {
+				JSONObject data = oAuthResponse.getData();
+				resource = getOneLoginResource(clazzConstructor, data);
+			} else {
+				setResponseError(oAuthResponse, false);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
+			if (oAuth2Response.getResponseCode() == 200) {
+				JSONObject data = oAuth2Response.getJSONObjectFromContent();
+				resource = getOneLoginResource(clazzConstructor, data);
+			} else {
+				setResponseError(oAuth2Response, false);
+			}
+		}
+		
+		return resource;
+	}
+
+	private SessionToken processLogin(URIBuilder url, int versionId, Map<String, Object> params, String allowedOrigin) throws OAuthSystemException, OAuthProblemException {
+		Map<String, String> extraHeaders = new HashMap<String,String>();
+		if (allowedOrigin != null) {
+			extraHeaders.put("Custom-Allowed-Origin-Header-1", allowedOrigin);
+		}
+
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		SessionToken sessionToken = null;
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body, extraHeaders);
+			if (oAuthResponse.getResponseCode() == 200) {
+				if (oAuthResponse.getType().equals("success")) {
+					JSONObject data = oAuthResponse.getData();
+					if (oAuthResponse.getMessage().equals("Success")) {
+						sessionToken = new SessionTokenInfo(data);
+					} else if (oAuthResponse.getMessage().equals("MFA is required for this user")) {
+						sessionToken = new SessionTokenMFAInfo(data);
+					}
+				}
+			} else {
+				setResponseError(oAuthResponse, false);
+			}
+		}
+		return sessionToken;
+	}
+
+	private SAMLEndpointResponse retrieveSamlAssertion(URIBuilder url, int versionId, Map<String, Object> params) throws OAuthSystemException, OAuthProblemException {
+		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
+		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
+
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		Map<String, String> headers = getAuthorizedHeader();
+		bearerRequest.setHeaders(headers);
+
+		SAMLEndpointResponse samlEndpointResponse = null;
+
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200) {
+				samlEndpointResponse = new SAMLEndpointResponse(oAuthResponse.getType(), oAuthResponse.getMessage());
+				if (oAuthResponse.getType().equals("success")) {
+					if (oAuthResponse.getMessage().equals("Success")) {
+						samlEndpointResponse.setSAMLResponse((String)oAuthResponse.getStringFromData());
+					} else {
+						MFA mfa = new MFA(oAuthResponse.getData());
+						samlEndpointResponse.setMFA(mfa);
+					}
+				} else if (oAuthResponse.getType().equals("pending")) {
+					setResponseError(oAuthResponse, false);
+				}
+			} else {
+				setResponseError(oAuthResponse, false);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 200) {
+				String message = (String) oAuth2Response.getFromContent("message");
+				String statusType = null;
+				if (message != null && message.equals("Success") || message.contains("MFA is required")) {
+					statusType = "success";
+				} else if (message != null && message.contains("pending")) {
+					statusType = "pending";
+				}
+				samlEndpointResponse = new SAMLEndpointResponse(statusType, message);
+
+				Object data = oAuth2Response.getFromContent("data");
+				Object state_token = oAuth2Response.getFromContent("state_token");
+				if (data != null) {
+					samlEndpointResponse.setSAMLResponse((String) data);
+				} else if (state_token != null) {
+					MFA mfa = new MFA(oAuth2Response.getJSONObjectFromContent());
+					samlEndpointResponse.setMFA(mfa);
+				}
+			} else {
+				setResponseError(oAuth2Response, false);
+			}
+		}
+		return samlEndpointResponse;
+	}
+
+	private String collectAfterCursor(URIBuilder url, OAuthClientRequest bearerRequest, OAuthClientResponse oAuthResponse) {
+		String afterCursor = oAuthResponse.getAfterCursor();
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			if (oAuthResponse.getClass() == OneloginOAuthJSONResourceResponse.class) {
+				url.setParameter("after_cursor", afterCursor); 
+			} else {
+				url.setParameter("cursor", afterCursor);
+			}
+			bearerRequest.setLocationUri(url.toString());
+		}
+
+		return afterCursor;
+	}
+
+	private String collectAfterCursor(ExtractionContext context, int versionId) {
+		String afterCursor = null;
+		if (versionId == 1) {
+			afterCursor = context.oAuthResponse.getAfterCursor();
+			if (afterCursor != null && !afterCursor.isEmpty()) {
+				context.url.setParameter("after_cursor", afterCursor);
+				context.bearerRequest.setLocationUri(context.url.toString());
+			}
+		} else {
+			afterCursor = context.oAuth2Response.getAfterCursor();
+			if (afterCursor != null && !afterCursor.isEmpty()) {
+				context.url.setParameter("cursor", afterCursor);
+				context.bearerRequest.setLocationUri(context.url.toString());
+			}
+		}
+
+		return afterCursor;
+	}
+
+	private OneLoginResource createResource(Class<? extends OneLoginResource> clazz, Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		OneLoginResource resource = null;
+		Constructor<?> clazzConstructor = getClassConstructor(clazz);
+
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200) {
+				if (oAuthResponse.getType().equals("success")) {
+					if (oAuthResponse.getMessage().equals("Success") || oAuthResponse.getMessage().contains("Authentication pending")) {
+						JSONObject data = oAuthResponse.getData();
+						resource = getOneLoginResource(clazzConstructor, data);
+					}
+				}
+			} else {
+				setResponseError(oAuthResponse, true);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 201) {
+				JSONObject data = oAuth2Response.getJSONObjectFromContent();
+				resource = getOneLoginResource(clazzConstructor, data);
+			} else {
+				setResponseError(oAuth2Response, true);
+			}
+		}
+
+		return resource;
+	}
+
+	private Integer createResource(Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		Integer resourceId = null;
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200) {
+				if (oAuthResponse.getType().equals("success")) {
+					if (oAuthResponse.getMessage().equals("Success")) {
+						resourceId = oAuthResponse.getDataInteger();
+					}
+				}
+			} else {
+				setResponseError(oAuthResponse, true);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 201) {
+				JSONArray data = oAuth2Response.getJSONArrayFromContent();
+				resourceId = (Integer) data.get(0);
+			} else {
+				setResponseError(oAuth2Response, true);
+			}
+		}
+
+		return resourceId;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private OneLoginResource updateResource(Class clazz, Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		OneLoginResource resource = null;
+		Constructor<?> clazzConstructor = getClassConstructor(clazz);
+
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200) {
+				if (oAuthResponse.getType().equals("success")) {
+					if (oAuthResponse.getMessage().equals("Success")) {
+						JSONObject data = oAuthResponse.getData();
+						resource = getOneLoginResource(clazzConstructor, data);
+					}
+				}
+			} else {
+				setResponseError(oAuthResponse, true);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 200) {
+				JSONObject data = oAuth2Response.getJSONObjectFromContent();
+				resource = getOneLoginResource(clazzConstructor, data);
+			} else {
+				setResponseError(oAuth2Response, true);
+			}
+		}
+
+		return resource;
+	}
+
+	private Boolean deleteResource(URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		Boolean removed = true;
+
+		List<Integer> validV2DeleteStatus = Arrays.asList(200, 202, 204);
+
+
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.DELETE, OneloginOAuthJSONResourceResponse.class);
+			if (oAuthResponse.getResponseCode() != 200) {
+				removed = false;
+				setResponseError(oAuthResponse, true);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.DELETE, OneloginOAuth2JSONResourceResponse.class);
+			if (!validV2DeleteStatus.contains(oAuth2Response.getResponseCode())) {
+				removed = false;
+				setResponseError(oAuth2Response, true);
+			}
+		}
+
+		return removed;
+	}
+
+	private Boolean updateOperation(Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		Boolean success = true;
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() != 200) {
+				success = false;
+				setResponseError(oAuthResponse, true);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() != 200) {
+				success = false;
+				setResponseError(oAuth2Response, true);
+			}
+		}
+
+		return success;
+	}
+
+	private Boolean createOperation(Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+		Boolean success = false;
+		
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200 || oAuthResponse.getResponseCode() == 201) {
+				if (oAuthResponse.getType().equals("success")) {
+					success = true;
+				} else {
+					setResponseError(oAuthResponse, false);
+				}
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 200 || oAuth2Response.getResponseCode() == 201) {
+				success = true;
+			} else {
+				setResponseError(oAuth2Response, false);
+			}
+		}
+
+		return success;
+	}
+
+	private void setResponseError(OneloginOAuthJSONAccessTokenResponse oAuthResponse) {
+		error = oAuthResponse.getError();
+		errorDescription = oAuthResponse.getErrorDescription();
+	}
+	
+	private void setResponseError(OneloginOAuthJSONResourceResponse oAuthResponse, Boolean includeAttrError) {
+		error = oAuthResponse.getError();
+		errorDescription = oAuthResponse.getErrorDescription();
+		if (includeAttrError) {
+			errorAttribute = oAuthResponse.getErrorAttribute();
+		}
+	}
+
+	private void setResponseError(OneloginOAuth2JSONResourceResponse oAuthResponse, Boolean includeAttrError) {
+		error = oAuthResponse.getError();
+		if (error == null) {
+			error = Integer.toString(oAuthResponse.getResponseCode());
+		}
+		errorDescription = oAuthResponse.getErrorDescription();
+		if (includeAttrError) {
+			errorAttribute = oAuthResponse.getErrorAttribute();
+		}
+	}
+
+	private ExtractionContext getResourceContext(String resourceUrl, int versionId) throws URISyntaxException, OAuthSystemException, OAuthProblemException {
+		return getResourceContext(new HashMap<String, String>(), resourceUrl, versionId);
+	}
+
+	private ExtractionContext getResourceContext(HashMap<String, String> queryParameters, String resourceUrl, int versionId) throws URISyntaxException, OAuthSystemException, OAuthProblemException {
+		OAuthClient oAuthClient = initClient();
+
+		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl, versionId));
 		for (Map.Entry<String,String> parameter: queryParameters.entrySet()) {
 			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
+		OAuthClientRequest bearerRequest = getAuthorizedBearerRequest(url);
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-		return new ExtractionContext().url(url).request(bearerRequest).client(oAuthClient);
+		return new ExtractionContext().url(url).request(bearerRequest).client(oAuthClient).version(versionId);
 	}
 
-	private ExtractionContext getResource(String resourceUrl, Object id) throws URISyntaxException, OAuthSystemException, OAuthProblemException {
-		cleanError();
-		prepareToken();
+	private ExtractionContext getResourceContext(String resourceUrl, Object id, int versionId) throws URISyntaxException, OAuthSystemException, OAuthProblemException {
+		OAuthClient oAuthClient = initClient();
+		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl, id.toString(), versionId));
+		OAuthClientRequest bearerRequest = getAuthorizedBearerRequest(url);
 
-		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl, id.toString()));
-
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString())
-			.buildHeaderMessage();
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-		return new ExtractionContext().url(url).request(bearerRequest).client(oAuthClient);
+		return new ExtractionContext().url(url).request(bearerRequest).client(oAuthClient).version(versionId);
 	}
 
-	
-	private ExtractionContext extractResourceBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor, String resourceUrl) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
-		cleanError();
-		prepareToken();
-
-		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl));
+	private ExtractionContext extractResourceBatch(HashMap<String, String> queryParameters, int batchSize, String afterCursor, String resourceUrl, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl, versionId));
 		if(!queryParameters.containsKey("limit")) {
 			url.addParameter("limit", String.valueOf(batchSize));
 		}
@@ -4041,52 +4176,122 @@ public class Client {
 			url.addParameter(parameter.getKey(), parameter.getValue());
 		}
 
-		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
-		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
-		if (afterCursor != null && !afterCursor.isEmpty()) {
-			url.setParameter("after_cursor", afterCursor);
-			bearerRequest.setLocationUri(url.toString());
-		}
-
-		Map<String, String> headers = getAuthorizedHeader();
-		bearerRequest.setHeaders(headers);
-
-		OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
-				OneloginOAuthJSONResourceResponse.class);
-
-		return new ExtractionContext().url(url).request(bearerRequest).response(oAuthResponse);
+		return auxExtractResourceBatch(url, batchSize, afterCursor, versionId);
 	}
 
-	private ExtractionContext extractResourceBatch(Object id, int batchSize, String afterCursor, String resourceUrl) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+	private ExtractionContext extractResourceBatch(Object id, int batchSize, String afterCursor, String resourceUrl, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl, id.toString(), versionId));
+
+		return auxExtractResourceBatch(url, batchSize, afterCursor, versionId);
+	}
+
+	private ExtractionContext auxExtractResourceBatch(URIBuilder url, int batchSize, String afterCursor, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException {
+		if (afterCursor != null && !afterCursor.isEmpty()) {
+			if (versionId==1) {
+				url.setParameter("after_cursor", afterCursor);
+			} else {
+				url.setParameter("cursor", afterCursor);
+			}
+		}
+
+		return executeCallAndGetContext(url, versionId);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Constructor<?> getClassConstructor(Class clazz) throws ErrorResourceInitialization {
+		Constructor<?> clazzConstructor;
+		try {
+			clazzConstructor = clazz.getConstructor(JSONObject.class);
+			return clazzConstructor;
+		} catch (NoSuchMethodException | SecurityException e) {
+			throw(new ErrorResourceInitialization(e.getMessage()));
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private OneLoginResource getOneLoginResource(Constructor clazzConstructor, JSONObject data) throws ErrorResourceInitialization {
+		try {
+			return (OneLoginResource)clazzConstructor.newInstance(data);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			throw(new ErrorResourceInitialization(e.getMessage()));
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private OAuthClientResponse executeCall(URIBuilder url, String httpMethod, Class clazz) throws OAuthSystemException, OAuthProblemException {
+		return executeCall(url, httpMethod, clazz, null);
+	}
+
+	@SuppressWarnings({ "rawtypes" })
+	private OAuthClientResponse executeCall(URIBuilder url, String httpMethod, Class clazz, String body) throws OAuthSystemException, OAuthProblemException {
+		Map<String, String> extraHeaders = new HashMap<String,String>();
+		return executeCall(url, httpMethod, clazz, body, extraHeaders);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private OAuthClientResponse executeCall(URIBuilder url, String httpMethod, Class clazz, String body, Map<String, String> extraHeaders) throws OAuthSystemException, OAuthProblemException {
+		OAuthClient oAuthClient = initClient();
+		OAuthClientRequest bearerRequest = getAuthorizedBearerRequest(url);
+
+		if (!extraHeaders.isEmpty()) {
+			for (Map.Entry<String, String> entry : extraHeaders.entrySet())
+			bearerRequest.addHeader(entry.getKey(), entry.getValue());
+		}
+
+		if (body != null && !body.isEmpty()) {
+			bearerRequest.setBody(body);
+		}
+
+		if (clazz.equals(OneloginOAuthJSONResourceResponse.class)) {
+			return oAuthClient.resource(bearerRequest, httpMethod, clazz);
+		} else {
+			return oAuthClient.resource(bearerRequest, httpMethod, clazz);
+		}
+	}
+
+	private ExtractionContext executeCallAndGetContext(URIBuilder url, Integer versionId) throws OAuthSystemException, OAuthProblemException {
+		OAuthClient oAuthClient = initClient();
+		OAuthClientRequest bearerRequest = getAuthorizedBearerRequest(url);
+		ExtractionContext context = new ExtractionContext().url(url).request(bearerRequest).version(versionId);
+
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
+					OneloginOAuthJSONResourceResponse.class);
+			context.response(oAuthResponse);
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuthResponse = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
+					OneloginOAuth2JSONResourceResponse.class);
+			context.response(oAuthResponse);
+		}
+
+		return context;
+	}
+
+	private OAuthClient initClient() throws OAuthSystemException, OAuthProblemException {
 		cleanError();
 		prepareToken();
 
-		URIBuilder url = new URIBuilder(settings.getURL(resourceUrl, id.toString()));
-
 		OneloginURLConnectionClient httpClient = new OneloginURLConnectionClient();
-		OAuthClient oAuthClient = new OAuthClient(httpClient);
+		return new OAuthClient(httpClient);
+	}
+
+	private OAuthClientRequest getAuthorizedBearerRequest(URIBuilder url) throws OAuthSystemException {
 		OAuthClientRequest bearerRequest = new OAuthBearerClientRequest(url.toString()).buildHeaderMessage();
-		if (afterCursor != null && !afterCursor.isEmpty()) {
-			url.setParameter("after_cursor", afterCursor);
-			bearerRequest.setLocationUri(url.toString());
-		}
 
 		Map<String, String> headers = getAuthorizedHeader();
 		bearerRequest.setHeaders(headers);
 
-		OneloginOAuth2JSONResourceResponse oAuth2Response = oAuthClient.resource(bearerRequest, OAuth.HttpMethod.GET,
-				OneloginOAuth2JSONResourceResponse.class);
-
-		return new ExtractionContext().url(url).request(bearerRequest).response(oAuth2Response);
+		return bearerRequest;
 	}
-	
+
 	private class ExtractionContext {
 		private OneloginOAuth2JSONResourceResponse oAuth2Response;
 		private OneloginOAuthJSONResourceResponse oAuthResponse;
 		private URIBuilder url;
 		private OAuthClientRequest bearerRequest;
 		private OAuthClient oAuthClient;
+		private int versionId; 
 
 		private ExtractionContext url(URIBuilder url) {
 			this.url = url;
@@ -4110,6 +4315,11 @@ public class Client {
 
 		private ExtractionContext client(OAuthClient oAuthClient) {
 			this.oAuthClient = oAuthClient;
+			return this;
+		}
+
+		private ExtractionContext version(int versionId) {
+			this.versionId = versionId;
 			return this;
 		}
 	}

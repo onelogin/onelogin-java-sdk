@@ -6,10 +6,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SessionTokenMFAInfo {
+public class SessionTokenMFAInfo extends SessionToken {
 
-	public User user;
-	public String stateToken;
+    public String stateToken;
 	public String callbackUrl;
 	public List<Device> devices = new ArrayList<Device>(); 
 
@@ -31,10 +30,6 @@ public class SessionTokenMFAInfo {
 
 	public String getCallbackUrl()	{
 		return callbackUrl;
-	}
-
-	public User getUser()	{
-		return user;
 	}
 
 	public List<Device> getDevices()	{

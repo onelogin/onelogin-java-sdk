@@ -14,6 +14,10 @@ public class Error extends Exception {
 		this.errorCode = errorCode;
 	}
 
+	public Error(String message) {
+		super(message);
+	}
+
     public int getErrorCode() {
         return errorCode;
     }
