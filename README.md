@@ -12,7 +12,7 @@ the SDK v2 will let you execute all the API methods available at:
 - version/2, described at https://developers.onelogin.com/api-docs/2/getting-started/dev-overview.
 
 V2 implements a flexible mechanism to decide what version use per resource
-(read more about this at the [Getting Started](https://github.com/onelogin/onelogin-java-sdk#getting-started) section, the `api_configuration` parameter).
+(read more about this at the [Getting Started](https://github.com/onelogin/onelogin-java-sdk#getting-started) section, the `apiConfiguration` parameter).
 
 V2 also allows you to call urls using the generic domain: api.[region].onelogin.com (that was the unique way on SDK v1) or branded domain: [subdomain].onelogin.com (read more about this at the [Getting Started](https://github.com/onelogin/onelogin-python-sdk#getting-started) section, the `subdomain` parameter).
 
@@ -178,11 +178,11 @@ public class AppTest
         Client client = new Client();
 
         // By default Client will work with the default endpoints
-        // but you can customize them with the api_configuration param
-        Map<String, Integer> api_configuration = new HashMap<String, Integer>();
-        api_configuration.put("role", 2);
-        api_configuration.put("user", 1);
-        client.setApiConfiguration(api_configuration)
+        // but you can customize them with the apiConfiguration param
+        Map<String, Integer> apiConfiguration = new HashMap<String, Integer>();
+        apiConfiguration.put("role", 2);
+        apiConfiguration.put("user", 1);
+        client.setApiConfiguration(apiConfiguration)
 
         /* Get an AccessToken */
         client.getAccessToken();
@@ -457,9 +457,9 @@ public class AppTest
 But the SDK settings could be provided directly to the constructor, for example:
 
 ```java
-        Map<String, Integer> api_configuration = new HashMap<String, Integer>();
-        api_configuration.put("user", 1);
-        api_configuration.put("mfa", 1);
+        Map<String, Integer> apiConfiguration = new HashMap<String, Integer>();
+        apiConfiguration.put("user", 1);
+        apiConfiguration.put("mfa", 1);
 
-    Client client = new Client("<client_id>", "<client_secret>", "<subdomain>", api_configuration, false);
+    Client client = new Client("<client_id>", "<client_secret>", "<subdomain>", apiConfiguration, false);
 ```
