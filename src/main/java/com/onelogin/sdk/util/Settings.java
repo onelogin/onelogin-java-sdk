@@ -2,11 +2,8 @@ package com.onelogin.sdk.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.Map;
 import java.util.HashMap;
@@ -26,7 +23,7 @@ public class Settings {
 	/**
 	 * Private property that contains the SDK settings
 	 */
-	private Properties prop = new Properties();	
+	private Properties prop = new Properties();
 
 	public final static String CLIENT_ID_KEY = "onelogin.sdk.client_id";
 	public final static String CLIENT_SECRET_KEY = "onelogin.sdk.client_secret";
@@ -42,7 +39,7 @@ public class Settings {
 	private String ip;
 	private Map<String, Integer> apiConfiguration;
 
-	private static Map<String, Integer> defaultApiConfiguration;
+	private static final Map<String, Integer> defaultApiConfiguration;
 	static {
 		defaultApiConfiguration = new HashMap<String, Integer>();
 		defaultApiConfiguration.put("user", 2);
@@ -65,18 +62,20 @@ public class Settings {
 	}
 
 	public Settings() throws IOException, Error {
-		this.loadPropFile("onelogin.sdk.properties");
+		this("onelogin.sdk.properties");
+	}
+
+	public Settings(String configFilename) throws IOException, Error {
+		this.loadPropFile(configFilename);
 		this.clientID = loadStringProperty(CLIENT_ID_KEY);
 		this.clientSecret = loadStringProperty(CLIENT_SECRET_KEY);
 		String regionValue = loadStringProperty(REGION);
 		String subdomainValue = loadStringProperty(SUBDOMAIN);
 		String ip = loadStringProperty(IP);
-		if (regionValue == null || regionValue.isEmpty()) {			
+		if (regionValue == null || regionValue.isEmpty()) {
 			regionValue = loadStringProperty(INSTANCE);
-		}
-
-		if (regionValue != null && !regionValue.isEmpty()) {
-		    this.region = regionValue;
+		} else {
+			setRegion(regionValue);
 		}
 
 		if (subdomainValue != null && !subdomainValue.isEmpty()) {
@@ -86,31 +85,26 @@ public class Settings {
 		if (ip != null && !ip.isEmpty()) {
 		    this.ip = ip;
 		}
-
-		setDefaultApiConfiguration();
 	}
 
 	public Settings(String clientID, String clientSecret, String subdomain, Map<String, Integer> apiConfiguration){
 		this.clientID = clientID;
 		this.clientSecret = clientSecret;
 		this.subdomain = subdomain;
-		setDefaultApiConfiguration();
 		setApiConfiguration(apiConfiguration);
 	}
 
 	public Settings(String clientID, String clientSecret, String region, String subdomain){
 		this.clientID = clientID;
 		this.clientSecret = clientSecret;
-		this.region = region;
+		setRegion(region);
 		this.subdomain = subdomain;
-		setDefaultApiConfiguration();
 	}
 
 	public Settings(String clientID, String clientSecret, String region){
 		this.clientID = clientID;
 		this.clientSecret = clientSecret;
-		this.region = region;
-		setDefaultApiConfiguration();
+		setRegion(region);
 	}
 
 	public String getClientId() {
@@ -133,6 +127,12 @@ public class Settings {
 		return ip;
 	}
 
+	public void setRegion(String region) {
+		if (region != null && !region.isEmpty()) {
+		    this.region = region;
+		}
+	}
+
 	public void setSubdomain(String subdomain) {
 		this.subdomain = subdomain;
 	}
@@ -140,23 +140,41 @@ public class Settings {
 	public Map<String, Integer> getApiConfiguration() {
 		return this.apiConfiguration;
 	}
-	
+
 	public Map<String, Integer> getDefaultApiConfiguration() {
-		return defaultApiConfiguration;
+		return Settings.defaultApiConfiguration;
 	}
-	
+
 	public void setApiConfiguration(Map<String, Integer> apiConfiguration) {
-		if (apiConfiguration != null && !apiConfiguration.isEmpty()) {
+		if (apiConfiguration == null) {
+			this.apiConfiguration = null;
+		} else {
+			this.apiConfiguration = new HashMap<String, Integer>();
 			for (Map.Entry<String, Integer> entry : apiConfiguration.entrySet()) {
 				this.apiConfiguration.put(entry.getKey(), entry.getValue());
 			}
 		}
 	}
 
-	private void setDefaultApiConfiguration() {
-		this.apiConfiguration = Settings.defaultApiConfiguration;
+	public void replaceSubsetApiConfiguration(Map<String, Integer> apiConfiguration) {
+		if (apiConfiguration != null && !apiConfiguration.isEmpty()) {
+			if (this.apiConfiguration == null) {
+				this.apiConfiguration = new HashMap<String, Integer>();
+			}
+
+			for (Map.Entry<String, Integer> entry : apiConfiguration.entrySet()) {
+				this.apiConfiguration.put(entry.getKey(), entry.getValue());
+			}
+		}
 	}
-	
+
+	public void setDefaultApiConfiguration() {
+		this.apiConfiguration = new HashMap<String, Integer>();
+		for (Map.Entry<String, Integer> entry : Settings.defaultApiConfiguration.entrySet()) {
+			this.apiConfiguration.put(entry.getKey(), entry.getValue());
+		}
+	}
+
 	public String getApiSubdomain() {
 		if (this.subdomain != null && !this.subdomain.isEmpty()) {
 			return this.subdomain;
@@ -166,7 +184,7 @@ public class Settings {
 
 	public String getURL(String urlpattern, String id, String extraId, int versionId) {
 		if (id == null) {
-			return String.format(urlpattern, getApiSubdomain(), versionId);			
+			return String.format(urlpattern, getApiSubdomain(), versionId);
 		} else if (extraId == null){
 			return String.format(urlpattern, getApiSubdomain(), versionId, id);
 		} else {
@@ -180,7 +198,7 @@ public class Settings {
 
 	public String getURL(String urlpattern, long id, long extraId, int versionId) {
 		if (id == 0) {
-			return String.format(urlpattern, getApiSubdomain(), versionId);			
+			return String.format(urlpattern, getApiSubdomain(), versionId);
 		} else if (extraId == 0){
 			return String.format(urlpattern, getApiSubdomain(), versionId, id);
 		} else {
@@ -190,7 +208,7 @@ public class Settings {
 
 	public String getURL(String urlpattern, long id, String extraId, int versionId) {
 		if (id == 0) {
-			return String.format(urlpattern, getApiSubdomain(), versionId);			
+			return String.format(urlpattern, getApiSubdomain(), versionId);
 		} else if (extraId == null){
 			return String.format(urlpattern, getApiSubdomain(), versionId, id);
 		} else {
@@ -217,40 +235,40 @@ public class Settings {
 			return String.format(urlpattern, getApiSubdomain(), versionId, id);
 		}
 	}
-	
+
 	public String getURL(String urlpattern, int versionId) {
 		return getURL(urlpattern, null, versionId);
 	}
-	
+
 	public String getURL(String urlpattern) {
 		return String.format(urlpattern, getApiSubdomain());
 	}
-	
-	public Integer getVersionId(String urlpattern) throws URISyntaxException {
+
+	public Integer getVersionId(String endpointName) throws URISyntaxException {
 		Integer version = null;
-		Map<String, Integer> current_api_configuration;
+		Map<String, Integer> currentApiConfiguration;
 		if (apiConfiguration == null) {
-			current_api_configuration = defaultApiConfiguration;
+			currentApiConfiguration = Settings.defaultApiConfiguration;
 		} else {
-			current_api_configuration = apiConfiguration;
+			currentApiConfiguration = apiConfiguration;
 		}
 
-		if (Endpoints.resource_matrix.containsKey(urlpattern) && Endpoints.version_matrix.containsKey(urlpattern)) {
-			String resource = Endpoints.resource_matrix.get(urlpattern);
-			Integer[] available_versions = Endpoints.version_matrix.get(urlpattern);
-			if (!current_api_configuration.containsKey(resource)) {
+		if (Endpoints.resource_matrix.containsKey(endpointName) && Endpoints.version_matrix.containsKey(endpointName)) {
+			String resource = Endpoints.resource_matrix.get(endpointName);
+			Integer[] available_versions = Endpoints.version_matrix.get(endpointName);
+			if (!currentApiConfiguration.containsKey(resource)) {
 				version = available_versions[available_versions.length-1];
-			} else if (Arrays.asList(available_versions).contains(current_api_configuration.get(resource))) {
-				version = current_api_configuration.get(resource);
+			} else if (Arrays.asList(available_versions).contains(currentApiConfiguration.get(resource))) {
+				version = currentApiConfiguration.get(resource);
 			} else {
 				version = available_versions[available_versions.length-1];
 			}
 		}
-		
+
 		if (version == null) {
-			throw new URISyntaxException("URL pattern not registered as valid endpoint on SDK", urlpattern);
+			throw new URISyntaxException("Name not registered as valid endpoint on SDK", endpointName);
 		}
-		
+
 		return version;
 	}
 
@@ -301,70 +319,5 @@ public class Settings {
 			propValue = propValue.trim();
 		}
 		return propValue;
-	}
-
-	/**
-	 * Loads a property of the type Boolean from the Properties object
-	 *
-	 * @param propertyKey
-	 *            the property name
-	 *
-	 * @return the value
-	 */
-	@SuppressWarnings("unused")
-	private Boolean loadBooleanProperty(String propertyKey) {
-		String booleanPropValue = prop.getProperty(propertyKey);
-		if (booleanPropValue != null) {
-			return Boolean.parseBoolean(booleanPropValue.trim());
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Loads a property of the type List from the Properties object
-	 *
-	 * @param propertyKey
-	 *            the property name
-	 *
-	 * @return the value
-	 */
-	@SuppressWarnings("unused")
-	private List<String> loadListProperty(String propertyKey) {
-		String arrayPropValue = prop.getProperty(propertyKey);
-		if (arrayPropValue != null && !arrayPropValue.isEmpty()) {
-			String [] values = arrayPropValue.trim().split(",");
-			for (int i = 0; i < values.length; i++) {
-				values[i] = values[i].trim();
-			}
-			return Arrays.asList(values);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Loads a property of the type URL from the Properties object
-	 *
-	 * @param propertyKey
-	 *            the property name
-	 *
-	 * @return the value
-	 */
-	@SuppressWarnings("unused")
-	private URL loadURLProperty(String propertyKey) {
-
-		String urlPropValue = prop.getProperty(propertyKey);
-
-		if (urlPropValue == null || urlPropValue.isEmpty()) {
-			return null;
-		} else {
-			try {
-				return new URL(urlPropValue.trim());
-			} catch (MalformedURLException e) {
-				LOGGER.error("'" + propertyKey + "' contains malformed url.", e);
-				return null;
-			}
-		}
 	}
 }
