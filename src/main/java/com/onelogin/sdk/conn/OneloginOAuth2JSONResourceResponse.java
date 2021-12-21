@@ -121,6 +121,33 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 		return this.jsonArray;
 	}
 
+	public String getIdFromContent() {
+		String resourceId = null;
+
+		if (this.jsonArray != null) {
+			resourceId = ((JSONObject) this.jsonArray.get(0)).optString("id");
+		} else {
+			resourceId = jsonObject.optString("id");
+		}
+		return resourceId;
+	}
+
+	public List<Long> getIdsFromContent() {
+		List<Long> resourceIds = new ArrayList<Long>();
+
+		if (this.jsonArray != null) {
+			for(int i = 0; i < this.jsonArray.length(); i++) {
+				JSONObject data = (JSONObject) this.jsonArray.get(i);
+				if (data.has("id")) {
+					resourceIds.add(data.getLong("id"));
+				} else {
+					resourceIds.add(Long.parseLong(data.toString()));
+				}
+			}
+		}
+		return resourceIds;
+	}
+
 	public String getBeforeCursor() {
 		String value = getParam("before_cursor");
 		if (value == "null") {
@@ -197,8 +224,13 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 					newmap.put("error_description", map.get("name"));
 				}
 			} else if (map.containsKey("status")) {
-				newmap.put("error", ((JSONObject)map.get("status")).get("code"));
-				newmap.put("error_description", ((JSONObject)map.get("status")).get("message"));
+				if (map.containsKey("description") && map.containsKey("error")) {
+					newmap.put("error", map.get("status"));
+					newmap.put("error_description", map.get("description"));
+				} else {
+					newmap.put("error", ((JSONObject)map.get("status")).get("code"));
+					newmap.put("error_description", ((JSONObject)map.get("status")).get("message"));
+				}
 			} else if (map.containsKey("message")) {
 				newmap.put("error_description", map.get("message"));
 				if (map.get("message").toString().contains("unknown attribute")) {

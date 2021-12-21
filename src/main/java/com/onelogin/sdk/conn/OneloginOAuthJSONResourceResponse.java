@@ -100,6 +100,19 @@ public class OneloginOAuthJSONResourceResponse extends OAuthClientResponse {
 		}
 		return data;
 	}
+
+	public String getDataId() {
+		String data = null;
+		if (this.parameters.containsKey("data")) {
+			try {
+				data = (String) this.parameters.get("data");
+			} catch (Exception e){
+				Object[] objArray = (Object[])this.parameters.get("data");
+				data = (String) objArray[0];
+			}
+		}
+		return data;
+	}
 	
 	public JSONObject[] getDataArray() {
 		JSONObject[] jsonArray = null;

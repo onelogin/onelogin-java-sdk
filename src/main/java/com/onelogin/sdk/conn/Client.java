@@ -53,6 +53,9 @@ import org.xml.sax.SAXException;
 import com.onelogin.sdk.exception.Error;
 import com.onelogin.sdk.exception.ErrorResourceInitialization;
 import com.onelogin.sdk.model.App;
+import com.onelogin.sdk.model.AssignedAdmin;
+import com.onelogin.sdk.model.AssignedApp;
+import com.onelogin.sdk.model.AssignedUser;
 import com.onelogin.sdk.model.AuthFactor;
 import com.onelogin.sdk.model.EmbedApp;
 import com.onelogin.sdk.model.Event;
@@ -188,11 +191,19 @@ public class Client {
 		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
 	}
 
-	public void setApiConfiguration(Map<String, Integer> api_configuration) {
-		this.settings.setApiConfiguration(api_configuration);
+	public void setDefaultApiConfiguration() {
+		this.settings.setDefaultApiConfiguration();
 	}
 
-	public Map<String, Integer> getApiConfiguration(Map<String, Integer> api_configuration) {
+	public void setApiConfiguration(Map<String, Integer> apiConfiguration) {
+		this.settings.setApiConfiguration(apiConfiguration);
+	}
+
+	public void replaceSubsetApiConfiguration(Map<String, Integer> apiConfiguration) {
+		this.settings.replaceSubsetApiConfiguration(apiConfiguration);
+	}
+
+	public Map<String, Integer> getApiConfiguration(Map<String, Integer> apiConfiguration) {
 		return this.settings.getApiConfiguration();
 	}
 
@@ -207,7 +218,7 @@ public class Client {
 	/**
 	 * Generates an access token and refresh token that you may use to call Onelogin's API methods.
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONAccessTokenResponse and throwOAuthProblemException is enabled
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/generate-tokens">Generate Tokens documentation</a>
@@ -222,7 +233,7 @@ public class Client {
 		Map<String, String> headers = getAuthorizedHeader(false);
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("grant_type", GrantType.CLIENT_CREDENTIALS);
+		params.put("grant_type", GrantType.CLIENT_CREDENTIALS.toString());
 		String body = JSONUtils.buildJSON(params);
 		request.setBody(body);
 
@@ -232,7 +243,7 @@ public class Client {
 	/**
 	 * Refreshing tokens provides a new set of access and refresh tokens.
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONAccessTokenResponse and throwOAuthProblemException is enabled
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/refresh-tokens">Refresh Tokens documentation</a>
@@ -253,7 +264,7 @@ public class Client {
 		headers.put("User-Agent", this.userAgent);
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("grant_type", GrantType.REFRESH_TOKEN);
+		params.put("grant_type", GrantType.REFRESH_TOKEN.toString());
 		params.put("access_token", accessToken);
 		params.put("refresh_token", refreshToken);
 		String body = JSONUtils.buildJSON(params);
@@ -265,7 +276,7 @@ public class Client {
 	/**
 	 * Revokes an access token and refresh token pair.
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONAccessTokenResponse and throwOAuthProblemException is enabled
 	 *
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/oauth20-tokens/revoke-tokens">Revoke Tokens documentation</a>
@@ -304,7 +315,7 @@ public class Client {
 	 *
 	 * @return RateLimit object
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException
 	 * @throws ErrorResourceInitialization
@@ -333,7 +344,7 @@ public class Client {
 	 *
 	 * @return List of User
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
      * @throws ErrorResourceInitialization
@@ -359,7 +370,7 @@ public class Client {
 	 *
 	 * @return List of User
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -380,7 +391,7 @@ public class Client {
 	 *
 	 * @return List of User
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -398,7 +409,7 @@ public class Client {
 	 *
 	 * @return List of User
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -420,7 +431,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of User (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -444,7 +455,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of User (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -467,7 +478,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of User (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -491,7 +502,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of User (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResourceContext call
 	 * @throws ErrorResourceInitialization
@@ -518,7 +529,7 @@ public class Client {
 	 *
 	 * @return User
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -544,7 +555,7 @@ public class Client {
 	 *
 	 * @return List of App
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -574,7 +585,7 @@ public class Client {
 	 *
 	 * @return List of App
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -595,7 +606,7 @@ public class Client {
 	 *
 	 * @return List of Role Ids
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -615,7 +626,7 @@ public class Client {
 	 *
 	 * @return List of custom attribute fields
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -638,7 +649,7 @@ public class Client {
 	 *
 	 * @return Created user
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -665,7 +676,7 @@ public class Client {
 	 *
 	 * @return Updated user
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -690,7 +701,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -717,7 +728,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -746,7 +757,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -780,7 +791,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -816,7 +827,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -837,7 +848,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -865,7 +876,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -890,7 +901,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -917,7 +928,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -942,7 +953,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -972,7 +983,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -994,7 +1005,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1020,7 +1031,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1058,7 +1069,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1082,7 +1093,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1106,7 +1117,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1128,7 +1139,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1150,7 +1161,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1170,7 +1181,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1190,7 +1201,7 @@ public class Client {
 	 *
 	 * @return SessionToken (SessionTokenInfo or SessionTokenMFAInfo) object if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1214,7 +1225,7 @@ public class Client {
 	 *
 	 * @return List of OneLoginApp
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at getResource call
 	 * @throws ErrorResourceInitialization
@@ -1239,7 +1250,7 @@ public class Client {
 	 *
 	 * @return List of OneLoginApp
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1259,7 +1270,7 @@ public class Client {
 	 *
 	 * @return List of OneLoginApp
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1276,7 +1287,7 @@ public class Client {
 	 *
 	 * @return List of OneLoginApp
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1295,7 +1306,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of OneLoginApp (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1315,7 +1326,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of OneLoginApp (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1339,7 +1350,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of OneLoginApp (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1372,7 +1383,7 @@ public class Client {
 	 *
 	 * @return List of Role
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at getResource call
 	 * @throws ErrorResourceInitialization
@@ -1398,7 +1409,7 @@ public class Client {
 	 *
 	 * @return List of Role
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1419,7 +1430,7 @@ public class Client {
 	 *
 	 * @return List of Role
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1437,7 +1448,7 @@ public class Client {
 	 *
 	 * @return List of Role
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1458,7 +1469,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Role (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1479,7 +1490,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Role (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1504,7 +1515,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Role (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1524,6 +1535,32 @@ public class Client {
 	}
 
 	/**
+	 * Creates a role
+	 *
+	 * @param roleParams
+	 *            Role data (name, apps, users, admins)
+	 *
+	 * @return Created role id
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/create-role">Create Role documentation</a>
+	 */
+	public Long createRole(Map<String, Object> roleParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("CREATE_ROLE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_ROLE_URL, versionId));
+
+		String roleId = createResource(roleParams, url, versionId);
+		if (roleId != null) {
+			return Long.parseLong(roleId);
+		}
+		return null;
+	}
+
+	/**
 	 * Gets Role by ID.
 	 *
 	 * @param id
@@ -1531,7 +1568,7 @@ public class Client {
 	 *
 	 * @return Role
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1545,6 +1582,273 @@ public class Client {
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_URL, Long.toString(id), versionId));
 
 		return (Role) getResource(Role.class, url, versionId);
+	}
+
+	/**
+	 * Updates a role
+	 *
+	 * @param id
+	 *            Id of the role to be modified
+	 * @param roleParams
+	 *            Role data (name, apps, users, admins)
+	 *
+	 * @return Updated user
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/update-role">Update Role documentation</a>
+	 */
+	public Long updateRole(long id, Map<String, Object> roleParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("UPDATE_ROLE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_ROLE_URL, Long.toString(id), versionId));
+
+		String roleId = updateResource(roleParams, url, versionId);
+		if (roleId != null) {
+			return Long.parseLong(roleId);
+		}
+		return null;
+	}
+
+	/**
+	 * Gets a list of Apps assigned to a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param assigned
+	 *            Defaults to true. Returns all apps assigned to the role, or the opposite (optional)
+	 *
+	 * @return List of app
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/get-role-apps">Get Role Apps documentation</a>
+	 */
+	public List<AssignedApp> getRoleApps(long roleId, Boolean assigned) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLE_APPS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_APPS_URL, Long.toString(roleId), versionId));
+
+		HashMap<String, Object> queryParameters = new HashMap<String, Object>();
+		queryParameters.put("assigned", assigned);
+
+		@SuppressWarnings("unchecked")
+		List<AssignedApp> roleApps = (List<AssignedApp>) retrieveResourceList(AssignedApp.class, url, queryParameters, versionId);
+		return roleApps;
+	}
+
+	public List<AssignedApp> getRoleApps(long roleId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		return getRoleApps(roleId, true);
+	}
+
+	/**
+	 * Assign applications to a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param appIds
+	 *            List of app ids
+	 *
+	 * @return List of app ids of a role
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/set-role-apps">Set Role Apps documentation</a>
+	 */
+	public List<Long> setRoleApps(long roleId, List<Long> appIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("SET_ROLE_APPS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.SET_ROLE_APPS_URL, Long.toString(roleId), versionId));
+
+		return setOperation(appIds, url, versionId);
+	}
+
+	/**
+	 * Gets a list of Users assigned to a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param name
+	 *            Allows you to filter on first name, last name, username, and email address.
+	 * @param includeUnassigned
+	 *            Include users that aren't assigned to the role. (optional)
+	 *
+	 * @return List of related users
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/get-role-users">Get Role Users documentation</a>
+	 */
+	public List<AssignedUser> getRoleUsers(long roleId, String name, Boolean includeUnassigned) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLE_USERS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_USERS_URL, Long.toString(roleId), versionId));
+
+		HashMap<String, Object> queryParameters = new HashMap<String, Object>();
+		queryParameters.put("name", name);
+		queryParameters.put("include_unassigned", includeUnassigned);
+
+		@SuppressWarnings("unchecked")
+		List<AssignedUser> roleApps = (List<AssignedUser>) retrieveResourceList(AssignedUser.class, url, queryParameters, versionId);
+		return roleApps;
+	}
+
+	/**
+	 *  Add users to a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param userIds
+	 *            List of user ids to be added to the role
+	 *
+	 * @return List of user ids added to the role
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/add-role-users">Add Role Users documentation</a>
+	 */
+	public List<Long> addRoleUsers(long roleId, List<Long> userIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("ADD_ROLE_USERS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ADD_ROLE_USERS_URL, Long.toString(roleId), versionId));
+
+		return  addToResourceOperation(userIds, url, versionId);
+	}
+
+	/**
+	 *  Remove users from a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param userIds
+	 *            List of user ids to be removed from the role
+	 *
+	 * @return true if succeed
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/remove-role-users">Remove Role Users documentation</a>
+	 */
+	public Boolean removeRoleUsers(long roleId, List<Long> userIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("REMOVE_ROLE_USERS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_ROLE_USERS_URL, Long.toString(roleId), versionId));
+
+		return  removeFromResourceOperation(userIds, url, versionId);
+	}
+
+	/**
+	 * Gets a list of Admins assigned to a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param name
+	 *            Allows you to filter on first name, last name, username, ad email address.
+	 * @param includeUnassigned
+	 *            Include users that aren't assigned to the role. (optional)
+	 *
+	 * @return List of related admins
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/get-role-admins">Get Role Admins documentation</a>
+	 */
+	public List<AssignedAdmin> getRoleAdmins(long roleId, String name, Boolean includeUnassigned) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("GET_ROLE_ADMINS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.GET_ROLE_ADMINS_URL, Long.toString(roleId), versionId));
+
+		HashMap<String, Object> queryParameters = new HashMap<String, Object>();
+		queryParameters.put("name", name);
+		queryParameters.put("include_unassigned", includeUnassigned);
+
+		@SuppressWarnings("unchecked")
+		List<AssignedAdmin> roleApps = (List<AssignedAdmin>) retrieveResourceList(AssignedAdmin.class, url, queryParameters, versionId);
+		return roleApps;
+	}
+
+	/**
+	 *  Add admins to a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param adminIds
+	 *            List of admin ids to be added to the role
+	 *
+	 * @return List of admin ids added to the role
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/add-role-admins">Add Role Admins documentation</a>
+	 */
+	public List<Long> addRoleAdmins(long roleId, List<Long> adminIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("ADD_ROLE_ADMINS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.ADD_ROLE_ADMINS_URL, Long.toString(roleId), versionId));
+
+		return  addToResourceOperation(adminIds, url, versionId);
+	}
+
+	/**
+	 *  Remove admins from a role.
+	 *
+	 * @param roleId
+	 *            Id of the role
+	 * @param adminIds
+	 *            List of admin ids to be removed from the role
+	 *
+	 * @return true if succeed
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/remove-role-admins">Remove Role Admins documentation</a>
+	 */
+	public Boolean removeRoleAdmins(long roleId, List<Long> adminIds) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("REMOVE_ROLE_ADMINS_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.REMOVE_ROLE_ADMINS_URL, Long.toString(roleId), versionId));
+
+		return  removeFromResourceOperation(adminIds, url, versionId);
+	}
+
+	/**
+	 * Deletes a role
+	 *
+	 * @param id
+	 *            Id of the role to be deleted
+	 *
+	 * @return true if success
+	 *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+	 * @throws ErrorResourceInitialization
+	 *
+	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/roles/delete-role">Delete Role by ID documentation</a>
+	 */
+	public Boolean deleteRole(long id) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		int versionId = settings.getVersionId("DELETE_ROLE_URL");
+		URIBuilder url = new URIBuilder(settings.getURL(Constants.DELETE_ROLE_URL, Long.toString(id), versionId));
+
+		return deleteResource(url, versionId);
 	}
 
 	/////////////////////
@@ -1584,7 +1888,7 @@ public class Client {
 	 *
 	 * @return List of Event
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitializationd
@@ -1609,7 +1913,7 @@ public class Client {
 	 *
 	 * @return List of Event
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1629,7 +1933,7 @@ public class Client {
 	 *
 	 * @return List of Event
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1647,7 +1951,7 @@ public class Client {
 	 *
 	 * @return List of Event
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1667,7 +1971,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Event (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1687,7 +1991,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Event (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1711,7 +2015,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Event (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1739,7 +2043,7 @@ public class Client {
 	 *
 	 * @return Event
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1764,7 +2068,7 @@ public class Client {
 	 *            assuming_acting_user_id, custom_message, directory_sync_run_id, group_id, group_name, ipaddr,
 	 *            otp_device_id, otp_device_name, policy_id, policy_name, role_id, role_name, user_id, user_name)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1807,7 +2111,7 @@ public class Client {
 	 *
 	 * @return List of Group
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 * @throws ErrorResourceInitialization
@@ -1829,7 +2133,7 @@ public class Client {
 	 *
 	 * @return List of Group
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1848,7 +2152,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Group
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1870,7 +2174,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Group
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1894,7 +2198,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Group
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1921,7 +2225,7 @@ public class Client {
 	 *
 	 * @return Group
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -1956,7 +2260,7 @@ public class Client {
 	 *
 	 * @return SAMLEndpointResponse
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -1995,7 +2299,7 @@ public class Client {
 	 *
 	 * @return SAMLEndpointResponse
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2025,7 +2329,7 @@ public class Client {
 	 *
 	 * @return SAMLEndpointResponse
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2072,7 +2376,7 @@ public class Client {
 	 *
 	 * @return SAMLEndpointResponse
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2098,7 +2402,7 @@ public class Client {
 	 *
 	 * @return SAMLEndpointResponse
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2122,7 +2426,7 @@ public class Client {
 	 *
 	 * @return SAMLEndpointResponse
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2147,7 +2451,7 @@ public class Client {
      *
      * @return Array AuthFactor list
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2194,7 +2498,7 @@ public class Client {
      *
      * @return OTPDevice The MFA device
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2269,7 +2573,7 @@ public class Client {
      *
      * @return MFACheckStatus Enrollment status
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2296,7 +2600,7 @@ public class Client {
      *
      * @return MFACheckStatus Enrollment status
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2319,7 +2623,7 @@ public class Client {
      *
      * @return Array OTPDevice list
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2359,7 +2663,7 @@ public class Client {
      *
      * @return FactorEnrollmentResponse Info with User Id, Device Id, and OTP Device
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2404,7 +2708,7 @@ public class Client {
      *
      * @return FactorEnrollmentResponse Info with User Id, Device Id, and OTP Device
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2441,7 +2745,7 @@ public class Client {
      *
      * @return Boolean True if Factor is verified
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2483,7 +2787,7 @@ public class Client {
      *
      * @return Boolean True if Factor is verified
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2511,7 +2815,7 @@ public class Client {
      *
      * @return Boolean True if Factor is verified
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2542,7 +2846,7 @@ public class Client {
      *
      * @return Boolean True if Factor is verified
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2575,7 +2879,7 @@ public class Client {
      *
      * @return MFACheckStatus Enrollment status
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2600,7 +2904,7 @@ public class Client {
      *
      * @return Boolean True if action succeed
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2631,7 +2935,7 @@ public class Client {
      *
      * @return Boolean True if action succeed
      *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
@@ -2745,7 +3049,7 @@ public class Client {
 	 *
 	 * @return String with the link
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2787,7 +3091,7 @@ public class Client {
 	 *
 	 * @return True if the mail with the link was sent
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -2815,7 +3119,7 @@ public class Client {
 	 *
 	 * @return True if the mail with the link was sent
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -2899,7 +3203,7 @@ public class Client {
 	 *
 	 * @return List of Privilege
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
      * @throws ErrorResourceInitialization
@@ -2929,7 +3233,7 @@ public class Client {
 	 *
 	 * @return Created Privilege
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -2996,7 +3300,7 @@ public class Client {
 	 *
 	 * @return Privilege
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -3026,7 +3330,7 @@ public class Client {
 	 *
 	 * @return Privilege
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 *
@@ -3094,7 +3398,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -3119,7 +3423,7 @@ public class Client {
 	 *
 	 * @return List of role Ids
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
      * @throws ErrorResourceInitialization
@@ -3142,7 +3446,7 @@ public class Client {
 	 *
 	 * @return List of role Ids
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
      * @throws ErrorResourceInitialization
@@ -3165,7 +3469,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Long (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 *
@@ -3184,7 +3488,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of User (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 * 
@@ -3235,7 +3539,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -3263,7 +3567,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -3289,7 +3593,7 @@ public class Client {
 	 *
 	 * @return List of user Ids
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
      * @throws ErrorResourceInitialization
@@ -3335,7 +3639,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of Long (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 *
@@ -3354,7 +3658,7 @@ public class Client {
 	 *
 	 * @return OneLoginResponse of User (Batch)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 * 
@@ -3405,7 +3709,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization 
@@ -3433,7 +3737,7 @@ public class Client {
 	 *
 	 * @return true if success
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -3461,7 +3765,7 @@ public class Client {
 	 *
 	 * @return Mapping 
 	 * 
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
@@ -3482,7 +3786,7 @@ public class Client {
 	/**
 	 * Prepare the client before execute a call to the API (get token ready)
 	 *
-	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection 
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONAccessTokenResponse and throwOAuthProblemException is enabled
 	 *
 	 */
@@ -3757,7 +4061,6 @@ public class Client {
 					if (data.has(index)) {
 						JSONArray dataArray = data.getJSONArray(index);
 						if (dataArray != null && dataArray.length() > 0) {
-							AuthFactor authFactor;
 							for (int i = 0; i < dataArray.length(); i++) {
 								resource = getOneLoginResource(clazzConstructor, dataArray.getJSONObject(i));
 								resources.add(resource);
@@ -3978,19 +4281,19 @@ public class Client {
 		return resource;
 	}
 
-	private Integer createResource(Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+	private String createResource(Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		String body = null;
 		if (params != null && !params.isEmpty()) {
 			body = JSONUtils.buildJSON(params);
 		}
 
-		Integer resourceId = null;
+		String resourceId = null;
 		if (versionId == 1) {
 			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthJSONResourceResponse.class, body);
 			if (oAuthResponse.getResponseCode() == 200) {
 				if (oAuthResponse.getType().equals("success")) {
 					if (oAuthResponse.getMessage().equals("Success")) {
-						resourceId = oAuthResponse.getDataInteger();
+						resourceId = oAuthResponse.getDataId();
 					}
 				}
 			} else {
@@ -3999,8 +4302,7 @@ public class Client {
 		} else {
 			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
 			if (oAuth2Response.getResponseCode() == 201) {
-				JSONArray data = oAuth2Response.getJSONArrayFromContent();
-				resourceId = (Integer) data.get(0);
+				resourceId = oAuth2Response.getIdFromContent();
 			} else {
 				setResponseError(oAuth2Response, true);
 			}
@@ -4042,6 +4344,36 @@ public class Client {
 		}
 
 		return resource;
+	}
+
+	private String updateResource(Map<String, Object> params, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		String body = null;
+		if (params != null && !params.isEmpty()) {
+			body = JSONUtils.buildJSON(params);
+		}
+
+		String resourceId = null;
+		if (versionId == 1) {
+			OneloginOAuthJSONResourceResponse oAuthResponse = (OneloginOAuthJSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuthJSONResourceResponse.class, body);
+			if (oAuthResponse.getResponseCode() == 200) {
+				if (oAuthResponse.getType().equals("success")) {
+					if (oAuthResponse.getMessage().equals("Success")) {
+						resourceId = oAuthResponse.getDataId();
+					}
+				}
+			} else {
+				setResponseError(oAuthResponse, true);
+			}
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class, body);
+			if (oAuth2Response.getResponseCode() == 200) {
+				resourceId = oAuth2Response.getIdFromContent();
+			} else {
+				setResponseError(oAuth2Response, true);
+			}
+		}
+
+		return resourceId;
 	}
 
 	private Boolean deleteResource(URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
@@ -4114,6 +4446,57 @@ public class Client {
 			} else {
 				setResponseError(oAuth2Response, false);
 			}
+		}
+
+		return success;
+	}
+
+	private List<Long> setOperation(List<Long> ids, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		List<Long> responseIds = null;
+
+		String body = null;
+		JSONArray jsonArray = new JSONArray(ids);
+		body = jsonArray.toString();
+
+		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class, body);
+		if (oAuth2Response.getResponseCode() == 200) {
+			responseIds = oAuth2Response.getIdsFromContent();
+		} else {
+			setResponseError(oAuth2Response, false);
+		}
+
+		return responseIds;
+	}
+
+	private List<Long> addToResourceOperation(List<Long> ids, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		List<Long> responseIds = null;
+
+		String body = null;
+		JSONArray jsonArray = new JSONArray(ids);
+		body = jsonArray.toString();
+
+		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
+		if (oAuth2Response.getResponseCode() == 200) {
+			responseIds = oAuth2Response.getIdsFromContent();
+		} else {
+			setResponseError(oAuth2Response, false);
+		}
+
+		return responseIds;
+	}
+
+	private Boolean removeFromResourceOperation(List<Long> ids, URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+		Boolean success = false;
+
+		String body = null;
+		JSONArray jsonArray = new JSONArray(ids);
+		body = jsonArray.toString();
+
+		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.DELETE, OneloginOAuth2JSONResourceResponse.class, body);
+		if (oAuth2Response.getResponseCode() == 204) {
+			success = true;
+		} else {
+			setResponseError(oAuth2Response, false);
 		}
 
 		return success;
@@ -4217,7 +4600,7 @@ public class Client {
 			throw(new ErrorResourceInitialization(e.getMessage()));
 		}
 	}
-
+	
 	@SuppressWarnings("rawtypes")
 	private OAuthClientResponse executeCall(URIBuilder url, String httpMethod, Class clazz) throws OAuthSystemException, OAuthProblemException {
 		return executeCall(url, httpMethod, clazz, null);
@@ -4243,11 +4626,7 @@ public class Client {
 			bearerRequest.setBody(body);
 		}
 
-		if (clazz.equals(OneloginOAuthJSONResourceResponse.class)) {
-			return oAuthClient.resource(bearerRequest, httpMethod, clazz);
-		} else {
-			return oAuthClient.resource(bearerRequest, httpMethod, clazz);
-		}
+		return oAuthClient.resource(bearerRequest, httpMethod, clazz);
 	}
 
 	private ExtractionContext executeCallAndGetContext(URIBuilder url, Integer versionId) throws OAuthSystemException, OAuthProblemException {

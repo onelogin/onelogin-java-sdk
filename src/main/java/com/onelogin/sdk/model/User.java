@@ -33,7 +33,7 @@ public class User extends OneLoginResource{
 	public String openidName;
 	public String localeCode;
 	public String comment;
-	public long directoryId;
+	public Long directoryId;
 	public long managerAdId;
 	public long trustedIdPId;
 	public long managerUserId;
@@ -70,7 +70,6 @@ public class User extends OneLoginResource{
 		} else if (data.has("role_id") && !data.isNull("role_id")) {
 			roleData = data.getJSONArray("role_id");
 		}
-
 		if (roleData != null) {
 			roleIds = new ArrayList<Long>();
 			for (int i = 0; i < roleData.length(); i++) {
