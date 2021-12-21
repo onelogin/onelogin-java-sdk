@@ -85,7 +85,7 @@ public class OneloginURLConnectionClient extends URLConnectionClient {
 			return;
 		}
 
-		if (("POST".equals(requestMethod)) || ("PUT".equals(requestMethod))) {
+		if (("POST".equals(requestMethod)) || ("PUT".equals(requestMethod)) || ("DELETE".equals(requestMethod)) ) {
 			httpURLConnection.setDoOutput(true);
 			OutputStream ost = httpURLConnection.getOutputStream();
 			PrintWriter pw = new PrintWriter(ost);

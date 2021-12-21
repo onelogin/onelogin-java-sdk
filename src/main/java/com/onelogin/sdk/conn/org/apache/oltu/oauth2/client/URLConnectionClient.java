@@ -119,7 +119,7 @@ public class URLConnectionClient implements HttpClient {
             return;
         }
 
-        if (OAuth.HttpMethod.POST.equals(requestMethod) || OAuth.HttpMethod.PUT.equals(requestMethod)) {
+        if (OAuth.HttpMethod.POST.equals(requestMethod) || OAuth.HttpMethod.PUT.equals(requestMethod) || OAuth.HttpMethod.DELETE.equals(requestMethod)) {
             httpURLConnection.setDoOutput(true);
             OutputStream ost = httpURLConnection.getOutputStream();
             PrintWriter pw = new PrintWriter(ost);
