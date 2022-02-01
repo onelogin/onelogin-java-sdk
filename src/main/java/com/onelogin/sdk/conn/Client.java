@@ -126,7 +126,8 @@ public class Client {
 	 * and the region from the config file)
 	 *
 	 * @param maxResults Set max number of items returned by a collection
-	 *
+	 * @param throwOAuthProblemException Decide if the OAuthProblemException gonna be raised or not
+	 * 
 	 * @throws IOException - If Settings initialization raises that exception when calling loadPropFile to load the file
 	 * @throws Error  - If Settings initialization raises that exception when calling loadPropFile to load the file
 	 */
@@ -3164,7 +3165,7 @@ public class Client {
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
 	 *
-	 * @see com.onelogin.sdk.model.Privileges
+	 * @see com.onelogin.sdk.model.Privilege
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/list-privileges">Get Privileges documentation</a>
 	 */
 	public List<Privilege> getPrivileges() throws OAuthSystemException, OAuthProblemException, URISyntaxException {
@@ -3207,7 +3208,7 @@ public class Client {
 	 * @param version
 	 *            The version for the privilege schema. Set to 2018-05-18.
 	 * @param statements
-	 *            A list of Statement objects or HashMap<String, Object>
+	 *            A list of Statement objects or HashMap of String, Object
 	 *
 	 * @return Created Privilege
 	 *
@@ -3328,7 +3329,7 @@ public class Client {
 	 * @param version
 	 *            The version for the privilege schema. Set to 2018-05-18.
 	 * @param statements
-	 *            A list of Statement objects or HashMap<String, Object>
+	 *            A list of Statement objects or HashMap of String, Object
 	 *
 	 * @return Privilege
 	 *
