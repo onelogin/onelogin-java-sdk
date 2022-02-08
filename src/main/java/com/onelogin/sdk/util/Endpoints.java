@@ -112,7 +112,7 @@ public class Endpoints {
         resource_matrix.put("UPDATE_HOOK_ENV_URL", "smarthook");
         resource_matrix.put("DELETE_HOOK_ENV_URL", "smarthook");
         resource_matrix.put("SMART_MFA_VALIDATE_USER", "smartmfa");
-        resource_matrix.put("SMART_MFA_VERFY_TOKEN", "smartmfa");
+        resource_matrix.put("SMART_MFA_VERIFY_TOKEN", "smartmfa");
         resource_matrix.put("TRACK_EVENT_URL", "risk");
         resource_matrix.put("GET_RISK_SCORE_URL", "risk");
         resource_matrix.put("GET_RISK_RULES_URL", "risk");
@@ -238,7 +238,7 @@ public class Endpoints {
         version_matrix.put("UPDATE_HOOK_ENV_URL", new Integer[]{2});
         version_matrix.put("DELETE_HOOK_ENV_URL", new Integer[]{2});
         version_matrix.put("SMART_MFA_VALIDATE_USER", new Integer[]{2});
-        version_matrix.put("SMART_MFA_VERFY_TOKEN", new Integer[]{2});
+        version_matrix.put("SMART_MFA_VERIFY_TOKEN", new Integer[]{2});
         version_matrix.put("TRACK_EVENT_URL", new Integer[]{2});
         version_matrix.put("GET_RISK_SCORE_URL", new Integer[]{2});
         version_matrix.put("GET_RISK_RULES_URL", new Integer[]{2});

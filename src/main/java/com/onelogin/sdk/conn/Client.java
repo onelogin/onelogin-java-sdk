@@ -2485,8 +2485,8 @@ public class Client {
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/smart-mfa/verify-token">Verify MFA Token documentation</a>
 	 */
 	public boolean verifyToken(String stateToken, String OTPToken) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
-			int versionId = settings.getVersionId("SMART_MFA_VERFY_TOKEN");
-			URIBuilder url = new URIBuilder(settings.getURL(Constants.SMART_MFA_VERFY_TOKEN, versionId));
+			int versionId = settings.getVersionId("SMART_MFA_VERIFY_TOKEN");
+			URIBuilder url = new URIBuilder(settings.getURL(Constants.SMART_MFA_VERIFY_TOKEN, versionId));
 
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("state_token", stateToken);
@@ -3852,12 +3852,12 @@ public class Client {
 
 	/**
 	 * Creates Mapping
-     *
+   *
 	 * @param mappingParams Mapping data (name, enabled, match, position
-     *                                    conditions[source, operator, value],
-     *                                    actions[action, value])
+   *                                    conditions[source, operator, value],
+   *                                    actions[action, value])
 	 *
-	 * @return Mapping 
+	 * @return Long 
 	 * 
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -3867,11 +3867,15 @@ public class Client {
 	 * @see com.onelogin.sdk.model.Mapping
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/user-mappings/create-mapping">Create Mapping documentation</a>
 	 */
-	 public Mapping createMapping(Map<String, Object> mappingParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+	 public Long createMapping(Map<String, Object> mappingParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 			int versionId = settings.getVersionId("CREATE_MAPPING_URL");
 			URIBuilder url = new URIBuilder(settings.getURL(Constants.CREATE_MAPPING_URL, versionId));
 
-			return (Mapping) createResource(Mapping.class, mappingParams, url, versionId);
+			String mappingId = createResource(mappingParams, url, versionId);
+			if (mappingId != null) {
+				return Long.parseLong(mappingId);
+			}
+			return null;
 	 } 
 
 	/**
@@ -3903,10 +3907,10 @@ public class Client {
 	 * @param id
 	 *            Id of the mapping to be modified
 	 * @param mappingParams Mapping data (name, enabled, match, position
-     *                                    conditions[source, operator, value],
-     *                                    actions[action, value])
+   *                                    conditions[source, operator, value],
+   *                                    actions[action, value])
 	 *
-	 * @return Updated Mapping
+	 * @return Long
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -3916,11 +3920,15 @@ public class Client {
 	 * @see com.onelogin.sdk.model.Mapping
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/user-mappings/update-mapping">Update Mapping documentation</a>
 	 */
-	public Mapping updateMapping(long id, Map<String, Object> mappingParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
+	public Long updateMapping(long id, Map<String, Object> mappingParams) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 		int versionId = settings.getVersionId("UPDATE_MAPPING_URL");
 		URIBuilder url = new URIBuilder(settings.getURL(Constants.UPDATE_MAPPING_URL, Long.toString(id), versionId));
 
-		return (Mapping) updateResource(Mapping.class, mappingParams, url, versionId);
+		String mappingId = updateResource(mappingParams, url, versionId);
+		if (mappingId != null) {
+			return Long.parseLong(mappingId);
+		}
+		return null;
 	}
 
 	/**
@@ -4710,7 +4718,7 @@ public class Client {
 			}
 		} else {
 			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
-			if (oAuth2Response.getResponseCode() == 201) {
+			if (oAuth2Response.getResponseCode() == 201 || oAuth2Response.getResponseCode() == 200) {
 				JSONObject data = oAuth2Response.getJSONObjectFromContent();
 				resource = getOneLoginResource(clazzConstructor, data);
 			} else {
