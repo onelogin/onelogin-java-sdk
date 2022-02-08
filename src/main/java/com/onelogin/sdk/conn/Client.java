@@ -3979,10 +3979,10 @@ public class Client {
 			JSONArray jsonArray = oAuth2Response.getJSONArrayFromContent();
 			JSONObject info;
 			for(int i = 0; i < jsonArray.length (); i++) {
-				info = jsonArray.getJSONObject(0);
+				info = jsonArray.getJSONObject(i);
 				resultData = new HashMap<String, Object>();
 				resultData.put("user", new User(info.getJSONObject("user")));
-				resultData.put("mapped", info.getJSONObject("mapped"));
+				resultData.put("mapped", info.getBoolean("mapped"));
 				result.add(resultData);
 			}
 		} else {
@@ -4434,10 +4434,12 @@ public class Client {
 	private List<HashMap<String, String>> retrieveListNameValue(URIBuilder url, int versionId) throws OAuthSystemException, OAuthProblemException {
 		List<HashMap<String, String>> listNameValue = new ArrayList<HashMap<String, String>>();
 
-		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuthJSONResourceResponse.class);
+		OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.GET, OneloginOAuth2JSONResourceResponse.class);
 		if (oAuth2Response.getResponseCode() == 200) {
 			HashMap<String, String> info;
 			JSONArray dataArray = oAuth2Response.getJSONArrayFromContent();
+			if (dataArray == null) return null;
+			
 			for(int i = 0; i < dataArray.length(); i++) {
 				JSONObject data = dataArray.getJSONObject(i);
 				info = new HashMap<String, String>();
