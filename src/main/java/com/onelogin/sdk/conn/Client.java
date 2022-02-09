@@ -153,6 +153,7 @@ public class Client {
 		this.maxResults = maxResults;
 		OneloginOAuthJSONAccessTokenResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
 		OneloginOAuthJSONResourceResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
+		OneloginOAuthBasicResponse.enableThrowingOAuthProblemException(throwOAuthProblemException);
 	}
 
 	public Client(int maxResults) throws IOException, Error {
@@ -2497,11 +2498,11 @@ public class Client {
 				body = JSONUtils.buildJSON(data);
 			}
 
-			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuth2JSONResourceResponse.class, body);
+			OneloginOAuthBasicResponse oAuth2Response = (OneloginOAuthBasicResponse) executeCall(url, OAuth.HttpMethod.POST, OneloginOAuthBasicResponse.class, body);
 			if (oAuth2Response.getResponseCode() == 200) {
 				return true;
 			} else {
-				setResponseError(oAuth2Response, true);
+				setResponseError(oAuth2Response);
 				return false;
 			}
 	}
@@ -4966,6 +4967,11 @@ public class Client {
 	}
 
 	private void setResponseError(OneloginOAuthJSONAccessTokenResponse oAuthResponse) {
+		error = oAuthResponse.getError();
+		errorDescription = oAuthResponse.getErrorDescription();
+	}
+
+	private void setResponseError(OneloginOAuthBasicResponse oAuthResponse) {
 		error = oAuthResponse.getError();
 		errorDescription = oAuthResponse.getErrorDescription();
 	}
