@@ -50,7 +50,7 @@ public class FactorEnrollmentResponse extends OneLoginResource {
 		}
 	}
 
-	public String geID() {
+	public String getID() {
 		return id;
 	}
 

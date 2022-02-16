@@ -58,11 +58,19 @@ public class Rule extends OneLoginResource {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj) {
+					return true;
+				}
+        if (obj == null) {
+					return false;
+				}
+        if (getClass() != obj.getClass()) {
+					return false;
+				}
         Role other = (Role) obj;
-        if (id != other.id) return false;
+        if (id != other.id) {
+					return false;
+				}
         return true;
     }
 }
