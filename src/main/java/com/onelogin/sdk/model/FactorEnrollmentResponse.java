@@ -50,6 +50,10 @@ public class FactorEnrollmentResponse extends OneLoginResource {
 		}
 	}
 
+	public String getID() {
+		return id;
+	}
+
 	public long getUserID() {
 		return userId;
 	}
@@ -73,6 +77,8 @@ public class FactorEnrollmentResponse extends OneLoginResource {
 		factorInfo.put("authFactorName", authFactorName);
 		factorInfo.put("typeDisplayName", typeDisplayName);
 		factorInfo.put("userDisplayName", userDisplayName);
+		factorInfo.put("expiresAt", expiresAt);
+		factorInfo.put("factorData", factorData);
 		return factorInfo;
 	}
 }

@@ -136,12 +136,14 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 		List<Long> resourceIds = new ArrayList<Long>();
 
 		if (this.jsonArray != null) {
-			for(int i = 0; i < this.jsonArray.length(); i++) {
-				JSONObject data = (JSONObject) this.jsonArray.get(i);
-				if (data.has("id")) {
-					resourceIds.add(data.getLong("id"));
+			for(Object elem : this.jsonArray) {
+				if (elem instanceof JSONObject) {
+					JSONObject data = (JSONObject)elem;
+					if (data.has("id")) {
+						resourceIds.add(data.getLong("id"));
+					}
 				} else {
-					resourceIds.add(Long.parseLong(data.toString()));
+					resourceIds.add(Long.parseLong(elem.toString()));
 				}
 			}
 		}

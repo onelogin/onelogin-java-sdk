@@ -141,7 +141,7 @@ public final class Constants {
 
     // Smart MFA
     public static final String SMART_MFA_VALIDATE_USER = "https://%s.onelogin.com/api/%s/smart-mfa";
-    public static final String SMART_MFA_VERFY_TOKEN = "https://%s.onelogin.com/api/%s/smart-mfa/verify";
+    public static final String SMART_MFA_VERIFY_TOKEN = "https://%s.onelogin.com/api/%s/smart-mfa/verify";
 
     // Vigilance AI URLS
     public static final String TRACK_EVENT_URL = "https://%s.onelogin.com/api/%s/risk/events";
