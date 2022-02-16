@@ -85,6 +85,8 @@ public class Settings {
 		if (ip != null && !ip.isEmpty()) {
 		    this.ip = ip;
 		}
+
+		setDefaultApiConfiguration();
 	}
 
 	public Settings(String clientID, String clientSecret, String subdomain, Map<String, Integer> apiConfiguration){
@@ -99,12 +101,14 @@ public class Settings {
 		this.clientSecret = clientSecret;
 		setRegion(region);
 		this.subdomain = subdomain;
+		setDefaultApiConfiguration();
 	}
 
 	public Settings(String clientID, String clientSecret, String region){
 		this.clientID = clientID;
 		this.clientSecret = clientSecret;
 		setRegion(region);
+		setDefaultApiConfiguration();
 	}
 
 	public String getClientId() {
