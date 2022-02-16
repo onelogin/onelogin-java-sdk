@@ -565,7 +565,7 @@ public class Client {
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
 	 *
-	 * @see com.onelogin.sdk.model.UserApp
+	 * @see com.onelogin.sdk.model.App
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-apps-for-user">Get Apps for a User documentation</a>
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/get-user-apps">Get User Apps documentation</a>
 	 */
@@ -595,7 +595,7 @@ public class Client {
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
 	 * @throws ErrorResourceInitialization
 	 *
-	 * @see com.onelogin.sdk.model.UserApp
+	 * @see com.onelogin.sdk.model.App
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-apps-for-user">Get Apps for a User documentation</a>
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/users/get-user-apps">Get User Apps documentation</a>
 	 */
@@ -614,7 +614,6 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Role
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/users/get-roles-for-user">Get Roles for a User documentation</a>
@@ -1896,7 +1895,7 @@ public class Client {
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
-	 * @throws ErrorResourceInitializationd
+	 * @throws ErrorResourceInitialization
 	 *
 	 * @see com.onelogin.sdk.model.Event
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/events/get-events">Get Events documentation</a>
@@ -2573,7 +2572,7 @@ public class Client {
      * @throws ErrorResourceInitialization
      *
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/enroll-factor">Enroll an Authentication Factor documentation</a>
-     * @see <a target="_blank" https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor">Enroll an Authentication Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor">Enroll an Authentication Factor documentation</a>
      */
     public OTPDevice enrollFactor(long userId, long factorId, String displayName, String number, Boolean verified, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
@@ -2660,7 +2659,7 @@ public class Client {
 	}
 
     /**
-     * Verify enrollment for OneLogin Voice & Protect Push authentication factors.
+     * Verify enrollment for OneLogin Voice &#38; Protect Push authentication factors.
      *
      * @param userId
      *            The id of the user.
@@ -2674,7 +2673,7 @@ public class Client {
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
      *
-     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor-verify-poll">Verify Enrollment of OneLogin Voice & Protect documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/enroll-factor-verify-poll">Verify Enrollment of OneLogin Voice &#38; Protect documentation</a>
      */
     public MFACheckStatus verifyEnrollFactorPoll(long userId, String registrationId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
 	    int versionId = settings.getVersionId("VERIFY_ENROLLMENT__PROTECTPUSH_VOICE_URL");
@@ -2953,7 +2952,7 @@ public class Client {
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
      * @throws ErrorResourceInitialization
      *
-     * @see <a target="_blank" https://developers.onelogin.com/api-docs/2/multi-factor-authentication/verify-factor-poll">Verify an Authentication Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/verify-factor-poll">Verify an Authentication Factor documentation</a>
      */
     public MFACheckStatus verifyFactorPoll(long userId, String verificationId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
@@ -3277,7 +3276,7 @@ public class Client {
 	 * @throws URISyntaxException - if there is an error when generating the target URL at the getResource call
      * @throws ErrorResourceInitialization
 	 *
-	 * @see com.onelogin.sdk.model.Privileges
+	 * @see com.onelogin.sdk.model.Privilege
 	 * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/privileges/list-privileges">Get Privileges documentation</a>
 	 */
 	public List<Privilege> getPrivileges() throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
@@ -3298,7 +3297,7 @@ public class Client {
 	 * @param version
 	 *            The version for the privilege schema. Set to 2018-05-18.
 	 * @param statements
-	 *            A list of Statement objects or HashMap<String, Object>
+	 *            A list of Statement objects or a HashMap of String -> Object.
 	 *
 	 * @return Created Privilege
 	 *
@@ -3395,7 +3394,7 @@ public class Client {
 	 * @param version
 	 *            The version for the privilege schema. Set to 2018-05-18.
 	 * @param statements
-	 *            A list of Statement objects or HashMap<String, Object>
+	 *            A list of Statement objects or a HashMap of String -> Object.
 	 *
 	 * @return Privilege
 	 *
@@ -3831,7 +3830,7 @@ public class Client {
 	 * @param queryParameters Query parameters of the Resource
 	 *            			  Parameters to filter the result of the list
 	 *
-	 * @return List<Mapping>
+	 * @return List of the mappings based on the query parameters.
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -4003,7 +4002,7 @@ public class Client {
 	/**
 	 * Gets a list of Mapping Conditions types that can be used to match users when mappings are run.
 	 *
-	 * @return List<HashMap<String,String>>
+	 * @return List of possible mapping conditions.
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -4022,10 +4021,9 @@ public class Client {
 	/**
 	 * Gets a list of possible operators for a given condition value.
      *
-	 * @param conditionValue
-	 *            The name of the condition (A Mapping Condition)
+	 * @param conditionValue The name of the condition (A Mapping Condition)
 	 *
-	 * @return List<HashMap<String,String>>
+	 * @return List of possible condition operators.
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -4044,10 +4042,9 @@ public class Client {
 	/**
 	 * Gets a list of possible values to compare to a condition type.
      *
-	 * @param conditionValue
-	 *            The name of the condition (A Mapping Condition)
+	 * @param conditionValue The name of the condition (A Mapping Condition)
 	 *
-	 * @return List<HashMap<String,String>>
+	 * @return List of possible condition values.
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -4066,7 +4063,7 @@ public class Client {
 	/**
 	 * Gets a list of the actions that can be applied when a mapping runs.
 	 *
-	 * @return List<HashMap<String,String>>
+	 * @return The list of possible actions.
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -4087,7 +4084,7 @@ public class Client {
 	 *
 	 * @param mappingIds ordered list of Mapping IDs
 	 *
-	 * @return List<Long>
+	 * @return Ordered list of the mapping IDs
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
@@ -4107,10 +4104,9 @@ public class Client {
 	/**
 	 * Gets a list of possible values to set using a given action.
      *
-	 * @param actionValue
-	 *            The name of the action (A Mapping Action)
+	 * @param conditionValue The name of the action (A Mapping Action)
 	 *
-	 * @return List<HashMap<String,String>>
+	 * @return List of possible action values.
 	 *
 	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
 	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled

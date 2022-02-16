@@ -50,9 +50,10 @@ import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthSystem
 
 /**
  * Common OAuth Utils class.
- * <p/>
+ * <p>
  * Some methods based on the Utils class from OAuth V1.0a library available at:
  * http://oauth.googlecode.com/svn/code/java/core/
+ * </p>
  *
  *
  *
