@@ -2943,7 +2943,7 @@ public class Client {
                 return false;
             } else {
                 //If 200 response check if otp was accepted
-                if (oAuthResponse.getStatus().equals("accepted")) {
+                if (oAuth2Response.getStatus().equals("accepted")) {
                     return true;
                 } else {
                     return false;
