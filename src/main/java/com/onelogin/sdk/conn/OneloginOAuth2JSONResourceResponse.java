@@ -212,6 +212,10 @@ public class OneloginOAuth2JSONResourceResponse extends OAuthClientResponse {
 		return getParam("message");
 	}
 
+	public String getStatus() {
+		return getParam("status");
+	}
+
 	protected Map<String, Object> transformOLData(Map<String, Object> map)
 	{
 		Map<String, Object> newmap = new HashMap<String, Object>();

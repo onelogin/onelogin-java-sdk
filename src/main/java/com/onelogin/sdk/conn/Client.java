@@ -2930,8 +2930,24 @@ public class Client {
 		params.put("otp", otp);
 		params.put("device_id", deviceId);
 		
-		return updateOperation(params, url, versionId);
-    }
+		//Modified updateOperation  
+		String body = JSONUtils.buildJSON(params);
+   		if (versionId == 1) {
+			//fail if using version 1
+			return false;
+		} else {
+			OneloginOAuth2JSONResourceResponse oAuth2Response = (OneloginOAuth2JSONResourceResponse) executeCall(url, OAuth.HttpMethod.PUT, OneloginOAuth2JSONResourceResponse.class, body);
+			//fail if don't get 200 OK response
+			if (oAuth2Response.getResponseCode() != 200) {
+				setResponseError(oAuth2Response, true);
+				return false;
+			} else {
+				//If 200 response check if otp was accepted
+				Object status = oAuth2Response.getFromContent("status");
+				return status != null && status.equals("accepted");
+			}
+		}
+	}
     
     public Boolean verifyFactorOtp(long userId, String verificationId, String otp, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization {
     	return verifyFactorOtp(userId, verificationId, otp, Long.toString(deviceId));
