@@ -2943,11 +2943,8 @@ public class Client {
 				return false;
 			} else {
 				//If 200 response check if otp was accepted
-				if (oAuth2Response.getStatus().equals("accepted")) {
-					return true;
-				} else {
-					return false;
-				}
+				Object status = oAuth2Response.getFromContent("status");
+				return status != null && status.equals("accepted");
 			}
 		}
 	}
