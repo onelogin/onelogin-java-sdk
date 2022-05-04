@@ -2741,7 +2741,7 @@ public class Client {
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
      */
-    public FactorEnrollmentResponse activateFactor(long userId, String deviceId, Integer expiresIn, String redirectTo, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    public FactorEnrollmentResponse activateFactor(long userId, String deviceId, Integer expiresIn, String customMessage, String redirectTo) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
 		int versionId = settings.getVersionId("ACTIVATE_FACTOR_URL");
 		URIBuilder url;
@@ -2763,7 +2763,7 @@ public class Client {
 		return (FactorEnrollmentResponse) createResource(FactorEnrollmentResponse.class, params, url, versionId);
     }
 
-    public FactorEnrollmentResponse activateFactor(long userId, long deviceId, Integer expiresIn, String redirectTo, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    public FactorEnrollmentResponse activateFactor(long userId, long deviceId, Integer expiresIn, String customMessage, String redirectTo) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
     	return activateFactor(userId, Long.toString(deviceId), expiresIn, redirectTo, customMessage);
     }
