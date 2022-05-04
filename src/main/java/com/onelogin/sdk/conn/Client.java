@@ -2726,6 +2726,8 @@ public class Client {
      *            the id of the MFA device.
      * @param expiresIn
      *            Sets the window of time in seconds that the factor must be verified within. Default 120. Valid range 120-900  (V2 Only).
+     * @param redirect_to
+     *            Redirect URL for MagicLink URL factors. Will accept any string.  (V2 Only).
      * @param customMessage
      *            Only applies to SMS factor (V2 only)
      *
@@ -2739,7 +2741,7 @@ public class Client {
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
      * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
      */
-    public FactorEnrollmentResponse activateFactor(long userId, String deviceId, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    public FactorEnrollmentResponse activateFactor(long userId, String deviceId, Integer expiresIn, String redirectTo, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
 		int versionId = settings.getVersionId("ACTIVATE_FACTOR_URL");
 		URIBuilder url;
@@ -2754,15 +2756,16 @@ public class Client {
 				expiresIn = 120;
 			}
 			params.put("expires_in", expiresIn);
+			params.put("redirect_to", redirectTo);
 			params.put("custom_message", customMessage);
 		}
 
 		return (FactorEnrollmentResponse) createResource(FactorEnrollmentResponse.class, params, url, versionId);
     }
 
-    public FactorEnrollmentResponse activateFactor(long userId, long deviceId, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    public FactorEnrollmentResponse activateFactor(long userId, long deviceId, Integer expiresIn, String redirectTo, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-    	return activateFactor(userId, Long.toString(deviceId), expiresIn, customMessage);
+    	return activateFactor(userId, Long.toString(deviceId), expiresIn, redirectTo, customMessage);
     }
 
     /**
@@ -2786,14 +2789,46 @@ public class Client {
      */
     public FactorEnrollmentResponse activateFactor(long userId, String deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-    	return activateFactor(userId, deviceId, null, null);
+    	return activateFactor(userId, deviceId, null, null, null);
     }
 
     public FactorEnrollmentResponse activateFactor(long userId, long deviceId) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
     {
-    	return activateFactor(userId, Long.toString(deviceId), null, null);
+    	return activateFactor(userId, Long.toString(deviceId), null, null, null);
     }
 
+    /**
+     * Triggers an SMS or Push notification containing a One-Time Password (OTP)
+     * that can be used to authenticate a user with the Verify Factor call. For backwards compatiability.
+     *
+     * @param userId
+     *            The id of the user.
+     * @param deviceId
+     *            the id of the MFA device.
+     * @param expiresIn
+     *            Sets the window of time in seconds that the factor must be verified within. Default 120. Valid range 120-900  (V2 Only).
+     * @param customMessage
+     *            Only applies to SMS factor (V2 only)
+     *
+     * @return FactorEnrollmentResponse Info with User Id, Device Id, and OTP Device
+     *
+	 * @throws OAuthSystemException - if there is a IOException reading parameters of the httpURLConnection
+	 * @throws OAuthProblemException - if there are errors validating the OneloginOAuthJSONResourceResponse and throwOAuthProblemException is enabled
+	 * @throws URISyntaxException - if there is an error when generating the target URL at the URIBuilder constructor
+     * @throws ErrorResourceInitialization
+     *
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/1/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
+     * @see <a target="_blank" href="https://developers.onelogin.com/api-docs/2/multi-factor-authentication/activate-factor">Activate an Authentication Factor documentation</a>
+     */
+    public FactorEnrollmentResponse activateFactor(long userId, String deviceId, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return activateFactor(userId, deviceId, null, null, null);
+    }
+
+    public FactorEnrollmentResponse activateFactor(long userId, long deviceId, Integer expiresIn, String customMessage) throws OAuthSystemException, OAuthProblemException, URISyntaxException, ErrorResourceInitialization
+    {
+    	return activateFactor(userId, Long.toString(deviceId), null, null, null);
+    }
     /**
      * Authenticates a one-time password (OTP) code provided by a multifactor authentication (MFA) device.
      *
