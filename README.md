@@ -416,6 +416,4 @@ public class AppTest
         Boolean userRemoved = client.removeUserFromPrivilege(privilege.id, userIds.get(0));
     }
 }
-
-}
 ```
