@@ -142,12 +142,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.xml.sax.SAXException;
 
 import com.onelogin.sdk.conn.Client;
 import com.onelogin.sdk.exception.Error;
+import com.onelogin.sdk.exception.ErrorResourceInitialization;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import com.onelogin.sdk.conn.org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 
 import com.onelogin.sdk.model.App;
 import com.onelogin.sdk.model.AuthFactor;
@@ -160,10 +161,11 @@ import com.onelogin.sdk.model.MFA;
 import com.onelogin.sdk.model.MFAToken;
 import com.onelogin.sdk.model.OneLoginApp;
 import com.onelogin.sdk.model.OTPDevice;
-import com.onelogin.sdk.model.Privilege
+import com.onelogin.sdk.model.Privilege;
 import com.onelogin.sdk.model.RateLimit;
 import com.onelogin.sdk.model.Role;
 import com.onelogin.sdk.model.SAMLEndpointResponse;
+import com.onelogin.sdk.model.SessionToken;
 import com.onelogin.sdk.model.SessionTokenInfo;
 import com.onelogin.sdk.model.SessionTokenMFAInfo;
 import com.onelogin.sdk.model.Statement;
@@ -172,7 +174,7 @@ import com.onelogin.sdk.model.User;
 
 public class AppTest
 {
-    public static void main( String[] args ) throws IOException, Error, OAuthSystemException, OAuthProblemException, URISyntaxException, XPathExpressionException, ParserConfigurationException, SAXException, NoSuchFieldException
+    public static void main( String[] args ) throws IOException, Error, ErrorResourceInitialization, OAuthProblemException, OAuthSystemException, URISyntaxException, XPathExpressionException, ParserConfigurationException, SAXException, NoSuchFieldException
     {
         /* Initialize Client using settings from onelogin.sdk.properties */
         Client client = new Client();
@@ -182,7 +184,7 @@ public class AppTest
         Map<String, Integer> apiConfiguration = new HashMap<String, Integer>();
         apiConfiguration.put("role", 2);
         apiConfiguration.put("user", 1);
-        client.setApiConfiguration(apiConfiguration)
+        client.setApiConfiguration(apiConfiguration);
 
         /* Get an AccessToken */
         client.getAccessToken();
@@ -227,16 +229,16 @@ public class AppTest
         List<Role> roleIds = client.getRoles();
 
         /* Get Role */
-        Role role = client.getRole(roleIds.get(0));
-        Role role2 = client.getRole(roleIds.get(1));
+        Role role = client.getRole(roleIds.get(0).getID());
+        Role role2 = client.getRole(roleIds.get(1).getID());
 
         /* Assign & Remove Roles On Users */
         List<Long> newRoleIds = new ArrayList<Long>();
-        newRoleIds.add(role.id);
-        newRoleIds.add(role2.id);
+        newRoleIds.add(role.getID());
+        newRoleIds.add(role2.getID());
         client.assignRoleToUser(user.id, newRoleIds);
         user = client.getUser(user.id);
-        newRoleIds.remove(role2.id);
+        newRoleIds.remove(role2.getID());
         client.removeRoleFromUser(user.id, newRoleIds);
         user = client.getUser(user.id);
 
@@ -266,13 +268,13 @@ public class AppTest
         List<App> userApps = client.getUserApps(user.id);
 
         /* Get User Roles */
-        List<Integer> userRolesIds = client.getUserRoles(user.id);
+        List<Long> userRolesIds = client.getUserRoles(user.id);
 
         /* Generate MFA Token */
         MFAToken mfaToken = client.generateMFAToken(user.id);
 
 		/* Get all Apps in a OneLogin account */
-		List<OneLoginApp> = client.getApps();
+		List<OneLoginApp> appList = client.getApps();
 
         /* Create user */
         Map<String, Object> newUserParams = new HashMap<String, Object>();
@@ -300,7 +302,7 @@ public class AppTest
         /* Create Event */
         int eventTypeId = 000;
         Long accountId = 00000L;
-        String actorSystem = 00;
+        String actorSystem = "00";
 
         Map<String, Object> eventParams = new HashMap<String, Object>();
         eventParams.put("event_type_id", eventTypeId);
@@ -321,7 +323,7 @@ public class AppTest
         List<Group> groups = client.getGroups();
 
         /* Get Group */
-        Group group = client.getGroup(groups.get(0).id);
+        Group group = client.getGroup(groups.get(0).getID());
 
         String appId = "000000";
 
@@ -348,31 +350,31 @@ public class AppTest
         sessionLoginTokenMFAParams.put("subdomain", "example-onelogin-subdomain");
         SessionTokenMFAInfo sessionTokenMFAData = (SessionTokenMFAInfo) client.createSessionLoginToken(sessionLoginTokenMFAParams);
         String otpCode = "645645";
-        SessionTokenInfo sessionTokenData2 = client.getSessionTokenVerified(Long.toString(sessionTokenMFAData.devices.get(0).getID()), sessionTokenMFAData.stateToken, otpCode);
+        SessionToken sessionTokenData2 = client.getSessionTokenVerified(Long.toString(sessionTokenMFAData.devices.get(0).getID()), sessionTokenMFAData.stateToken, otpCode);
 
         long userId = 00000000;
 
-        # Get Available Authentication Factors
+        // Get Available Authentication Factors
         List<AuthFactor> authFactors = client.getFactors(userId);
 
-        # Enroll an Authentication Factor
-        AuthFactor enrollFactor = client.enrollFactor(userId, authFactors.get(0).id, 'My Device', '+14156456830');
+        // Enroll an Authentication Factor
+        OTPDevice enrollFactor = client.enrollFactor(userId, authFactors.get(0).getID(), "My Device", "+14156456830");
 
-        # Get Enrolled Authentication Factors
+        // Get Enrolled Authentication Factors
         List<OTPDevice> otpDevices = client.getEnrolledFactors(userId);
 
         long deviceId = 0000000;
 
-        # Activate an Authentication Factor
+        // Activate an Authentication Factor
         FactorEnrollmentResponse enrollmentResponse = client.activateFactor(userId, deviceId);
 
         String otpToken= "XXXXXXXXXX";
 
-        # Verify an Authentication Factor
+        // Verify an Authentication Factor
         Boolean verified = client.verifyFactor(userId, deviceId, otpToken);
 
-        # Remove an Authentication Factor
-        Boolean removed = client.removeFactor(userId, deviceId);
+        // Remove an Authentication Factor
+        Boolean removed1 = client.removeFactor(userId, deviceId);
 
         /* Generate Invite Link */
         String urlLink = client.generateInviteLink("user@example.com");
@@ -381,8 +383,8 @@ public class AppTest
         Boolean sent  = client.sendInviteLink("user@example.com");
 
         /* Get Apps to Embed for a User */
-        String embedToken = "30e256c101cd0d2e731de1ec222e93c4be8a1578"
-        List<App> apps = client.getEmbedApps(embedToken, "user@example.com");
+        String embedToken = "30e256c101cd0d2e731de1ec222e93c4be8a1578";
+        List<EmbedApp> apps = client.getEmbedApps(embedToken, "user@example.com");
 
         /* Get Privileges */
         List<Privilege> privileges = client.getPrivileges();
@@ -409,42 +411,42 @@ public class AppTest
 
         Privilege privilege = client.createPrivilege(name, version, statements);
 
-        /* Update Privilege */
+        /* Update Privilege **TODO**
         name = "modified_privilege_example";
         statement2.put("Action", Arrays.asList(
                 "apps:List"
         ));
         statements = Arrays.asList(statement1, statement2);
         Privilege privilege2 = client.updatePrivilege(privilege.id, name, version, statements);
-
+*/
         /* Get Privilege */
-        Privilege privilege3 = client.getPrivilege(privilege.id)
+        Privilege privilege3 = client.getPrivilege(privilege.id);
 
         /* Delete Privilege */
         Boolean privRemoved = client.deletePrivilege(privilege.id);
 
         /* Gets a list of the roles assigned to a privilege */
-        List<Long> roleIds = client.getRolesAssignedToPrivileges(privilege.id);
+        List<Long> roleIds1 = client.getRolesAssignedToPrivileges(privilege.id);
 
         /* Assign roles to a privilege */
         List<Role> roles = client.getRoles();
-        List<Long> roleIds = new ArrayList<Long>();
-        for(Role role: roles) {
-            roleIds.add(role.getID());
+        List<Long> roleIds2 = new ArrayList<Long>();
+        for(Role role1: roles) {
+            roleIds2.add(role1.getID());
         }
-        Boolean roleAssigned = client.assignRolesToPrivilege(privilege.id, roleIds);
+        Boolean roleAssigned = client.assignRolesToPrivilege(privilege.id, roleIds2);
 
         /* Remove role from a privilege */
-        Boolean roleRemoved = client.removeRoleFromPrivilege(privilege.id, roleIds.get(0));
+        Boolean roleRemoved = client.removeRoleFromPrivilege(privilege.id, roleIds2.get(0));
 
         /* Gets a list of the users assigned to a privilege */
         List<Long> userIds = client.getUsersAssignedToPrivileges(privilege.id);
 
         /* Assign users to a privilege */
-        List<User> users = client.getUsers();
-        List<Long> userIds = new ArrayList<Long>();
-        for(User user: users) {
-            userIds.add(user.id);
+        List<User> users1 = client.getUsers();
+        List<Long> userIds1 = new ArrayList<Long>();
+        for(User user1: users1) {
+            userIds1.add(user1.id);
         }
         Boolean userAssigned = client.assignUsersToPrivilege(privilege.id, userIds);
 
