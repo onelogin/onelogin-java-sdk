@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'com.diffplug.spotless'
 
 group = 'com.onelogin'
-version = '3.0.0-alpha.1'
+version = '3.0.0-beta.1'
 
 buildscript {
     repositories {
@@ -89,7 +89,7 @@ if(hasProperty('target') && target == 'android') {
     publishing {
         publications {
             maven(MavenPublication) {
-               artifactId = 'openapi-java-client'
+               artifactId = 'onelogin-java-sdk'
                from components.java
             }
         }

@@ -20,6 +20,7 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 | [**createRiskRule**](DefaultApi.md#createRiskRule) | **POST** /api/2/risk/rules |  |
 | [**createRoles**](DefaultApi.md#createRoles) | **POST** /api/2/roles |  |
 | [**createRule**](DefaultApi.md#createRule) | **POST** /api/2/apps/{app_id}/rules |  |
+| [**createSessionLoginToken**](DefaultApi.md#createSessionLoginToken) | **POST** /api/1/login/auth |  |
 | [**createUser**](DefaultApi.md#createUser) | **POST** /api/2/users |  |
 | [**deleteAccessTokenClaim**](DefaultApi.md#deleteAccessTokenClaim) | **DELETE** /api/2/api_authorizations/{id}/claims/{claim_id} |  |
 | [**deleteApp**](DefaultApi.md#deleteApp) | **DELETE** /api/2/apps/{app_id} |  |
@@ -45,6 +46,11 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 | [**getClientApps**](DefaultApi.md#getClientApps) | **GET** /api/2/api_authorizations/{id}/clients |  |
 | [**getEnrolledFactors**](DefaultApi.md#getEnrolledFactors) | **GET** /api/2/mfa/users/{user_id}/devices |  |
 | [**getEnvironmentVariable**](DefaultApi.md#getEnvironmentVariable) | **GET** /api/2/hooks/envs/{envvar_id} |  |
+| [**getEventById**](DefaultApi.md#getEventById) | **GET** /api/1/events/{event_id} |  |
+| [**getEventTypes**](DefaultApi.md#getEventTypes) | **GET** /api/1/events/types |  |
+| [**getEvents**](DefaultApi.md#getEvents) | **GET** /api/1/events |  |
+| [**getGroupById**](DefaultApi.md#getGroupById) | **GET** /api/1/groups/{group_id} |  |
+| [**getGroups**](DefaultApi.md#getGroups) | **GET** /api/1/groups |  |
 | [**getHook**](DefaultApi.md#getHook) | **GET** /api/2/hooks/{hook_id} |  |
 | [**getLogs**](DefaultApi.md#getLogs) | **GET** /api/2/hooks/{hook_id}/logs |  |
 | [**getMapping**](DefaultApi.md#getMapping) | **GET** /api/2/mappings/{mapping_id} |  |
@@ -100,6 +106,7 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 | [**updateRule**](DefaultApi.md#updateRule) | **PUT** /api/2/apps/{app_id}/rules/{rule_id} |  |
 | [**updateScope**](DefaultApi.md#updateScope) | **PUT** /api/2/api_authorizations/{id}/scopes/{scope_id} |  |
 | [**updateUser**](DefaultApi.md#updateUser) | **PUT** /api/2/users/{user_id} |  |
+| [**v1VerifyFactor**](DefaultApi.md#v1VerifyFactor) | **POST** /api/1/login/verify_factor |  |
 | [**verifyEnrollment**](DefaultApi.md#verifyEnrollment) | **PUT** /api/2/mfa/users/{user_id}/registrations/{registration_id} |  |
 | [**verifyEnrollmentVoiceProtect**](DefaultApi.md#verifyEnrollmentVoiceProtect) | **GET** /api/2/mfa/users/{user_id}/registrations/{registration_id} |  |
 | [**verifyFactor**](DefaultApi.md#verifyFactor) | **PUT** /api/2/mfa/users/{user_id}/verifications/{verification_id} |  |
@@ -120,7 +127,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -184,7 +191,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -251,7 +258,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -318,7 +325,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -383,7 +390,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -449,7 +456,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -516,7 +523,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -580,7 +587,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -646,7 +653,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -710,7 +717,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -774,7 +781,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -838,7 +845,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -895,7 +902,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -959,7 +966,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1016,7 +1023,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1077,7 +1084,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1130,6 +1137,72 @@ No authorization required
 | **401** | Typically, this error means that your access token value is invalid. |  -  |
 | **422** | UNPROCESSABLE ENTRY |  -  |
 
+<a name="createSessionLoginToken"></a>
+# **createSessionLoginToken**
+> CreateSessionLoginToken200Response createSessionLoginToken(authorization, createSessionLoginTokenRequest, customAllowedOriginHeader1)
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authorization = "authorization_example"; // String | 
+    CreateSessionLoginTokenRequest createSessionLoginTokenRequest = new CreateSessionLoginTokenRequest(); // CreateSessionLoginTokenRequest | 
+    String customAllowedOriginHeader1 = "customAllowedOriginHeader1_example"; // String | Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+    try {
+      CreateSessionLoginToken200Response result = apiInstance.createSessionLoginToken(authorization, createSessionLoginTokenRequest, customAllowedOriginHeader1);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#createSessionLoginToken");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | **String**|  | |
+| **createSessionLoginTokenRequest** | [**CreateSessionLoginTokenRequest**](CreateSessionLoginTokenRequest.md)|  | |
+| **customAllowedOriginHeader1** | **String**| Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS. | [optional] |
+
+### Return type
+
+[**CreateSessionLoginToken200Response**](CreateSessionLoginToken200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | UNAUTHORIZED |  -  |
+
 <a name="createUser"></a>
 # **createUser**
 > User createUser(authorization, user, mappings, validatePolicy)
@@ -1143,7 +1216,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1212,7 +1285,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1277,7 +1350,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1340,7 +1413,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1406,7 +1479,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1469,7 +1542,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1532,7 +1605,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1595,7 +1668,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1658,7 +1731,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1721,7 +1794,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1784,7 +1857,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1847,7 +1920,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1912,7 +1985,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1977,7 +2050,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -1986,7 +2059,7 @@ public class Example {
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
-    Integer userId = 56; // Integer | Set to the id of the user that you want to return.
+    Integer userId = 56; // Integer | Set to the id of the user.
     try {
       apiInstance.deleteUser(authorization, userId);
     } catch (ApiException e) {
@@ -2005,7 +2078,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | **String**|  | |
-| **userId** | **Integer**| Set to the id of the user that you want to return. | |
+| **userId** | **Integer**| Set to the id of the user. | |
 
 ### Return type
 
@@ -2040,7 +2113,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2106,7 +2179,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2172,7 +2245,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2236,7 +2309,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2297,7 +2370,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2362,7 +2435,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2426,7 +2499,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2490,7 +2563,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2553,7 +2626,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2617,7 +2690,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2680,7 +2753,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2730,6 +2803,352 @@ No authorization required
 | **200** | OK |  -  |
 | **401** | Typically, this error means that your access token value is invalid. |  -  |
 
+<a name="getEventById"></a>
+# **getEventById**
+> GetEventById200Response getEventById(authorization, id)
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authorization = "authorization_example"; // String | 
+    Integer id = 56; // Integer | 
+    try {
+      GetEventById200Response result = apiInstance.getEventById(authorization, id);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#getEventById");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | **String**|  | |
+| **id** | **Integer**|  | |
+
+### Return type
+
+[**GetEventById200Response**](GetEventById200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | Typically, this error means that your access token value is invalid. |  -  |
+| **404** | Invalid ID |  -  |
+
+<a name="getEventTypes"></a>
+# **getEventTypes**
+> GetEventTypes200Response getEventTypes()
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    try {
+      GetEventTypes200Response result = apiInstance.getEventTypes();
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#getEventTypes");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**GetEventTypes200Response**](GetEventTypes200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+<a name="getEvents"></a>
+# **getEvents**
+> GetEvents200Response getEvents(authorization, userId, fields, until, since, limit, sort, clientId, createdAt, directoryId, eventTypeId, id, resolution)
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authorization = "authorization_example"; // String | 
+    Integer userId = 56; // Integer | Set to the id of the user.
+    String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
+    String until = "until_example"; // String | Include the until query parameter to return results with created_at before the value
+    String since = "since_example"; // String | Include the until query parameter to return results with created_at after the value
+    Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
+    String sort = "sort_example"; // String | When you call a resource API, include the sort query parameter to sort results by id attribute value.
+    Integer clientId = 56; // Integer | 
+    String createdAt = "createdAt_example"; // String | 
+    String directoryId = "directoryId_example"; // String | The ID in OneLogin of the Directory that the user belongs to
+    List<Integer> eventTypeId = Arrays.asList(); // List<Integer> | 
+    Integer id = 56; // Integer | 
+    String resolution = "resolution_example"; // String | 
+    try {
+      GetEvents200Response result = apiInstance.getEvents(authorization, userId, fields, until, since, limit, sort, clientId, createdAt, directoryId, eventTypeId, id, resolution);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#getEvents");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | **String**|  | |
+| **userId** | **Integer**| Set to the id of the user. | |
+| **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
+| **until** | **String**| Include the until query parameter to return results with created_at before the value | [optional] |
+| **since** | **String**| Include the until query parameter to return results with created_at after the value | [optional] |
+| **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
+| **sort** | **String**| When you call a resource API, include the sort query parameter to sort results by id attribute value. | [optional] |
+| **clientId** | **Integer**|  | [optional] |
+| **createdAt** | **String**|  | [optional] |
+| **directoryId** | **String**| The ID in OneLogin of the Directory that the user belongs to | [optional] |
+| **eventTypeId** | [**List&lt;Integer&gt;**](Integer.md)|  | [optional] |
+| **id** | **Integer**|  | [optional] |
+| **resolution** | **String**|  | [optional] |
+
+### Return type
+
+[**GetEvents200Response**](GetEvents200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | Typically, this error means that your access token value is invalid. |  -  |
+
+<a name="getGroupById"></a>
+# **getGroupById**
+> GetGroupById200Response getGroupById(authorization, id)
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authorization = "authorization_example"; // String | 
+    Integer id = 56; // Integer | 
+    try {
+      GetGroupById200Response result = apiInstance.getGroupById(authorization, id);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#getGroupById");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | **String**|  | |
+| **id** | **Integer**|  | |
+
+### Return type
+
+[**GetGroupById200Response**](GetGroupById200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | Typically, this error means that your access token value is invalid. |  -  |
+| **404** | Invalid ID |  -  |
+
+<a name="getGroups"></a>
+# **getGroups**
+> GetGroups200Response getGroups(authorization, fields, until, since, limit, sort, id)
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authorization = "authorization_example"; // String | 
+    String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
+    String until = "until_example"; // String | Include the until query parameter to return results with created_at before the value
+    String since = "since_example"; // String | Include the until query parameter to return results with created_at after the value
+    Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
+    String sort = "sort_example"; // String | When you call a resource API, include the sort query parameter to sort results by id attribute value.
+    Integer id = 56; // Integer | 
+    try {
+      GetGroups200Response result = apiInstance.getGroups(authorization, fields, until, since, limit, sort, id);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#getGroups");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | **String**|  | |
+| **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
+| **until** | **String**| Include the until query parameter to return results with created_at before the value | [optional] |
+| **since** | **String**| Include the until query parameter to return results with created_at after the value | [optional] |
+| **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
+| **sort** | **String**| When you call a resource API, include the sort query parameter to sort results by id attribute value. | [optional] |
+| **id** | **Integer**|  | [optional] |
+
+### Return type
+
+[**GetGroups200Response**](GetGroups200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | Typically, this error means that your access token value is invalid. |  -  |
+
 <a name="getHook"></a>
 # **getHook**
 > Hook getHook(authorization, hookId)
@@ -2743,7 +3162,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2807,7 +3226,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2881,7 +3300,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -2945,7 +3364,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3008,7 +3427,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3065,7 +3484,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3129,7 +3548,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3193,7 +3612,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3267,7 +3686,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3339,7 +3758,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3413,7 +3832,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3479,7 +3898,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3544,7 +3963,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3553,7 +3972,7 @@ public class Example {
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
-    Integer userId = 56; // Integer | Set to the id of the user that you want to return.
+    Integer userId = 56; // Integer | Set to the id of the user.
     try {
       User result = apiInstance.getUser(authorization, userId);
       System.out.println(result);
@@ -3573,7 +3992,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | **String**|  | |
-| **userId** | **Integer**| Set to the id of the user that you want to return. | |
+| **userId** | **Integer**| Set to the id of the user. | |
 
 ### Return type
 
@@ -3608,7 +4027,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3617,7 +4036,7 @@ public class Example {
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
-    Integer userId = 56; // Integer | Set to the id of the user that you want to return.
+    Integer userId = 56; // Integer | Set to the id of the user.
     Boolean ignoreVisibility = true; // Boolean | Defaults to `false`. When `true` will show all apps that are assigned to a user regardless of their portal visibility setting.
     try {
       List<GetUserApps200ResponseInner> result = apiInstance.getUserApps(authorization, userId, ignoreVisibility);
@@ -3638,7 +4057,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | **String**|  | |
-| **userId** | **Integer**| Set to the id of the user that you want to return. | |
+| **userId** | **Integer**| Set to the id of the user. | |
 | **ignoreVisibility** | **Boolean**| Defaults to &#x60;false&#x60;. When &#x60;true&#x60; will show all apps that are assigned to a user regardless of their portal visibility setting. | [optional] |
 
 ### Return type
@@ -3674,7 +4093,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3738,7 +4157,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3803,7 +4222,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3866,7 +4285,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -3935,7 +4354,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4009,7 +4428,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4070,7 +4489,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4135,7 +4554,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4200,7 +4619,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4263,7 +4682,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4275,8 +4694,8 @@ public class Example {
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
-    String name = "name_example"; // String | The name or partial name of the connector to search for. When using a partial name you must append a wildcard `*`
-    AuthMethod authMethod = AuthMethod.fromValue("0"); // AuthMethod | Returns all connectors of a given type.
+    String name = "name_example"; // String | The name or partial name of the app to search for. When using a partial name you must append a wildcard `*`
+    AuthMethod authMethod = AuthMethod.fromValue("0"); // AuthMethod | Returns all apps based of a given type.
     try {
       List<Connector> result = apiInstance.listConnectors(authorization, limit, page, cursor, name, authMethod);
       System.out.println(result);
@@ -4299,8 +4718,8 @@ public class Example {
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
-| **name** | **String**| The name or partial name of the connector to search for. When using a partial name you must append a wildcard &#x60;*&#x60; | [optional] |
-| **authMethod** | [**AuthMethod**](.md)| Returns all connectors of a given type. | [optional] [enum: 0, 1, 2, 3, 4, 6, 7, 8] |
+| **name** | **String**| The name or partial name of the app to search for. When using a partial name you must append a wildcard &#x60;*&#x60; | [optional] |
+| **authMethod** | [**AuthMethod**](.md)| Returns all apps based of a given type. | [optional] [enum: 0, 1, 2, 3, 4, 6, 7, 8] |
 
 ### Return type
 
@@ -4335,7 +4754,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4402,7 +4821,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4469,7 +4888,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4532,7 +4951,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4593,7 +5012,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4656,7 +5075,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4719,7 +5138,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4780,7 +5199,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4789,11 +5208,11 @@ public class Example {
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
-    Boolean enabled = true; // Boolean | Defaults to true. When set to `false` will return all disabled mappings.
-    String hasCondition = "has_condition=has_role:123456,status:1"; // String | Filters Mappings based on their Conditions.
-    String hasConditionType = "builtin"; // String | Filters Mappings based on their condition types.
-    String hasAction = "has_action=set_groups:123456,set_usertype:*"; // String | Filters Mappings based on their Actions.
-    String hasActionType = "builtin"; // String | Filters Mappings based on their action types.
+    Boolean enabled = true; // Boolean | Defaults to true. When set to `false` will return all disabled rules.
+    String hasCondition = "hasCondition_example"; // String | Filters Rules based on their Conditions.
+    String hasConditionType = "hasConditionType_example"; // String | Filters Rules based on their condition types.
+    String hasAction = "hasAction_example"; // String | Filters Rules based on their Actions.
+    String hasActionType = "hasActionType_example"; // String | Filters Rules based on their action types.
     try {
       List<Mapping> result = apiInstance.listMappings(authorization, enabled, hasCondition, hasConditionType, hasAction, hasActionType);
       System.out.println(result);
@@ -4813,11 +5232,11 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | **String**|  | |
-| **enabled** | **Boolean**| Defaults to true. When set to &#x60;false&#x60; will return all disabled mappings. | [optional] [default to true] |
-| **hasCondition** | **String**| Filters Mappings based on their Conditions. | [optional] |
-| **hasConditionType** | **String**| Filters Mappings based on their condition types. | [optional] [enum: builtin, custom, none] |
-| **hasAction** | **String**| Filters Mappings based on their Actions. | [optional] |
-| **hasActionType** | **String**| Filters Mappings based on their action types. | [optional] [enum: builtin, custom, none] |
+| **enabled** | **Boolean**| Defaults to true. When set to &#x60;false&#x60; will return all disabled rules. | [optional] |
+| **hasCondition** | **String**| Filters Rules based on their Conditions. | [optional] |
+| **hasConditionType** | **String**| Filters Rules based on their condition types. | [optional] |
+| **hasAction** | **String**| Filters Rules based on their Actions. | [optional] |
+| **hasActionType** | **String**| Filters Rules based on their action types. | [optional] |
 
 ### Return type
 
@@ -4851,7 +5270,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4906,7 +5325,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -4979,7 +5398,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5052,7 +5471,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5105,7 +5524,7 @@ No authorization required
 
 <a name="listUsers"></a>
 # **listUsers**
-> List&lt;User&gt; listUsers(authorization, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, appId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields)
+> List&lt;User&gt; listUsers(authorization, appId, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields)
 
 
 
@@ -5116,7 +5535,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5125,6 +5544,7 @@ public class Example {
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
+    Integer appId = 56; // Integer | 
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -5141,12 +5561,11 @@ public class Example {
     String samaccountname = "samaccountname_example"; // String | The AD login name for the user
     String directoryId = "directoryId_example"; // String | The ID in OneLogin of the Directory that the user belongs to
     String externalId = "externalId_example"; // String | An external identifier that has been set on the user
-    String appId = "appId_example"; // String | The ID of a OneLogin Application
     String userIds = "userIds_example"; // String | A comma separated list of OneLogin User IDs
     String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket = "customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket_example"; // String | The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes.
-    String fields = "fields_example"; // String | A comma separated list user attributes to return.
+    String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
     try {
-      List<User> result = apiInstance.listUsers(authorization, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, appId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
+      List<User> result = apiInstance.listUsers(authorization, appId, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listUsers");
@@ -5164,6 +5583,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | **String**|  | |
+| **appId** | **Integer**|  | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -5180,10 +5600,9 @@ public class Example {
 | **samaccountname** | **String**| The AD login name for the user | [optional] |
 | **directoryId** | **String**| The ID in OneLogin of the Directory that the user belongs to | [optional] |
 | **externalId** | **String**| An external identifier that has been set on the user | [optional] |
-| **appId** | **String**| The ID of a OneLogin Application | [optional] |
 | **userIds** | **String**| A comma separated list of OneLogin User IDs | [optional] |
 | **customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket** | **String**| The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes. | [optional] |
-| **fields** | **String**| A comma separated list user attributes to return. | [optional] |
+| **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
 
 ### Return type
 
@@ -5219,7 +5638,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5284,7 +5703,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5349,7 +5768,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5414,7 +5833,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5479,7 +5898,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5545,7 +5964,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5608,7 +6027,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5677,7 +6096,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5743,7 +6162,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5810,7 +6229,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5879,7 +6298,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -5946,7 +6365,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6012,7 +6431,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6078,7 +6497,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6144,7 +6563,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6210,7 +6629,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6278,7 +6697,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6347,7 +6766,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6356,7 +6775,7 @@ public class Example {
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
-    Integer userId = 56; // Integer | Set to the id of the user that you want to return.
+    Integer userId = 56; // Integer | Set to the id of the user.
     User user = new User(); // User | 
     String mappings = "async"; // String | Controls how mappings will be applied to the user on creation. Defaults to async.
     Boolean validatePolicy = true; // Boolean | Will passwords validate against the User Policy? Defaults to true.
@@ -6379,7 +6798,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | **String**|  | |
-| **userId** | **Integer**| Set to the id of the user that you want to return. | |
+| **userId** | **Integer**| Set to the id of the user. | |
 | **user** | [**User**](User.md)|  | |
 | **mappings** | **String**| Controls how mappings will be applied to the user on creation. Defaults to async. | [optional] [enum: async, sync, disabled] |
 | **validatePolicy** | **Boolean**| Will passwords validate against the User Policy? Defaults to true. | [optional] |
@@ -6406,6 +6825,72 @@ No authorization required
 | **404** | Invalid ID |  -  |
 | **422** | Indicates that the syntax of the request is good but a value supplied is not valid. |  -  |
 
+<a name="v1VerifyFactor"></a>
+# **v1VerifyFactor**
+> V1VerifyFactor200Response v1VerifyFactor(authorization, v1VerifyFactorRequest, customAllowedOriginHeader1)
+
+
+
+### Example
+```java
+// Import classes:
+import com.onelogin.sdk.ApiClient;
+import com.onelogin.sdk.ApiException;
+import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.models.*;
+import com.onelogin.sdk.DefaultApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authorization = "authorization_example"; // String | 
+    V1VerifyFactorRequest v1VerifyFactorRequest = new V1VerifyFactorRequest(); // V1VerifyFactorRequest | 
+    String customAllowedOriginHeader1 = "customAllowedOriginHeader1_example"; // String | Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
+    try {
+      V1VerifyFactor200Response result = apiInstance.v1VerifyFactor(authorization, v1VerifyFactorRequest, customAllowedOriginHeader1);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling DefaultApi#v1VerifyFactor");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | **String**|  | |
+| **v1VerifyFactorRequest** | [**V1VerifyFactorRequest**](V1VerifyFactorRequest.md)|  | |
+| **customAllowedOriginHeader1** | **String**| Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS. | [optional] |
+
+### Return type
+
+[**V1VerifyFactor200Response**](V1VerifyFactor200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | UNAUTHORIZED |  -  |
+
 <a name="verifyEnrollment"></a>
 # **verifyEnrollment**
 > List&lt;Registration&gt; verifyEnrollment(authorization, userId, registrationId, verifyEnrollmentRequest)
@@ -6419,7 +6904,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6486,7 +6971,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6540,7 +7025,7 @@ No authorization required
 
 <a name="verifyFactor"></a>
 # **verifyFactor**
-> Status2 verifyFactor(authorization, userId, verificationId, verifyFactorRequest)
+> GenerateToken400Response verifyFactor(authorization, userId, verificationId, verifyFactorRequest)
 
 
 
@@ -6551,7 +7036,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6564,7 +7049,7 @@ public class Example {
     Integer verificationId = 56; // Integer | The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call.
     VerifyFactorRequest verifyFactorRequest = new VerifyFactorRequest(); // VerifyFactorRequest | 
     try {
-      Status2 result = apiInstance.verifyFactor(authorization, userId, verificationId, verifyFactorRequest);
+      GenerateToken400Response result = apiInstance.verifyFactor(authorization, userId, verificationId, verifyFactorRequest);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#verifyFactor");
@@ -6588,7 +7073,7 @@ public class Example {
 
 ### Return type
 
-[**Status2**](Status2.md)
+[**GenerateToken400Response**](GenerateToken400Response.md)
 
 ### Authorization
 
@@ -6619,7 +7104,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -6684,7 +7169,7 @@ import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
 import com.onelogin.sdk.models.*;
-import org.openapitools.client.api.DefaultApi;
+import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {

@@ -1,8 +1,8 @@
 lazy val root = (project in file(".")).
   settings(
     organization := "com.onelogin",
-    name := "openapi-java-client",
-    version := "3.0.0-alpha.1",
+    name := "onelogin-java-sdk",
+    version := "3.0.0-beta.1",
     scalaVersion := "2.11.4",
     scalacOptions ++= Seq("-feature"),
     javacOptions in compile ++= Seq("-Xlint:deprecation"),
