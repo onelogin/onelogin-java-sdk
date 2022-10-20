@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: OneLogin API
-  version: 3.0.0-alpha.1
+  version: 3.0.0-beta.1
 servers:
 - url: "https://{subdomain}.{domain}.com"
   variables:
@@ -154,7 +154,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -179,14 +179,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Audiences are required
       x-content-type: application/json
       x-accepts: application/json
@@ -211,14 +211,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -245,14 +245,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: NOT FOUND
       x-accepts: application/json
     put:
@@ -287,14 +287,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -326,14 +326,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     post:
@@ -362,20 +362,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: This name already exists
       x-content-type: application/json
       x-accepts: application/json
@@ -405,14 +405,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -446,20 +446,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: This name already exists
       x-content-type: application/json
       x-accepts: application/json
@@ -490,14 +490,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     post:
@@ -526,20 +526,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: This name already exists
       x-content-type: application/json
       x-accepts: application/json
@@ -569,14 +569,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -610,20 +610,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: This name already exists
       x-content-type: application/json
       x-accepts: application/json
@@ -654,14 +654,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     post:
@@ -694,20 +694,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: An invalid scope id has been provided
       x-content-type: application/json
       x-accepts: application/json
@@ -737,14 +737,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-accepts: application/json
@@ -783,20 +783,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: An invalid scope id has been provided
       x-content-type: application/json
       x-accepts: application/json
@@ -872,14 +872,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-accepts: application/json
@@ -904,14 +904,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -937,14 +937,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -971,14 +971,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -1007,14 +1007,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -1045,20 +1045,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "403":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: You attempted to delete a connector level parameter.
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
   /api/2/apps/{app_id}/users:
@@ -1121,7 +1121,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1178,7 +1178,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1208,7 +1208,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -1246,14 +1246,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -1286,14 +1286,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -1328,7 +1328,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -1366,7 +1366,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1403,7 +1403,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1440,7 +1440,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1471,7 +1471,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1508,7 +1508,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1545,7 +1545,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -1583,13 +1583,13 @@ paths:
         name: cursor
         schema:
           type: string
-      - description: The name or partial name of the connector to search for. When
-          using a partial name you must append a wildcard `*`
+      - description: The name or partial name of the app to search for. When using
+          a partial name you must append a wildcard `*`
         in: query
         name: name
         schema:
-          $ref: '#/components/schemas/name_1'
-      - description: Returns all connectors of a given type.
+          $ref: '#/components/schemas/name'
+      - description: Returns all apps based of a given type.
         in: query
         name: auth_method
         schema:
@@ -1622,14 +1622,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-accepts: application/json
@@ -1661,7 +1661,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1707,7 +1707,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-content-type: application/json
@@ -1747,7 +1747,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1791,7 +1791,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-content-type: application/json
@@ -1824,7 +1824,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -1883,7 +1883,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-content-type: application/json
@@ -1923,13 +1923,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_2'
+                $ref: '#/components/schemas/generateToken_400_response'
           description: NOT FOUND
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -1964,20 +1964,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_2'
+                $ref: '#/components/schemas/generateToken_400_response'
           description: OK
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "403":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: FORBIDDEN
       x-content-type: application/json
       x-accepts: application/json
@@ -2007,7 +2007,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -2093,7 +2093,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -2118,7 +2118,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -2144,14 +2144,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -2179,14 +2179,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -2216,14 +2216,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -2295,14 +2295,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -2342,14 +2342,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-content-type: application/json
       x-accepts: application/json
@@ -2381,14 +2381,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-content-type: application/json
       x-accepts: application/json
@@ -2464,14 +2464,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     post:
@@ -2510,14 +2510,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -2550,14 +2550,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-content-type: application/json
       x-accepts: application/json
@@ -2633,14 +2633,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     post:
@@ -2679,7 +2679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-content-type: application/json
@@ -2732,19 +2732,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: BAD REQUEST
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: UNAUTHORIZED
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-content-type: application/json
       x-accepts: application/json
@@ -2803,7 +2803,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -2842,14 +2842,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -2877,14 +2877,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -2914,7 +2914,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -2996,14 +2996,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
   /api/2/hooks/envs:
@@ -3061,7 +3061,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -3090,14 +3090,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -3126,14 +3126,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -3162,7 +3162,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -3198,13 +3198,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: BAD REQUEST
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -3311,11 +3311,11 @@ paths:
         name: external_id
         schema:
           type: string
-      - description: The ID of a OneLogin Application
-        in: query
+      - in: path
         name: app_id
+        required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/id_1'
       - description: A comma separated list of OneLogin User IDs
         in: query
         name: user_ids
@@ -3327,10 +3327,14 @@ paths:
         name: "custom_attributes.{attribute_name}"
         schema:
           type: string
-      - description: A comma separated list user attributes to return.
+      - description: Optional. Comma delimited list of fields to return.
         in: query
         name: fields
         schema:
+          enum:
+          - apps
+          - users
+          - admins
           type: string
       responses:
         "200":
@@ -3360,20 +3364,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: An invalid search parameter was used.
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: You cant sort on this field.
       x-accepts: application/json
     post:
@@ -3413,20 +3417,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: BAD REQUEST
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -3440,12 +3444,12 @@ paths:
         required: true
         schema:
           type: string
-      - description: Set to the id of the user that you want to return.
+      - description: Set to the id of the user.
         in: path
         name: user_id
         required: true
         schema:
-          $ref: '#/components/schemas/id_2'
+          type: integer
       responses:
         "204":
           description: "On success, no content is returned in the response body."
@@ -3453,14 +3457,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -3471,12 +3475,12 @@ paths:
         required: true
         schema:
           type: string
-      - description: Set to the id of the user that you want to return.
+      - description: Set to the id of the user.
         in: path
         name: user_id
         required: true
         schema:
-          $ref: '#/components/schemas/id_2'
+          type: integer
       responses:
         "200":
           content:
@@ -3488,14 +3492,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -3506,12 +3510,12 @@ paths:
         required: true
         schema:
           type: string
-      - description: Set to the id of the user that you want to return.
+      - description: Set to the id of the user.
         in: path
         name: user_id
         required: true
         schema:
-          $ref: '#/components/schemas/id_2'
+          type: integer
       - description: Controls how mappings will be applied to the user on creation.
           Defaults to async.
         in: query
@@ -3541,26 +3545,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: BAD REQUEST
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
         "422":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Indicates that the syntax of the request is good but a value
             supplied is not valid.
       x-content-type: application/json
@@ -3574,12 +3578,12 @@ paths:
         required: true
         schema:
           type: string
-      - description: Set to the id of the user that you want to return.
+      - description: Set to the id of the user.
         in: path
         name: user_id
         required: true
         schema:
-          $ref: '#/components/schemas/id_2'
+          type: integer
       - description: Defaults to `false`. When `true` will show all apps that are
           assigned to a user regardless of their portal visibility setting.
         in: query
@@ -3599,14 +3603,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
   /api/2/mappings:
@@ -3619,41 +3623,30 @@ paths:
         schema:
           type: string
       - description: Defaults to true. When set to `false` will return all disabled
-          mappings.
+          rules.
         in: query
         name: enabled
         schema:
-          default: true
           type: boolean
-      - description: Filters Mappings based on their Conditions.
-        example: "has_condition=has_role:123456,status:1"
+      - description: Filters Rules based on their Conditions.
         in: query
         name: has_condition
         schema:
           type: string
-      - description: Filters Mappings based on their condition types.
+      - description: Filters Rules based on their condition types.
         in: query
         name: has_condition_type
         schema:
-          enum:
-          - builtin
-          - custom
-          - none
           type: string
-      - description: Filters Mappings based on their Actions.
-        example: "has_action=set_groups:123456,set_usertype:*"
+      - description: Filters Rules based on their Actions.
         in: query
         name: has_action
         schema:
           type: string
-      - description: Filters Mappings based on their action types.
+      - description: Filters Rules based on their action types.
         in: query
         name: has_action_type
         schema:
-          enum:
-          - builtin
-          - custom
-          - none
           type: string
       responses:
         "200":
@@ -3668,7 +3661,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -3693,7 +3686,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -3726,14 +3719,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     get:
@@ -3761,14 +3754,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: Invalid ID
       x-accepts: application/json
     put:
@@ -3798,7 +3791,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -3847,7 +3840,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -3880,7 +3873,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -3912,7 +3905,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -3944,7 +3937,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -3970,7 +3963,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -4002,7 +3995,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
@@ -4034,7 +4027,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status_1'
+                $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
         "422":
@@ -4220,6 +4213,348 @@ paths:
         "401":
           description: Invalid Access Token
       x-accepts: application/json
+  /api/1/events/types:
+    get:
+      operationId: getEventTypes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getEventTypes_200_response'
+          description: OK
+      x-accepts: application/json
+  /api/1/events:
+    get:
+      operationId: getEvents
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Optional. Comma delimited list of fields to return.
+        in: query
+        name: fields
+        schema:
+          enum:
+          - apps
+          - users
+          - admins
+          type: string
+      - description: Include the until query parameter to return results with created_at
+          before the value
+        in: query
+        name: until
+        schema:
+          type: string
+      - description: Include the until query parameter to return results with created_at
+          after the value
+        in: query
+        name: since
+        schema:
+          type: string
+      - description: "The total number of items returned per page. The maximum limit\
+          \ varies between endpoints, see the relevant endpoint documentation for\
+          \ the specific limit."
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: "When you call a resource API, include the sort query parameter\
+          \ to sort results by id attribute value."
+        in: query
+        name: sort
+        schema:
+          type: string
+      - in: query
+        name: client_id
+        schema:
+          type: integer
+      - in: query
+        name: created_at
+        schema:
+          type: string
+      - description: The ID in OneLogin of the Directory that the user belongs to
+        in: query
+        name: directory_id
+        schema:
+          type: string
+      - in: query
+        name: event_type_id
+        schema:
+          items:
+            type: integer
+          type: array
+      - in: query
+        name: id
+        schema:
+          type: integer
+      - in: query
+        name: resolution
+        schema:
+          type: string
+      - description: Set to the id of the user.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getEvents_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: "Typically, this error means that your access token value is\
+            \ invalid."
+      x-accepts: application/json
+  /api/1/events/{event_id}:
+    get:
+      operationId: getEventById
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getEventById_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: "Typically, this error means that your access token value is\
+            \ invalid."
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: Invalid ID
+      x-accepts: application/json
+  /api/1/groups:
+    get:
+      operationId: getGroups
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Optional. Comma delimited list of fields to return.
+        in: query
+        name: fields
+        schema:
+          enum:
+          - apps
+          - users
+          - admins
+          type: string
+      - description: Include the until query parameter to return results with created_at
+          before the value
+        in: query
+        name: until
+        schema:
+          type: string
+      - description: Include the until query parameter to return results with created_at
+          after the value
+        in: query
+        name: since
+        schema:
+          type: string
+      - description: "The total number of items returned per page. The maximum limit\
+          \ varies between endpoints, see the relevant endpoint documentation for\
+          \ the specific limit."
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: "When you call a resource API, include the sort query parameter\
+          \ to sort results by id attribute value."
+        in: query
+        name: sort
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getGroups_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: "Typically, this error means that your access token value is\
+            \ invalid."
+      x-accepts: application/json
+  /api/1/groups/{group_id}:
+    get:
+      operationId: getGroupById
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getGroupById_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: "Typically, this error means that your access token value is\
+            \ invalid."
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: Invalid ID
+      x-accepts: application/json
+  /api/1/login/auth:
+    post:
+      operationId: createSessionLoginToken
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Required for CORS requests only. Set to the Origin URI from which
+          you are allowed to send a request using CORS.
+        in: header
+        name: Custom-Allowed-Origin-Header-1
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createSessionLoginToken_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createSessionLoginToken_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createSessionLoginToken_400_response'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/generateToken_400_response'
+          description: UNAUTHORIZED
+      x-content-type: application/json
+      x-accepts: application/json
+  /api/1/login/verify_factor:
+    post:
+      operationId: v1VerifyFactor
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      - description: Required for CORS requests only. Set to the Origin URI from which
+          you are allowed to send a request using CORS.
+        in: header
+        name: Custom-Allowed-Origin-Header-1
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1VerifyFactor_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1VerifyFactor_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/generateToken_400_response'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/generateToken_400_response'
+          description: UNAUTHORIZED
+      x-content-type: application/json
+      x-accepts: application/json
 components:
   headers:
     Current-Page:
@@ -4252,6 +4587,456 @@ components:
     After-Cursor:
       description: A string that can be used to request the page of results that follows
         the current page using the same set of search filters and pagination options.
+      schema:
+        type: string
+  parameters:
+    secret_authorization:
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    bearer:
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+    id:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+    claim_id:
+      in: path
+      name: claim_id
+      required: true
+      schema:
+        type: integer
+    scope_id:
+      in: path
+      name: scope_id
+      required: true
+      schema:
+        type: integer
+    client_app_id:
+      in: path
+      name: client_app_id
+      required: true
+      schema:
+        type: integer
+    limit:
+      description: "The total number of items returned per page. The maximum limit\
+        \ varies between endpoints, see the relevant endpoint documentation for the\
+        \ specific limit."
+      in: query
+      name: limit
+      schema:
+        type: integer
+    page:
+      description: The page number of results to return.
+      in: query
+      name: page
+      schema:
+        type: integer
+    cursor:
+      description: Set to the value extracted from Before-Cursor or After-Cursor headers
+        to return the previous or next page.
+      in: query
+      name: cursor
+      schema:
+        type: string
+    name:
+      description: The name or partial name of the app to search for. When using a
+        partial name you must append a wildcard `*`
+      in: query
+      name: name
+      schema:
+        $ref: '#/components/schemas/name'
+    connector_id:
+      description: Returns all apps based off a specific connector. See List Connectors
+        for a complete list of Connector IDs.
+      in: query
+      name: connector_id
+      schema:
+        $ref: '#/components/schemas/connector_id'
+    auth_method:
+      description: Returns all apps based of a given type.
+      in: query
+      name: auth_method
+      schema:
+        $ref: '#/components/schemas/auth_method'
+    app_id:
+      in: path
+      name: app_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id_1'
+    parameter_id:
+      in: path
+      name: parameter_id
+      required: true
+      schema:
+        type: integer
+    enabled:
+      description: Defaults to true. When set to `false` will return all disabled
+        rules.
+      in: query
+      name: enabled
+      schema:
+        type: boolean
+    has_condition:
+      description: Filters Rules based on their Conditions.
+      in: query
+      name: has_condition
+      schema:
+        type: string
+    has_condition_type:
+      description: Filters Rules based on their condition types.
+      in: query
+      name: has_condition_type
+      schema:
+        type: string
+    has_action:
+      description: Filters Rules based on their Actions.
+      in: query
+      name: has_action
+      schema:
+        type: string
+    has_action_type:
+      description: Filters Rules based on their action types.
+      in: query
+      name: has_action_type
+      schema:
+        type: string
+    rule_id:
+      description: The id of the app rule to locate.
+      in: path
+      name: rule_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id_2'
+    condition_value:
+      description: The value for the selected condition.
+      in: path
+      name: condition_value
+      required: true
+      schema:
+        type: string
+    action_value:
+      description: The value for the selected action.
+      in: path
+      name: action_value
+      required: true
+      schema:
+        type: string
+    user_id:
+      description: Set to the id of the user.
+      in: path
+      name: user_id
+      required: true
+      schema:
+        type: integer
+    registration_id:
+      description: Set to the uuid of the registration. This was included in the response
+        as part of the initial request in Enroll Factor.
+      in: path
+      name: registration_id
+      required: true
+      schema:
+        type: integer
+    device_id:
+      description: Set to the device_id of the MFA device.
+      in: path
+      name: device_id
+      required: true
+      schema:
+        type: integer
+    verification_id:
+      description: The verification_id is returned on activation of the factor or
+        you can get the device_id using the Activate Factor API call.
+      in: path
+      name: verification_id
+      required: true
+      schema:
+        type: integer
+    role_name:
+      description: Optional. Filters by role name.
+      in: query
+      name: name
+      schema:
+        $ref: '#/components/schemas/name_2'
+    app_name:
+      description: Optional. Returns roles that contain this app name.
+      in: query
+      name: app_id
+      schema:
+        $ref: '#/components/schemas/name'
+    fields:
+      description: Optional. Comma delimited list of fields to return.
+      in: query
+      name: fields
+      schema:
+        enum:
+        - apps
+        - users
+        - admins
+        type: string
+    role_id:
+      description: Set to the id of the role you want to return.
+      in: path
+      name: role_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/role_id'
+    assigned:
+      description: Optional. Defaults to true. Returns all apps not yet assigned to
+        the role.
+      in: query
+      name: assigned
+      schema:
+        type: boolean
+    user_name:
+      description: "Allows you to filter on first name, last name, username, and email\
+        \ address."
+      in: query
+      name: name
+      schema:
+        type: string
+    include_unassigned:
+      description: Optional. Defaults to false. Include users that aren’t assigned
+        to the role.
+      in: query
+      name: include_unassigned
+      schema:
+        type: boolean
+    hook_id:
+      description: Set to the id of the Hook that you want to return.
+      in: path
+      name: hook_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id_3'
+    request_id:
+      description: Returns logs that contain this request_id.
+      in: query
+      name: request_id
+      schema:
+        type: string
+    correlation_id:
+      description: Returns logs that contain this correlation_id.
+      in: query
+      name: correlation_id
+      schema:
+        type: string
+    envvar_id:
+      description: Set to the id of the Hook Environment Variable that you want to
+        fetch.
+      in: path
+      name: envvar_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id_4'
+    created_since:
+      description: An ISO8601 timestamp value that returns all users created after
+        a given date & time.
+      in: query
+      name: created_since
+      schema:
+        type: string
+    created_until:
+      description: An ISO8601 timestamp value that returns all users created before
+        a given date & time.
+      in: query
+      name: created_until
+      schema:
+        type: string
+    updated_since:
+      description: An ISO8601 timestamp value that returns all users updated after
+        a given date & time.
+      in: query
+      name: updated_since
+      schema:
+        type: string
+    updated_until:
+      description: An ISO8601 timestamp value that returns all users updated before
+        a given date & time.
+      in: query
+      name: updated_until
+      schema:
+        type: string
+    last_login_since:
+      description: An ISO8601 timestamp value that returns all users that logged in
+        after a given date & time.
+      in: query
+      name: last_login_since
+      schema:
+        type: string
+    last_login_until:
+      in: query
+      name: last_login_until
+      schema:
+        type: string
+    firstname:
+      description: The first name of the user
+      in: query
+      name: firstname
+      schema:
+        type: string
+    lastname:
+      description: The last name of the user
+      in: query
+      name: lastname
+      schema:
+        type: string
+    email:
+      description: The email address of the user
+      in: query
+      name: email
+      schema:
+        type: string
+    username:
+      description: The username for the user
+      in: query
+      name: username
+      schema:
+        type: string
+    samaccountname:
+      description: The AD login name for the user
+      in: query
+      name: samaccountname
+      schema:
+        type: string
+    directory_id:
+      description: The ID in OneLogin of the Directory that the user belongs to
+      in: query
+      name: directory_id
+      schema:
+        type: string
+    external_id:
+      description: An external identifier that has been set on the user
+      in: query
+      name: external_id
+      schema:
+        type: string
+    user_ids:
+      description: A comma separated list of OneLogin User IDs
+      in: query
+      name: user_ids
+      schema:
+        type: string
+    custom_attributes:
+      description: The short name of a custom attribute. Note that the attribute name
+        is prefixed with custom_attributes.
+      in: query
+      name: "custom_attributes.{attribute_name}"
+      schema:
+        type: string
+    mappings:
+      description: Controls how mappings will be applied to the user on creation.
+        Defaults to async.
+      in: query
+      name: mappings
+      schema:
+        enum:
+        - async
+        - sync
+        - disabled
+        type: string
+    validate_policy:
+      description: Will passwords validate against the User Policy? Defaults to true.
+      in: query
+      name: validate_policy
+      schema:
+        type: boolean
+    ignore_visibility:
+      description: Defaults to `false`. When `true` will show all apps that are assigned
+        to a user regardless of their portal visibility setting.
+      in: query
+      name: ignore_visibility
+      schema:
+        type: boolean
+    mapping_id:
+      description: The id of the user mapping to locate.
+      in: path
+      name: mapping_id
+      required: true
+      schema:
+        type: integer
+    risk_rule_id:
+      in: path
+      name: risk_rule_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id_5'
+    before:
+      description: Optional ISO8601 formatted date string. Defaults to current date.
+        Maximum date is 90 days ago.
+      in: query
+      name: before
+      schema:
+        type: string
+    after:
+      description: Optional ISO8601 formatted date string. Defaults to 30 days ago.
+        Maximum date is 90 days ago.
+      in: query
+      name: after
+      schema:
+        type: string
+    until:
+      description: Include the until query parameter to return results with created_at
+        before the value
+      in: query
+      name: until
+      schema:
+        type: string
+    since:
+      description: Include the until query parameter to return results with created_at
+        after the value
+      in: query
+      name: since
+      schema:
+        type: string
+    sort:
+      description: "When you call a resource API, include the sort query parameter\
+        \ to sort results by id attribute value."
+      in: query
+      name: sort
+      schema:
+        type: string
+    client_id:
+      in: query
+      name: client_id
+      schema:
+        type: integer
+    created_at:
+      in: query
+      name: created_at
+      schema:
+        type: string
+    event_type_id:
+      in: query
+      name: event_type_id
+      schema:
+        items:
+          type: integer
+        type: array
+    event_id:
+      in: query
+      name: id
+      schema:
+        type: integer
+    resolution:
+      in: query
+      name: resolution
+      schema:
+        type: string
+    allowed_origin:
+      description: Required for CORS requests only. Set to the Origin URI from which
+        you are allowed to send a request using CORS.
+      in: header
+      name: Custom-Allowed-Origin-Header-1
       schema:
         type: string
   requestBodies:
@@ -4334,7 +5119,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: "Typically, this error means that your access token value is invalid."
     status_200:
       content:
@@ -4346,25 +5131,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: Invalid ID
     status_422:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: This name already exists
     status_invalid_scope:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: An invalid scope id has been provided
     "422_invalid_value":
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: Indicates that the syntax of the request is good but a value supplied
         is not valid.
     app:
@@ -4383,19 +5168,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: FORBIDDEN
     "400_bad_request":
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: BAD REQUEST
     "401_unauthorized":
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/status_1'
+            $ref: '#/components/schemas/status'
       description: UNAUTHORIZED
     "422_function_not_base64":
       content:
@@ -4421,8 +5206,14 @@ components:
           schema:
             $ref: '#/components/schemas/risk_rule'
       description: OK
+    v1_401:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/generateToken_400_response'
+      description: UNAUTHORIZED
   schemas:
-    status:
+    v1_status:
       example:
         code: 0
         error: true
@@ -4445,7 +5236,7 @@ components:
         id:
           type: string
       type: object
-    status_1:
+    status:
       properties:
         message:
           type: string
@@ -4755,17 +5546,6 @@ components:
           type: string
         default:
           type: boolean
-      type: object
-    status_2:
-      example:
-        status:
-          code: 0
-          type: type
-          message: message
-          error: true
-      properties:
-        status:
-          $ref: '#/components/schemas/status_2_status'
       type: object
     role:
       example:
@@ -5324,6 +6104,768 @@ components:
       type: object
     id_5:
       type: string
+    event:
+      example:
+        risk_reasons: risk_reasons
+        privilege_id: 8
+        notes: notes
+        policy_id: 2
+        assumed_by_superadmin_or_reseller: 1
+        service_directory_id: 5
+        directory_sync_run_id: 5
+        user_name: user_name
+        risk_cookie_id: risk_cookie_id
+        created_at: created_at
+        solved: true
+        client_id: client_id
+        event_type_id: 2
+        otp_device_id: 3
+        actor_user_id: 6
+        certificate_id: 1
+        resource_type_id: 4
+        actor_user_name: actor_user_name
+        role_id: 7
+        param: param
+        error_description: error_description
+        user_field_id: 9
+        id: 9
+        ipaddr: ipaddr
+        app_id: 1
+        assuming_acting_user_id: 5
+        proxy_ip: proxy_ip
+        risk_score: 1
+        otp_device_name: otp_device_name
+        policy_name: policy_name
+        object_id: 9
+        app-name: app-name
+        adc_id: 4
+        role_name: role_name
+        custom_message: custom_message
+        policy_type: policy_type
+        account_id: 0
+        group-name: group-name
+        group_id: 7
+        user_id: 1
+        resolved_at: resolved_at
+        mapping_id: 6
+        radius_config_id: 7
+        trusted_idp_id: 6
+        actor_system: actor_system
+      properties:
+        account_id:
+          description: Account that triggered the event.
+          type: integer
+        actor_system:
+          description: Acting system that triggered the event when the actor is not
+            a user.
+          type: string
+        actor_user_id:
+          description: ID of the user whose action triggered the event.
+          type: integer
+        actor_user_name:
+          description: First and last name of the user whose action triggered the
+            event.
+          type: string
+        app_id:
+          description: "ID of the app involved in the event, if applicable."
+          type: integer
+        app-name:
+          description: "Name of the app involved in the event, if applicable."
+          type: string
+        assuming_acting_user_id:
+          description: "ID of the user who assumed the role of the acting user to\
+            \ trigger the event, if applicable."
+          type: integer
+        client_id:
+          description: Client ID used to generate the access token that made the API
+            call that generated the event.
+          type: string
+        created_at:
+          description: ISO8601 Time and date at which the event was created. This
+            value is autogenerated by OneLogin.
+          type: string
+        custom_message:
+          description: More details about the event.
+          type: string
+        directory_sync_run_id:
+          description: Directory sync run ID.
+          type: integer
+        error_description:
+          description: "Provisioning error details, if applicable."
+          type: string
+        event_type_id:
+          description: Type of event triggered.
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+          - 11
+          - 12
+          - 13
+          - 14
+          - 15
+          - 16
+          - 17
+          - 18
+          - 19
+          - 20
+          - 21
+          - 22
+          - 23
+          - 24
+          - 25
+          - 26
+          - 27
+          - 28
+          - 29
+          - 30
+          - 31
+          - 32
+          - 33
+          - 34
+          - 35
+          - 36
+          - 37
+          - 38
+          - 39
+          - 40
+          - 41
+          - 42
+          - 43
+          - 44
+          - 45
+          - 46
+          - 47
+          - 48
+          - 49
+          - 50
+          - 51
+          - 52
+          - 53
+          - 54
+          - 55
+          - 56
+          - 57
+          - 58
+          - 59
+          - 60
+          - 61
+          - 62
+          - 63
+          - 64
+          - 65
+          - 66
+          - 67
+          - 68
+          - 69
+          - 70
+          - 71
+          - 72
+          - 73
+          - 74
+          - 75
+          - 76
+          - 77
+          - 78
+          - 79
+          - 80
+          - 81
+          - 82
+          - 83
+          - 84
+          - 85
+          - 86
+          - 87
+          - 88
+          - 89
+          - 90
+          - 91
+          - 92
+          - 95
+          - 96
+          - 100
+          - 101
+          - 102
+          - 103
+          - 104
+          - 105
+          - 106
+          - 110
+          - 111
+          - 112
+          - 113
+          - 114
+          - 115
+          - 116
+          - 117
+          - 118
+          - 119
+          - 120
+          - 121
+          - 122
+          - 123
+          - 124
+          - 125
+          - 126
+          - 127
+          - 128
+          - 129
+          - 130
+          - 131
+          - 132
+          - 133
+          - 134
+          - 135
+          - 136
+          - 137
+          - 138
+          - 139
+          - 140
+          - 141
+          - 145
+          - 146
+          - 147
+          - 148
+          - 149
+          - 150
+          - 151
+          - 152
+          - 153
+          - 154
+          - 155
+          - 156
+          - 157
+          - 158
+          - 159
+          - 160
+          - 161
+          - 162
+          - 163
+          - 164
+          - 165
+          - 166
+          - 167
+          - 168
+          - 169
+          - 170
+          - 171
+          - 172
+          - 173
+          - 174
+          - 175
+          - 176
+          - 177
+          - 178
+          - 179
+          - 180
+          - 181
+          - 182
+          - 183
+          - 184
+          - 185
+          - 186
+          - 187
+          - 188
+          - 189
+          - 190
+          - 191
+          - 192
+          - 193
+          - 194
+          - 195
+          - 196
+          - 197
+          - 198
+          - 199
+          - 200
+          - 201
+          - 202
+          - 203
+          - 204
+          - 205
+          - 206
+          - 207
+          - 208
+          - 209
+          - 210
+          - 211
+          - 212
+          - 213
+          - 214
+          - 215
+          - 216
+          - 217
+          - 218
+          - 219
+          - 220
+          - 221
+          - 222
+          - 223
+          - 224
+          - 225
+          - 226
+          - 227
+          - 228
+          - 229
+          - 230
+          - 231
+          - 232
+          - 233
+          - 234
+          - 235
+          - 236
+          - 237
+          - 238
+          - 239
+          - 240
+          - 241
+          - 242
+          - 243
+          - 244
+          - 245
+          - 246
+          - 247
+          - 248
+          - 249
+          - 250
+          - 251
+          - 252
+          - 253
+          - 254
+          - 255
+          - 291
+          - 300
+          - 301
+          - 303
+          - 304
+          - 305
+          - 306
+          - 307
+          - 330
+          - 331
+          - 332
+          - 333
+          - 334
+          - 400
+          - 401
+          - 402
+          - 410
+          - 411
+          - 412
+          - 501
+          - 502
+          - 503
+          - 510
+          - 511
+          - 512
+          - 513
+          - 514
+          - 515
+          - 516
+          - 517
+          - 518
+          - 519
+          - 520
+          - 521
+          - 522
+          - 523
+          - 524
+          - 525
+          - 526
+          - 527
+          - 528
+          - 529
+          - 530
+          - 531
+          - 532
+          - 533
+          - 534
+          - 535
+          - 536
+          - 537
+          - 538
+          - 539
+          - 540
+          - 541
+          - 542
+          - 545
+          - 546
+          - 550
+          - 551
+          - 552
+          - 553
+          - 554
+          - 555
+          - 600
+          - 601
+          - 602
+          - 700
+          - 701
+          - 702
+          - 703
+          - 704
+          - 705
+          - 706
+          - 800
+          - 801
+          - 802
+          - 803
+          - 804
+          - 805
+          - 900
+          - 901
+          - 902
+          - 903
+          - 904
+          - 905
+          - 906
+          - 907
+          - 911
+          - 912
+          - 931
+          - 932
+          - 950
+          - 1001
+          - 1002
+          - 1010
+          - 1100
+          - 1101
+          - 1200
+          - 1201
+          - 1244
+          - 1245
+          - 1300
+          - 1301
+          - 1302
+          - 1303
+          - 1304
+          - 1305
+          - 1400
+          - 1401
+          - 1402
+          - 1403
+          - 1404
+          - 1405
+          - 1406
+          - 1407
+          - 1408
+          - 1409
+          - 1410
+          - 1411
+          - 1412
+          - 1413
+          - 1414
+          - 1415
+          - 1416
+          - 1417
+          - 1418
+          - 1419
+          - 1420
+          - 1421
+          - 1422
+          - 1423
+          - 1424
+          - 1500
+          - 1501
+          - 1502
+          - 1503
+          - 1504
+          - 1505
+          - 1506
+          - 1507
+          - 1508
+          - 1509
+          - 1510
+          - 1511
+          - 1512
+          - 1513
+          - 1514
+          - 1600
+          - 1601
+          - 1602
+          - 1603
+          - 1604
+          - 1605
+          - 1606
+          - 1607
+          - 1608
+          - 1609
+          - 1700
+          - 1701
+          - 1702
+          - 1801
+          - 1802
+          - 1900
+          - 1901
+          - 1902
+          - 1903
+          - 1904
+          - 1905
+          - 2000
+          - 2001
+          - 2002
+          - 2003
+          - 2004
+          - 2005
+          - 2006
+          - 2007
+          - 2008
+          - 2009
+          - 2010
+          - 2011
+          - 2012
+          - 2013
+          - 2014
+          - 2015
+          - 2016
+          - 2017
+          - 2018
+          - 2100
+          - 2101
+          - 2102
+          - 2103
+          - 2104
+          - 2105
+          - 2106
+          - 2107
+          - 2108
+          - 2109
+          - 2110
+          - 2111
+          - 2112
+          - 2113
+          - 2114
+          - 2201
+          - 2202
+          - 2203
+          - 2204
+          - 3000
+          - 3001
+          - 3002
+          - 3003
+          - 3004
+          - 3005
+          - 3006
+          - 3007
+          - 3008
+          - 3009
+          - 3010
+          - 3011
+          - 3012
+          - 3013
+          - 3014
+          - 3015
+          - 3016
+          - 3017
+          - 3018
+          - 3019
+          - 3020
+          - 3021
+          - 3022
+          - 3023
+          - 3024
+          - 3025
+          - 3026
+          - 3027
+          - 3028
+          - 9000
+          - 9001
+          - 9002
+          - 9003
+          - 9004
+          - 9005
+          - 9006
+          - 9007
+          - 9008
+          - 9009
+          - 9010
+          - 9011
+          - 9012
+          - 9013
+          - 9014
+          - 9015
+          - 9016
+          - 9017
+          - 9018
+          - 9019
+          - 9020
+          - 9021
+          - 9022
+          - 9023
+          - 9024
+          - 9025
+          - 9026
+          - 9027
+          - 9028
+          - 9029
+          - 9030
+          - 9031
+          - 9032
+          - 9033
+          - 9034
+          - 9035
+          - 9036
+          - 9037
+          - 9038
+          - 9039
+          - 9040
+          - 9041
+          - 9042
+          - 9043
+          - 9044
+          - 9045
+          - 9046
+          - 9047
+          - 9048
+          - 9049
+          - 9050
+          - 9051
+          - 9052
+          - 9053
+          - 9054
+          - 9055
+          - 9056
+          - 9057
+          - 9058
+          - 9059
+          type: integer
+        group_id:
+          description: ID of a group involved in the event.
+          type: integer
+        group-name:
+          description: Name of a group involved in the event.
+          type: string
+        id:
+          description: Event's unique ID in OneLogin. Autogenerated by OneLogin.
+          type: integer
+        ipaddr:
+          description: IP address of the machine used to trigger the event.
+          type: string
+        notes:
+          description: More details about the event.
+          type: string
+        otp_device_id:
+          description: ID of a device involved in the event.
+          type: integer
+        otp_device_name:
+          description: Name of a device involved in the event.
+          type: string
+        policy_id:
+          description: ID of the policy involved in the event.
+          type: integer
+        policy_name:
+          description: Name of the policy involved in the event.
+          type: string
+        resource_type_id:
+          description: "ID of the resource (user, role, group, and so forth) associated\
+            \ with the event."
+          type: integer
+        role_id:
+          description: ID of a role involved in the event.
+          type: integer
+        role_name:
+          description: Name of a role involved in the event.
+          type: string
+        user_id:
+          description: ID of the user that was acted upon to trigger the event.
+          type: integer
+        user_name:
+          description: Name of the user that was acted upon to trigger the event.
+          type: string
+        risk_cookie_id:
+          type: string
+        assumed_by_superadmin_or_reseller:
+          type: integer
+        certificate_id:
+          type: integer
+        mapping_id:
+          type: integer
+        radius_config_id:
+          type: integer
+        risk_score:
+          type: integer
+        param:
+          type: string
+        adc_id:
+          type: integer
+        solved:
+          type: boolean
+        service_directory_id:
+          type: integer
+        object_id:
+          type: integer
+        user_field_id:
+          type: integer
+        risk_reasons:
+          type: string
+        policy_type:
+          type: string
+        resolved_at:
+          type: string
+        trusted_idp_id:
+          type: integer
+        privilege_id:
+          type: integer
+        proxy_ip:
+          type: string
+      type: object
+    v1_pagination:
+      example:
+        after_cursor: after_cursor
+        previous_link: previous_link
+        before_cursor: before_cursor
+        next_link: next_link
+      properties:
+        before_cursor:
+          type: string
+        after_cursor:
+          type: string
+        previous_link:
+          type: string
+        next_link:
+          type: string
+      type: object
+    group:
+      example:
+        reference: reference
+        name: name
+        id: 0
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        reference:
+          type: string
+      type: object
+    v1_user:
+      description: Provides information about the user that will be logged in via
+        the session token.
+      example:
+        firstname: firstname
+        id: 0
+        email: email
+        lastname: lastname
+        username: username
+      properties:
+        email:
+          type: string
+        firstname:
+          type: string
+        id:
+          type: integer
+        lastname:
+          type: string
+        username:
+          type: string
+      type: object
     condition:
       example:
         source: source
@@ -5411,7 +6953,7 @@ components:
           message: message
       properties:
         status:
-          $ref: '#/components/schemas/status'
+          $ref: '#/components/schemas/v1_status'
       type: object
     revokeToken_request:
       properties:
@@ -5444,7 +6986,7 @@ components:
           message: message
       properties:
         status:
-          $ref: '#/components/schemas/status'
+          $ref: '#/components/schemas/v1_status'
         data:
           $ref: '#/components/schemas/getRateLimit_200_response_data'
       type: object
@@ -6187,6 +7729,544 @@ components:
         total:
           type: integer
       type: object
+    getEventTypes_200_response_data_inner:
+      example:
+        name: name
+        description: description
+        id: 0
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
+      type: object
+    getEventTypes_200_response:
+      example:
+        data:
+        - name: name
+          description: description
+          id: 0
+        - name: name
+          description: description
+          id: 0
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        data:
+          items:
+            $ref: '#/components/schemas/getEventTypes_200_response_data_inner'
+          type: array
+      type: object
+    getEvents_200_response:
+      example:
+        pagination:
+          after_cursor: after_cursor
+          previous_link: previous_link
+          before_cursor: before_cursor
+          next_link: next_link
+        data:
+        - risk_reasons: risk_reasons
+          privilege_id: 8
+          notes: notes
+          policy_id: 2
+          assumed_by_superadmin_or_reseller: 1
+          service_directory_id: 5
+          directory_sync_run_id: 5
+          user_name: user_name
+          risk_cookie_id: risk_cookie_id
+          created_at: created_at
+          solved: true
+          client_id: client_id
+          event_type_id: 2
+          otp_device_id: 3
+          actor_user_id: 6
+          certificate_id: 1
+          resource_type_id: 4
+          actor_user_name: actor_user_name
+          role_id: 7
+          param: param
+          error_description: error_description
+          user_field_id: 9
+          id: 9
+          ipaddr: ipaddr
+          app_id: 1
+          assuming_acting_user_id: 5
+          proxy_ip: proxy_ip
+          risk_score: 1
+          otp_device_name: otp_device_name
+          policy_name: policy_name
+          object_id: 9
+          app-name: app-name
+          adc_id: 4
+          role_name: role_name
+          custom_message: custom_message
+          policy_type: policy_type
+          account_id: 0
+          group-name: group-name
+          group_id: 7
+          user_id: 1
+          resolved_at: resolved_at
+          mapping_id: 6
+          radius_config_id: 7
+          trusted_idp_id: 6
+          actor_system: actor_system
+        - risk_reasons: risk_reasons
+          privilege_id: 8
+          notes: notes
+          policy_id: 2
+          assumed_by_superadmin_or_reseller: 1
+          service_directory_id: 5
+          directory_sync_run_id: 5
+          user_name: user_name
+          risk_cookie_id: risk_cookie_id
+          created_at: created_at
+          solved: true
+          client_id: client_id
+          event_type_id: 2
+          otp_device_id: 3
+          actor_user_id: 6
+          certificate_id: 1
+          resource_type_id: 4
+          actor_user_name: actor_user_name
+          role_id: 7
+          param: param
+          error_description: error_description
+          user_field_id: 9
+          id: 9
+          ipaddr: ipaddr
+          app_id: 1
+          assuming_acting_user_id: 5
+          proxy_ip: proxy_ip
+          risk_score: 1
+          otp_device_name: otp_device_name
+          policy_name: policy_name
+          object_id: 9
+          app-name: app-name
+          adc_id: 4
+          role_name: role_name
+          custom_message: custom_message
+          policy_type: policy_type
+          account_id: 0
+          group-name: group-name
+          group_id: 7
+          user_id: 1
+          resolved_at: resolved_at
+          mapping_id: 6
+          radius_config_id: 7
+          trusted_idp_id: 6
+          actor_system: actor_system
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        pagination:
+          $ref: '#/components/schemas/v1_pagination'
+        data:
+          items:
+            $ref: '#/components/schemas/event'
+          type: array
+      type: object
+    getEventById_200_response:
+      example:
+        data:
+        - risk_reasons: risk_reasons
+          privilege_id: 8
+          notes: notes
+          policy_id: 2
+          assumed_by_superadmin_or_reseller: 1
+          service_directory_id: 5
+          directory_sync_run_id: 5
+          user_name: user_name
+          risk_cookie_id: risk_cookie_id
+          created_at: created_at
+          solved: true
+          client_id: client_id
+          event_type_id: 2
+          otp_device_id: 3
+          actor_user_id: 6
+          certificate_id: 1
+          resource_type_id: 4
+          actor_user_name: actor_user_name
+          role_id: 7
+          param: param
+          error_description: error_description
+          user_field_id: 9
+          id: 9
+          ipaddr: ipaddr
+          app_id: 1
+          assuming_acting_user_id: 5
+          proxy_ip: proxy_ip
+          risk_score: 1
+          otp_device_name: otp_device_name
+          policy_name: policy_name
+          object_id: 9
+          app-name: app-name
+          adc_id: 4
+          role_name: role_name
+          custom_message: custom_message
+          policy_type: policy_type
+          account_id: 0
+          group-name: group-name
+          group_id: 7
+          user_id: 1
+          resolved_at: resolved_at
+          mapping_id: 6
+          radius_config_id: 7
+          trusted_idp_id: 6
+          actor_system: actor_system
+        - risk_reasons: risk_reasons
+          privilege_id: 8
+          notes: notes
+          policy_id: 2
+          assumed_by_superadmin_or_reseller: 1
+          service_directory_id: 5
+          directory_sync_run_id: 5
+          user_name: user_name
+          risk_cookie_id: risk_cookie_id
+          created_at: created_at
+          solved: true
+          client_id: client_id
+          event_type_id: 2
+          otp_device_id: 3
+          actor_user_id: 6
+          certificate_id: 1
+          resource_type_id: 4
+          actor_user_name: actor_user_name
+          role_id: 7
+          param: param
+          error_description: error_description
+          user_field_id: 9
+          id: 9
+          ipaddr: ipaddr
+          app_id: 1
+          assuming_acting_user_id: 5
+          proxy_ip: proxy_ip
+          risk_score: 1
+          otp_device_name: otp_device_name
+          policy_name: policy_name
+          object_id: 9
+          app-name: app-name
+          adc_id: 4
+          role_name: role_name
+          custom_message: custom_message
+          policy_type: policy_type
+          account_id: 0
+          group-name: group-name
+          group_id: 7
+          user_id: 1
+          resolved_at: resolved_at
+          mapping_id: 6
+          radius_config_id: 7
+          trusted_idp_id: 6
+          actor_system: actor_system
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        data:
+          items:
+            $ref: '#/components/schemas/event'
+          type: array
+      type: object
+    getGroups_200_response:
+      example:
+        pagination:
+          after_cursor: after_cursor
+          previous_link: previous_link
+          before_cursor: before_cursor
+          next_link: next_link
+        data:
+        - reference: reference
+          name: name
+          id: 0
+        - reference: reference
+          name: name
+          id: 0
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        pagination:
+          $ref: '#/components/schemas/v1_pagination'
+        data:
+          items:
+            $ref: '#/components/schemas/group'
+          type: array
+      type: object
+    getGroupById_200_response:
+      example:
+        data:
+        - reference: reference
+          name: name
+          id: 0
+        - reference: reference
+          name: name
+          id: 0
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        data:
+          items:
+            $ref: '#/components/schemas/group'
+          type: array
+      type: object
+    createSessionLoginToken_request:
+      properties:
+        username_or_email:
+          description: Set to the username or email of the user that you want to log
+            in.
+          type: string
+        password:
+          description: Set to the password of the user that you want to log in.
+          type: string
+        subodmain:
+          description: Set to the subdomain of the user that you want to log in.
+          type: string
+        fields:
+          description: A comma separated list of user fields to return.
+          type: string
+      required:
+      - password
+      - subdomain
+      - username_or_email
+      type: object
+    createSessionLoginToken_200_response_data_inner_devices_inner:
+      example:
+        device_id: 6
+        device_type: device_type
+      properties:
+        device_type:
+          description: "Lists an available MFA device type, such as OneLogin OTP SMS,\
+            \ Google Authenticator, or Duo Security."
+          type: string
+        device_id:
+          description: Lists an ID for the device type that must be submitted with
+            the Verify Factor API call.
+          type: integer
+      type: object
+    createSessionLoginToken_200_response_data_inner:
+      example:
+        session_token: session_token
+        callback_url: callback_url
+        expires_at: expires_at
+        devices:
+        - device_id: 6
+          device_type: device_type
+        - device_id: 6
+          device_type: device_type
+        state_token: state_token
+        return_to_url: return_to_url
+        user:
+          firstname: firstname
+          id: 0
+          email: email
+          lastname: lastname
+          username: username
+        status: status
+      properties:
+        expires_at:
+          description: Date and time when session token expires. Tokens expire 2 minutes
+            after creation. Returned only when MFA is not required.
+          type: string
+        return_to_url:
+          description: "Returns the return_to_url value sent in the request, if applicable.\
+            \ Returned only when MFA is not required."
+          type: string
+        session_token:
+          description: Provides the session token that can be used to log the user
+            in. Returned only when MFA is not required.
+          type: string
+        status:
+          description: username_or_email and password values sent are valid. Returned
+            only when MFA is not required.
+          type: string
+        user:
+          $ref: '#/components/schemas/v1_user'
+        state_token:
+          description: Value to submit with each Verify Factor API call until session
+            login token is issued. Returned only when MFA required.
+          type: string
+        callback_url:
+          description: "Verify Factor API endpoint where device_id, state_token, and\
+            \ otp_token must be sent. Returned only when MFA is required."
+          type: string
+        devices:
+          description: Provides device values that must be submitted with the Verify
+            Factor API call. Returned only when MFA is required
+          items:
+            $ref: '#/components/schemas/createSessionLoginToken_200_response_data_inner_devices_inner'
+          type: array
+      type: object
+    createSessionLoginToken_200_response:
+      example:
+        data:
+        - session_token: session_token
+          callback_url: callback_url
+          expires_at: expires_at
+          devices:
+          - device_id: 6
+            device_type: device_type
+          - device_id: 6
+            device_type: device_type
+          state_token: state_token
+          return_to_url: return_to_url
+          user:
+            firstname: firstname
+            id: 0
+            email: email
+            lastname: lastname
+            username: username
+          status: status
+        - session_token: session_token
+          callback_url: callback_url
+          expires_at: expires_at
+          devices:
+          - device_id: 6
+            device_type: device_type
+          - device_id: 6
+            device_type: device_type
+          state_token: state_token
+          return_to_url: return_to_url
+          user:
+            firstname: firstname
+            id: 0
+            email: email
+            lastname: lastname
+            username: username
+          status: status
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        data:
+          items:
+            $ref: '#/components/schemas/createSessionLoginToken_200_response_data_inner'
+          type: array
+      type: object
+    createSessionLoginToken_400_response:
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        error_method:
+          type: boolean
+      type: object
+    v1VerifyFactor_request:
+      properties:
+        device_id:
+          description: Provide the MFA device_id you are submitting for verification.
+            The device_id is supplied by the Create Session Login Token API
+          type: string
+        state_token:
+          description: Token of MFA device_id you are submitting for verification.
+            The state_token is supplied by the Create Session Login Token API.
+          type: string
+        otp_token:
+          description: Provide the OTP value for the MFA factor you are submitting
+            for verification.
+          type: string
+        do_not_notify:
+          description: "When verifying MFA via Protect Push, true stops additional\
+            \ push notifications being sent to the OneLogin Protect device."
+          type: boolean
+      required:
+      - device_id
+      - state_token
+      type: object
+    v1VerifyFactor_200_response_data_inner:
+      example:
+        session_token: session_token
+        expires_at: expires_at
+        return_to_url: return_to_url
+        user:
+          firstname: firstname
+          id: 0
+          email: email
+          lastname: lastname
+          username: username
+        status: status
+      properties:
+        expires_at:
+          description: Date and time at which the session token will expire. Tokens
+            expire two minutes after creation.
+          type: string
+        return_to_url:
+          description: "Returns the return_to_url value sent in the request, if applicable."
+          type: string
+        session_token:
+          description: Provides the session token that can be used to log the user
+            in.
+          type: string
+        status:
+          description: "Authenticated: Indicates that the username_or_email and password\
+            \ values sent in the request are valid."
+          type: string
+        user:
+          $ref: '#/components/schemas/v1_user'
+      type: object
+    v1VerifyFactor_200_response:
+      example:
+        data:
+        - session_token: session_token
+          expires_at: expires_at
+          return_to_url: return_to_url
+          user:
+            firstname: firstname
+            id: 0
+            email: email
+            lastname: lastname
+            username: username
+          status: status
+        - session_token: session_token
+          expires_at: expires_at
+          return_to_url: return_to_url
+          user:
+            firstname: firstname
+            id: 0
+            email: email
+            lastname: lastname
+            username: username
+          status: status
+        status:
+          code: 0
+          error: true
+          type: type
+          message: message
+      properties:
+        status:
+          $ref: '#/components/schemas/v1_status'
+        data:
+          items:
+            $ref: '#/components/schemas/v1VerifyFactor_200_response_data_inner'
+          type: array
+      type: object
     schema_provisioning:
       example:
         enabled: true
@@ -6250,22 +8330,6 @@ components:
           type: string
         factor_data:
           $ref: '#/components/schemas/factor_inner_factor_data'
-      type: object
-    status_2_status:
-      example:
-        code: 0
-        type: type
-        message: message
-        error: true
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        message:
-          type: string
-        error:
-          type: boolean
       type: object
     schema_1_added_by:
       example:

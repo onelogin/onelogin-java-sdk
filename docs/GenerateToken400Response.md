@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**status** | [**Status**](Status.md) |  |  [optional] |
+|**status** | [**V1Status**](V1Status.md) |  |  [optional] |
 
 
 

@@ -11,7 +11,7 @@
  */
 
 
-package org.openapitools.client.api;
+package com.onelogin.sdk;
 
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.model.ActivateFactorRequest;
