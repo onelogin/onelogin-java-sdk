@@ -40,7 +40,6 @@ docs/GenerateMfaTokenRequest.md
 docs/GenerateSamlAssertionRequest.md
 docs/GenerateToken200Response.md
 docs/GenerateToken400Response.md
-docs/GenerateTokenRequest.md
 docs/GetAuthorizationServer200Response.md
 docs/GetAvailableFactors200ResponseInner.md
 docs/GetClientApps200ResponseInner.md
@@ -174,7 +173,6 @@ src/main/java/com/onelogin/sdk/model/GenerateMfaTokenRequest.java
 src/main/java/com/onelogin/sdk/model/GenerateSamlAssertionRequest.java
 src/main/java/com/onelogin/sdk/model/GenerateToken200Response.java
 src/main/java/com/onelogin/sdk/model/GenerateToken400Response.java
-src/main/java/com/onelogin/sdk/model/GenerateTokenRequest.java
 src/main/java/com/onelogin/sdk/model/GetAuthorizationServer200Response.java
 src/main/java/com/onelogin/sdk/model/GetAvailableFactors200ResponseInner.java
 src/main/java/com/onelogin/sdk/model/GetClientApps200ResponseInner.java
@@ -246,3 +244,4 @@ src/main/java/com/onelogin/sdk/model/VerifyFactorRequest.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorSaml200Response.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorSamlRequest.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorVoice200ResponseInner.java
+src/test/java/com/onelogin/sdk/DefaultApiTest.java

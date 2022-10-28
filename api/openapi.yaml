@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: OneLogin API
-  version: 3.0.0-beta.1
+  version: 3.0.0
 servers:
 - url: "https://{subdomain}.{domain}.com"
   variables:
@@ -13,15 +13,9 @@ paths:
   /auth/oauth2/v2/token:
     post:
       operationId: generateToken
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/generateToken_request'
         required: true
@@ -53,7 +47,7 @@ paths:
                 $ref: '#/components/schemas/generateToken_400_response'
           description: "Typically, this error means that you are using the incorrect\
             \ method. Ensure that you are making a POST."
-      x-content-type: application/json
+      x-content-type: application/x-www-form-urlencoded
       x-accepts: application/json
   /auth/oauth2/revoke:
     post:
@@ -6917,10 +6911,18 @@ components:
       type: object
     generateToken_request:
       properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
         grant_type:
           enum:
           - client_credentials
           type: string
+      required:
+      - client_id
+      - client_secret
+      - grant_type
       type: object
     generateToken_200_response:
       example:

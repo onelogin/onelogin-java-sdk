@@ -2359,7 +2359,7 @@ No authorization required
 
 <a name="generateToken"></a>
 # **generateToken**
-> GenerateToken200Response generateToken(authorization, generateTokenRequest)
+> GenerateToken200Response generateToken(clientId, clientSecret, grantType)
 
 
 
@@ -2378,10 +2378,11 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
-    GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest(); // GenerateTokenRequest | 
+    String clientId = "clientId_example"; // String | 
+    String clientSecret = "clientSecret_example"; // String | 
+    String grantType = "client_credentials"; // String | 
     try {
-      GenerateToken200Response result = apiInstance.generateToken(authorization, generateTokenRequest);
+      GenerateToken200Response result = apiInstance.generateToken(clientId, clientSecret, grantType);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#generateToken");
@@ -2398,8 +2399,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
-| **generateTokenRequest** | [**GenerateTokenRequest**](GenerateTokenRequest.md)|  | |
+| **clientId** | **String**|  | |
+| **clientSecret** | **String**|  | |
+| **grantType** | **String**|  | [enum: client_credentials] |
 
 ### Return type
 
@@ -2411,7 +2413,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: application/x-www-form-urlencoded
  - **Accept**: application/json
 
 ### HTTP response details
