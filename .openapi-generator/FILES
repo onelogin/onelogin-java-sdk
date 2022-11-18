@@ -244,4 +244,3 @@ src/main/java/com/onelogin/sdk/model/VerifyFactorRequest.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorSaml200Response.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorSamlRequest.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorVoice200ResponseInner.java
-src/test/java/com/onelogin/sdk/DefaultApiTest.java

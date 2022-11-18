@@ -12,7 +12,7 @@
 |**expiresIn** | **Integer** |  |  [optional] |
 |**refreshToken** | **String** |  |  [optional] |
 |**tokenType** | **String** |  |  [optional] |
-|**accounttId** | **Integer** |  |  [optional] |
+|**accountId** | **Integer** |  |  [optional] |
 
 
 
