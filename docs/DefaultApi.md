@@ -135,7 +135,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     ActivateFactorRequest activateFactorRequest = new ActivateFactorRequest(); // ActivateFactorRequest | 
     try {
@@ -155,7 +155,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **activateFactorRequest** | [**ActivateFactorRequest**](ActivateFactorRequest.md)|  | |
 
@@ -199,7 +199,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     AddAccessTokenClaimRequest addAccessTokenClaimRequest = new AddAccessTokenClaimRequest(); // AddAccessTokenClaimRequest | 
     try {
@@ -220,7 +220,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **addAccessTokenClaimRequest** | [**AddAccessTokenClaimRequest**](AddAccessTokenClaimRequest.md)|  | |
 
@@ -266,7 +266,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     AddClientAppRequest addClientAppRequest = new AddClientAppRequest(); // AddClientAppRequest | 
     try {
@@ -287,7 +287,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **addClientAppRequest** | [**AddClientAppRequest**](AddClientAppRequest.md)|  | |
 
@@ -333,7 +333,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | 
     try {
@@ -354,7 +354,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)|  | |
 
@@ -398,7 +398,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | 
     try {
@@ -419,7 +419,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)|  | |
 
@@ -464,7 +464,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     AddScopeRequest addScopeRequest = new AddScopeRequest(); // AddScopeRequest | 
     try {
@@ -485,7 +485,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **addScopeRequest** | [**AddScopeRequest**](AddScopeRequest.md)|  | |
 
@@ -531,7 +531,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | The request body must contain an array of User Mapping IDs in the desired order.
     try {
       List<Integer> result = apiInstance.bulkMappingSort(authorization, requestBody);
@@ -551,7 +551,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)| The request body must contain an array of User Mapping IDs in the desired order. | |
 
 ### Return type
@@ -595,7 +595,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | The request body must contain an array of App Rule IDs in the desired order.
     try {
@@ -616,7 +616,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)| The request body must contain an array of App Rule IDs in the desired order. | |
 
@@ -661,7 +661,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Schema schema = new Schema(); // Schema | 
     try {
       Schema result = apiInstance.createApp(authorization, schema);
@@ -681,7 +681,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **schema** | [**Schema**](Schema.md)|  | |
 
 ### Return type
@@ -725,7 +725,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     CreateAuthorizationServerRequest createAuthorizationServerRequest = new CreateAuthorizationServerRequest(); // CreateAuthorizationServerRequest | 
     try {
       Id result = apiInstance.createAuthorizationServer(authorization, createAuthorizationServerRequest);
@@ -745,7 +745,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **createAuthorizationServerRequest** | [**CreateAuthorizationServerRequest**](CreateAuthorizationServerRequest.md)|  | |
 
 ### Return type
@@ -789,7 +789,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     CreateEnvironmentVariableRequest createEnvironmentVariableRequest = new CreateEnvironmentVariableRequest(); // CreateEnvironmentVariableRequest | 
     try {
       Envvar result = apiInstance.createEnvironmentVariable(authorization, createEnvironmentVariableRequest);
@@ -809,7 +809,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **createEnvironmentVariableRequest** | [**CreateEnvironmentVariableRequest**](CreateEnvironmentVariableRequest.md)|  | |
 
 ### Return type
@@ -853,7 +853,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Hook hook = new Hook(); // Hook | 
     try {
       apiInstance.createHook(authorization, hook);
@@ -872,7 +872,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hook** | [**Hook**](Hook.md)|  | |
 
 ### Return type
@@ -910,7 +910,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Mapping mapping = new Mapping(); // Mapping | 
     try {
       Integer result = apiInstance.createMapping(authorization, mapping);
@@ -930,7 +930,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mapping** | [**Mapping**](Mapping.md)|  | |
 
 ### Return type
@@ -974,7 +974,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     RiskRule riskRule = new RiskRule(); // RiskRule | 
     try {
       apiInstance.createRiskRule(authorization, riskRule);
@@ -993,7 +993,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRule** | [**RiskRule**](RiskRule.md)|  | |
 
 ### Return type
@@ -1031,7 +1031,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
       List<CreateRoles201ResponseInner> result = apiInstance.createRoles(authorization);
       System.out.println(result);
@@ -1050,7 +1050,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 
 ### Return type
 
@@ -1092,7 +1092,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Rule rule = new Rule(); // Rule | 
     try {
@@ -1113,7 +1113,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **rule** | [**Rule**](Rule.md)|  | |
 
@@ -1158,7 +1158,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     CreateSessionLoginTokenRequest createSessionLoginTokenRequest = new CreateSessionLoginTokenRequest(); // CreateSessionLoginTokenRequest | 
     String customAllowedOriginHeader1 = "customAllowedOriginHeader1_example"; // String | Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
     try {
@@ -1179,7 +1179,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **createSessionLoginTokenRequest** | [**CreateSessionLoginTokenRequest**](CreateSessionLoginTokenRequest.md)|  | |
 | **customAllowedOriginHeader1** | **String**| Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS. | [optional] |
 
@@ -1224,7 +1224,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     User user = new User(); // User | 
     String mappings = "async"; // String | Controls how mappings will be applied to the user on creation. Defaults to async.
     Boolean validatePolicy = true; // Boolean | Will passwords validate against the User Policy? Defaults to true.
@@ -1246,7 +1246,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **user** | [**User**](User.md)|  | |
 | **mappings** | **String**| Controls how mappings will be applied to the user on creation. Defaults to async. | [optional] [enum: async, sync, disabled] |
 | **validatePolicy** | **Boolean**| Will passwords validate against the User Policy? Defaults to true. | [optional] |
@@ -1293,7 +1293,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer claimId = 56; // Integer | 
     try {
@@ -1313,7 +1313,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **claimId** | **Integer**|  | |
 
@@ -1358,7 +1358,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     try {
       apiInstance.deleteApp(authorization, appId);
@@ -1377,7 +1377,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 
 ### Return type
@@ -1421,7 +1421,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer parameterId = 56; // Integer | 
     try {
@@ -1441,7 +1441,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **parameterId** | **Integer**|  | |
 
@@ -1487,7 +1487,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       apiInstance.deleteAuthorizationServer(authorization, id);
@@ -1506,7 +1506,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -1550,7 +1550,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String envvarId = "envvarId_example"; // String | Set to the id of the Hook Environment Variable that you want to fetch.
     try {
       apiInstance.deleteEnvironmentVariable(authorization, envvarId);
@@ -1569,7 +1569,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **envvarId** | **String**| Set to the id of the Hook Environment Variable that you want to fetch. | |
 
 ### Return type
@@ -1613,7 +1613,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer deviceId = 56; // Integer | Set to the device_id of the MFA device.
     try {
@@ -1633,7 +1633,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **deviceId** | **Integer**| Set to the device_id of the MFA device. | |
 
@@ -1676,7 +1676,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
     try {
       apiInstance.deleteHook(authorization, hookId);
@@ -1695,7 +1695,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
 
 ### Return type
@@ -1739,7 +1739,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
     try {
       apiInstance.deleteMapping(authorization, mappingId);
@@ -1758,7 +1758,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
 
 ### Return type
@@ -1802,7 +1802,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String riskRuleId = "riskRuleId_example"; // String | 
     try {
       RiskRule result = apiInstance.deleteRiskRule(authorization, riskRuleId);
@@ -1822,7 +1822,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRuleId** | **String**|  | |
 
 ### Return type
@@ -1865,7 +1865,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     try {
       apiInstance.deleteRole(authorization, roleId);
@@ -1884,7 +1884,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 
 ### Return type
@@ -1928,7 +1928,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer ruleId = 56; // Integer | The id of the app rule to locate.
     try {
@@ -1948,7 +1948,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **ruleId** | **Integer**| The id of the app rule to locate. | |
 
@@ -1993,7 +1993,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer scopeId = 56; // Integer | 
     try {
@@ -2013,7 +2013,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **scopeId** | **Integer**|  | |
 
@@ -2058,7 +2058,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     try {
       apiInstance.deleteUser(authorization, userId);
@@ -2077,7 +2077,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 
 ### Return type
@@ -2121,7 +2121,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | Request body is a list of user IDs tested against the mapping conditions to verify that the mapping would be applied
     try {
@@ -2142,7 +2142,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)| Request body is a list of user IDs tested against the mapping conditions to verify that the mapping would be applied | |
 
@@ -2187,7 +2187,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     EnrollFactorRequest enrollFactorRequest = new EnrollFactorRequest(); // EnrollFactorRequest | 
     try {
@@ -2208,7 +2208,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **enrollFactorRequest** | [**EnrollFactorRequest**](EnrollFactorRequest.md)|  | |
 
@@ -2253,7 +2253,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     GenerateMfaTokenRequest generateMfaTokenRequest = new GenerateMfaTokenRequest(); // GenerateMfaTokenRequest | 
     try {
       GenerateMfaToken200Response result = apiInstance.generateMfaToken(authorization, generateMfaTokenRequest);
@@ -2273,7 +2273,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **generateMfaTokenRequest** | [**GenerateMfaTokenRequest**](GenerateMfaTokenRequest.md)|  | |
 
 ### Return type
@@ -2317,7 +2317,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     GenerateSamlAssertionRequest generateSamlAssertionRequest = new GenerateSamlAssertionRequest(); // GenerateSamlAssertionRequest | 
     try {
       apiInstance.generateSamlAssertion(authorization, generateSamlAssertionRequest);
@@ -2336,7 +2336,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **generateSamlAssertionRequest** | [**GenerateSamlAssertionRequest**](GenerateSamlAssertionRequest.md)|  | |
 
 ### Return type
@@ -2359,7 +2359,7 @@ No authorization required
 
 <a name="generateToken"></a>
 # **generateToken**
-> GenerateToken200Response generateToken(authorization, generateTokenRequest)
+> GenerateToken200Response generateToken(clientId, clientSecret, grantType)
 
 
 
@@ -2378,10 +2378,11 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
-    GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest(); // GenerateTokenRequest | 
+    String clientId = "clientId_example"; // String | 
+    String clientSecret = "clientSecret_example"; // String | 
+    String grantType = "client_credentials"; // String | 
     try {
-      GenerateToken200Response result = apiInstance.generateToken(authorization, generateTokenRequest);
+      GenerateToken200Response result = apiInstance.generateToken(clientId, clientSecret, grantType);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#generateToken");
@@ -2398,8 +2399,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
-| **generateTokenRequest** | [**GenerateTokenRequest**](GenerateTokenRequest.md)|  | |
+| **clientId** | **String**|  | |
+| **clientSecret** | **String**|  | |
+| **grantType** | **String**|  | [enum: client_credentials] |
 
 ### Return type
 
@@ -2411,7 +2413,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: application/x-www-form-urlencoded
  - **Accept**: application/json
 
 ### HTTP response details
@@ -2443,7 +2445,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     try {
       Schema result = apiInstance.getApp(authorization, appId);
@@ -2463,7 +2465,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 
 ### Return type
@@ -2507,7 +2509,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       GetAuthorizationServer200Response result = apiInstance.getAuthorizationServer(authorization, id);
@@ -2527,7 +2529,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -2571,7 +2573,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     try {
       List<GetAvailableFactors200ResponseInner> result = apiInstance.getAvailableFactors(authorization, userId);
@@ -2591,7 +2593,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 
 ### Return type
@@ -2634,7 +2636,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       List<GetClientApps200ResponseInner> result = apiInstance.getClientApps(authorization, id);
@@ -2654,7 +2656,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -2698,7 +2700,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     try {
       List<Device> result = apiInstance.getEnrolledFactors(authorization, userId);
@@ -2718,7 +2720,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 
 ### Return type
@@ -2761,7 +2763,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String envvarId = "envvarId_example"; // String | Set to the id of the Hook Environment Variable that you want to fetch.
     try {
       Envvar result = apiInstance.getEnvironmentVariable(authorization, envvarId);
@@ -2781,7 +2783,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **envvarId** | **String**| Set to the id of the Hook Environment Variable that you want to fetch. | |
 
 ### Return type
@@ -2824,7 +2826,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       GetEventById200Response result = apiInstance.getEventById(authorization, id);
@@ -2844,7 +2846,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -2945,7 +2947,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
     String until = "until_example"; // String | Include the until query parameter to return results with created_at before the value
@@ -2976,7 +2978,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
 | **until** | **String**| Include the until query parameter to return results with created_at before the value | [optional] |
@@ -3031,7 +3033,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       GetGroupById200Response result = apiInstance.getGroupById(authorization, id);
@@ -3051,7 +3053,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -3096,7 +3098,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
     String until = "until_example"; // String | Include the until query parameter to return results with created_at before the value
     String since = "since_example"; // String | Include the until query parameter to return results with created_at after the value
@@ -3121,7 +3123,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
 | **until** | **String**| Include the until query parameter to return results with created_at before the value | [optional] |
 | **since** | **String**| Include the until query parameter to return results with created_at after the value | [optional] |
@@ -3170,7 +3172,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
     try {
       Hook result = apiInstance.getHook(authorization, hookId);
@@ -3190,7 +3192,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
 
 ### Return type
@@ -3234,7 +3236,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
@@ -3259,7 +3261,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
@@ -3308,7 +3310,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
     try {
       Mapping result = apiInstance.getMapping(authorization, mappingId);
@@ -3328,7 +3330,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
 
 ### Return type
@@ -3372,7 +3374,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
       GetRateLimit200Response result = apiInstance.getRateLimit(authorization);
       System.out.println(result);
@@ -3391,7 +3393,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 
 ### Return type
 
@@ -3435,7 +3437,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String riskRuleId = "riskRuleId_example"; // String | 
     try {
       apiInstance.getRiskRule(authorization, riskRuleId);
@@ -3454,7 +3456,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRuleId** | **String**|  | |
 
 ### Return type
@@ -3492,7 +3494,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     GetRiskScoreRequest getRiskScoreRequest = new GetRiskScoreRequest(); // GetRiskScoreRequest | 
     try {
       GetRiskScore200Response result = apiInstance.getRiskScore(authorization, getRiskScoreRequest);
@@ -3512,7 +3514,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **getRiskScoreRequest** | [**GetRiskScoreRequest**](GetRiskScoreRequest.md)|  | |
 
 ### Return type
@@ -3556,7 +3558,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     try {
       Role result = apiInstance.getRole(authorization, roleId);
@@ -3576,7 +3578,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 
 ### Return type
@@ -3620,7 +3622,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
@@ -3645,7 +3647,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
@@ -3694,7 +3696,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
@@ -3718,7 +3720,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
@@ -3766,7 +3768,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
@@ -3791,7 +3793,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
@@ -3840,7 +3842,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer ruleId = 56; // Integer | The id of the app rule to locate.
     try {
@@ -3861,7 +3863,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **ruleId** | **Integer**| The id of the app rule to locate. | |
 
@@ -3906,7 +3908,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String before = "before_example"; // String | Optional ISO8601 formatted date string. Defaults to current date. Maximum date is 90 days ago.
     String after = "after_example"; // String | Optional ISO8601 formatted date string. Defaults to 30 days ago. Maximum date is 90 days ago.
     try {
@@ -3927,7 +3929,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **before** | **String**| Optional ISO8601 formatted date string. Defaults to current date. Maximum date is 90 days ago. | [optional] |
 | **after** | **String**| Optional ISO8601 formatted date string. Defaults to 30 days ago. Maximum date is 90 days ago. | [optional] |
 
@@ -3971,7 +3973,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     try {
       User result = apiInstance.getUser(authorization, userId);
@@ -3991,7 +3993,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 
 ### Return type
@@ -4035,7 +4037,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Boolean ignoreVisibility = true; // Boolean | Defaults to `false`. When `true` will show all apps that are assigned to a user regardless of their portal visibility setting.
     try {
@@ -4056,7 +4058,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **ignoreVisibility** | **Boolean**| Defaults to &#x60;false&#x60;. When &#x60;true&#x60; will show all apps that are assigned to a user regardless of their portal visibility setting. | [optional] |
 
@@ -4101,7 +4103,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       List<ListAccessTokenClaims200ResponseInner> result = apiInstance.listAccessTokenClaims(authorization, id);
@@ -4121,7 +4123,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -4165,7 +4167,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     String actionValue = "actionValue_example"; // String | The value for the selected action.
     try {
@@ -4186,7 +4188,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **actionValue** | **String**| The value for the selected action. | |
 
@@ -4230,7 +4232,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     try {
       List<ListActions200ResponseInner> result = apiInstance.listActions(authorization, appId);
@@ -4250,7 +4252,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 
 ### Return type
@@ -4293,7 +4295,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
@@ -4316,7 +4318,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
@@ -4362,7 +4364,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -4387,7 +4389,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4436,7 +4438,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
       List<ListAuthorizationServers200ResponseInner> result = apiInstance.listAuthorizationServers(authorization);
       System.out.println(result);
@@ -4455,7 +4457,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 
 ### Return type
 
@@ -4497,7 +4499,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
     try {
@@ -4518,7 +4520,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **conditionValue** | **String**| The value for the selected condition. | |
 
@@ -4562,7 +4564,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
     try {
@@ -4583,7 +4585,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **conditionValue** | **String**| The value for the selected condition. | |
 
@@ -4627,7 +4629,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     try {
       List<ListConditions200ResponseInner> result = apiInstance.listConditions(authorization, appId);
@@ -4647,7 +4649,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 
 ### Return type
@@ -4690,7 +4692,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -4714,7 +4716,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4762,7 +4764,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -4784,7 +4786,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4829,7 +4831,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -4851,7 +4853,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4896,7 +4898,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String actionValue = "actionValue_example"; // String | The value for the selected action.
     try {
       List<ListConditionValues200ResponseInner> result = apiInstance.listMappingActionValues(authorization, actionValue);
@@ -4916,7 +4918,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **actionValue** | **String**| The value for the selected action. | |
 
 ### Return type
@@ -4959,7 +4961,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
       List<ListActions200ResponseInner> result = apiInstance.listMappingActions(authorization);
       System.out.println(result);
@@ -4978,7 +4980,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 
 ### Return type
 
@@ -5020,7 +5022,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
     try {
       List<ListMappingConditionOperators200ResponseInner> result = apiInstance.listMappingConditionOperators(authorization, conditionValue);
@@ -5040,7 +5042,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **conditionValue** | **String**| The value for the selected condition. | |
 
 ### Return type
@@ -5083,7 +5085,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
     try {
       List<ListConditionValues200ResponseInner> result = apiInstance.listMappingConditionValues(authorization, conditionValue);
@@ -5103,7 +5105,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **conditionValue** | **String**| The value for the selected condition. | |
 
 ### Return type
@@ -5146,7 +5148,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
       List<ListMappingConditions200ResponseInner> result = apiInstance.listMappingConditions(authorization);
       System.out.println(result);
@@ -5165,7 +5167,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 
 ### Return type
 
@@ -5207,7 +5209,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Boolean enabled = true; // Boolean | Defaults to true. When set to `false` will return all disabled rules.
     String hasCondition = "hasCondition_example"; // String | Filters Rules based on their Conditions.
     String hasConditionType = "hasConditionType_example"; // String | Filters Rules based on their condition types.
@@ -5231,7 +5233,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **enabled** | **Boolean**| Defaults to true. When set to &#x60;false&#x60; will return all disabled rules. | [optional] |
 | **hasCondition** | **String**| Filters Rules based on their Conditions. | [optional] |
 | **hasConditionType** | **String**| Filters Rules based on their condition types. | [optional] |
@@ -5278,7 +5280,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
       apiInstance.listRiskRules(authorization);
     } catch (ApiException e) {
@@ -5296,7 +5298,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 
 ### Return type
 
@@ -5333,7 +5335,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -5358,7 +5360,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -5406,7 +5408,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Boolean enabled = true; // Boolean | Defaults to true. When set to `false` will return all disabled rules.
     String hasCondition = "hasCondition_example"; // String | Filters Rules based on their Conditions.
@@ -5431,7 +5433,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **enabled** | **Boolean**| Defaults to true. When set to &#x60;false&#x60; will return all disabled rules. | [optional] |
 | **hasCondition** | **String**| Filters Rules based on their Conditions. | [optional] |
@@ -5479,7 +5481,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     try {
       List<ListScopes200ResponseInner> result = apiInstance.listScopes(authorization, id);
@@ -5499,7 +5501,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 
 ### Return type
@@ -5543,7 +5545,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
@@ -5582,7 +5584,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
@@ -5646,7 +5648,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer clientAppId = 56; // Integer | 
     try {
@@ -5666,7 +5668,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **clientAppId** | **Integer**|  | |
 
@@ -5711,7 +5713,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     RemoveRoleUsersRequest removeRoleUsersRequest = new RemoveRoleUsersRequest(); // RemoveRoleUsersRequest | 
     try {
@@ -5731,7 +5733,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **removeRoleUsersRequest** | [**RemoveRoleUsersRequest**](RemoveRoleUsersRequest.md)|  | |
 
@@ -5776,7 +5778,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     RemoveRoleUsersRequest removeRoleUsersRequest = new RemoveRoleUsersRequest(); // RemoveRoleUsersRequest | 
     try {
@@ -5796,7 +5798,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **removeRoleUsersRequest** | [**RemoveRoleUsersRequest**](RemoveRoleUsersRequest.md)|  | |
 
@@ -5906,7 +5908,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | 
     try {
@@ -5927,7 +5929,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)|  | |
 
@@ -5972,7 +5974,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     TrackEventRequest trackEventRequest = new TrackEventRequest(); // TrackEventRequest | 
     try {
       apiInstance.trackEvent(authorization, trackEventRequest);
@@ -5991,7 +5993,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **trackEventRequest** | [**TrackEventRequest**](TrackEventRequest.md)|  | |
 
 ### Return type
@@ -6035,7 +6037,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer claimId = 56; // Integer | 
     AddAccessTokenClaimRequest addAccessTokenClaimRequest = new AddAccessTokenClaimRequest(); // AddAccessTokenClaimRequest | 
@@ -6057,7 +6059,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **claimId** | **Integer**|  | |
 | **addAccessTokenClaimRequest** | [**AddAccessTokenClaimRequest**](AddAccessTokenClaimRequest.md)|  | |
@@ -6104,7 +6106,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Schema schema = new Schema(); // Schema | 
     try {
@@ -6125,7 +6127,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **schema** | [**Schema**](Schema.md)|  | |
 
@@ -6170,7 +6172,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     CreateAuthorizationServerRequest createAuthorizationServerRequest = new CreateAuthorizationServerRequest(); // CreateAuthorizationServerRequest | 
     try {
@@ -6191,7 +6193,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **createAuthorizationServerRequest** | [**CreateAuthorizationServerRequest**](CreateAuthorizationServerRequest.md)|  | |
 
@@ -6237,7 +6239,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer clientAppId = 56; // Integer | 
     UpdateClientAppRequest updateClientAppRequest = new UpdateClientAppRequest(); // UpdateClientAppRequest | 
@@ -6259,7 +6261,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **clientAppId** | **Integer**|  | |
 | **updateClientAppRequest** | [**UpdateClientAppRequest**](UpdateClientAppRequest.md)|  | |
@@ -6306,7 +6308,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String envvarId = "envvarId_example"; // String | Set to the id of the Hook Environment Variable that you want to fetch.
     UpdateEnvironmentVariableRequest updateEnvironmentVariableRequest = new UpdateEnvironmentVariableRequest(); // UpdateEnvironmentVariableRequest | 
     try {
@@ -6327,7 +6329,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **envvarId** | **String**| Set to the id of the Hook Environment Variable that you want to fetch. | |
 | **updateEnvironmentVariableRequest** | [**UpdateEnvironmentVariableRequest**](UpdateEnvironmentVariableRequest.md)|  | |
 
@@ -6373,7 +6375,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
     Hook hook = new Hook(); // Hook | 
     try {
@@ -6394,7 +6396,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
 | **hook** | [**Hook**](Hook.md)|  | |
 
@@ -6439,7 +6441,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
     Mapping mapping = new Mapping(); // Mapping | 
     try {
@@ -6460,7 +6462,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
 | **mapping** | [**Mapping**](Mapping.md)|  | |
 
@@ -6505,7 +6507,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String riskRuleId = "riskRuleId_example"; // String | 
     RiskRule riskRule = new RiskRule(); // RiskRule | 
     try {
@@ -6526,7 +6528,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRuleId** | **String**|  | |
 | **riskRule** | [**RiskRule**](RiskRule.md)|  | |
 
@@ -6571,7 +6573,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     Role role = new Role(); // Role | 
     try {
@@ -6592,7 +6594,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **role** | [**Role**](Role.md)|  | |
 
@@ -6637,7 +6639,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer ruleId = 56; // Integer | The id of the app rule to locate.
     Rule rule = new Rule(); // Rule | 
@@ -6659,7 +6661,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **ruleId** | **Integer**| The id of the app rule to locate. | |
 | **rule** | [**Rule**](Rule.md)|  | |
@@ -6705,7 +6707,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer scopeId = 56; // Integer | 
     AddScopeRequest addScopeRequest = new AddScopeRequest(); // AddScopeRequest | 
@@ -6727,7 +6729,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **scopeId** | **Integer**|  | |
 | **addScopeRequest** | [**AddScopeRequest**](AddScopeRequest.md)|  | |
@@ -6774,7 +6776,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     User user = new User(); // User | 
     String mappings = "async"; // String | Controls how mappings will be applied to the user on creation. Defaults to async.
@@ -6797,7 +6799,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **user** | [**User**](User.md)|  | |
 | **mappings** | **String**| Controls how mappings will be applied to the user on creation. Defaults to async. | [optional] [enum: async, sync, disabled] |
@@ -6846,7 +6848,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     V1VerifyFactorRequest v1VerifyFactorRequest = new V1VerifyFactorRequest(); // V1VerifyFactorRequest | 
     String customAllowedOriginHeader1 = "customAllowedOriginHeader1_example"; // String | Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
     try {
@@ -6867,7 +6869,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **v1VerifyFactorRequest** | [**V1VerifyFactorRequest**](V1VerifyFactorRequest.md)|  | |
 | **customAllowedOriginHeader1** | **String**| Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS. | [optional] |
 
@@ -6912,7 +6914,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer registrationId = 56; // Integer | Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor.
     VerifyEnrollmentRequest verifyEnrollmentRequest = new VerifyEnrollmentRequest(); // VerifyEnrollmentRequest | 
@@ -6934,7 +6936,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **registrationId** | **Integer**| Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor. | |
 | **verifyEnrollmentRequest** | [**VerifyEnrollmentRequest**](VerifyEnrollmentRequest.md)|  | |
@@ -6979,7 +6981,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer registrationId = 56; // Integer | Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor.
     try {
@@ -7000,7 +7002,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **registrationId** | **Integer**| Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor. | |
 
@@ -7044,7 +7046,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer verificationId = 56; // Integer | The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call.
     VerifyFactorRequest verifyFactorRequest = new VerifyFactorRequest(); // VerifyFactorRequest | 
@@ -7066,7 +7068,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **verificationId** | **Integer**| The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call. | |
 | **verifyFactorRequest** | [**VerifyFactorRequest**](VerifyFactorRequest.md)|  | |
@@ -7112,7 +7114,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     VerifyFactorSamlRequest verifyFactorSamlRequest = new VerifyFactorSamlRequest(); // VerifyFactorSamlRequest | 
     try {
       VerifyFactorSaml200Response result = apiInstance.verifyFactorSaml(authorization, verifyFactorSamlRequest);
@@ -7132,7 +7134,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **verifyFactorSamlRequest** | [**VerifyFactorSamlRequest**](VerifyFactorSamlRequest.md)|  | |
 
 ### Return type
@@ -7177,7 +7179,7 @@ public class Example {
     defaultClient.setBasePath("https://onelogininc.onelogin.com");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer verificationId = 56; // Integer | The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call.
     try {
@@ -7198,7 +7200,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **verificationId** | **Integer**| The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call. | |
 
