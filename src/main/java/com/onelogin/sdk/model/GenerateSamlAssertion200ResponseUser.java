@@ -48,7 +48,7 @@ import com.onelogin.sdk.JSON;
  * Provides information about the user that will be logged in via the SAML assertion. Returned only when MFA is required.
  */
 @ApiModel(description = "Provides information about the user that will be logged in via the SAML assertion. Returned only when MFA is required.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-01-04T13:30:16.594658-08:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-01-04T14:04:05.007954-08:00[America/Los_Angeles]")
 public class GenerateSamlAssertion200ResponseUser {
   public static final String SERIALIZED_NAME_LASTNAME = "lastname";
   @SerializedName(SERIALIZED_NAME_LASTNAME)

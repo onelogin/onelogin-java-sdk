@@ -2,7 +2,7 @@
 
 OneLogin API
 - API version: 3.1.0
-  - Build date: 2023-01-04T13:30:16.594658-08:00[America/Los_Angeles]
+  - Build date: 2023-01-04T14:04:05.007954-08:00[America/Los_Angeles]
 
 OpenAPI Specification for OneLogin
 

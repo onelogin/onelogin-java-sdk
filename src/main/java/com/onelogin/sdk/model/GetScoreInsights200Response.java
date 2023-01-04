@@ -48,7 +48,7 @@ import com.onelogin.sdk.JSON;
 /**
  * GetScoreInsights200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-01-04T13:30:16.594658-08:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-01-04T14:04:05.007954-08:00[America/Los_Angeles]")
 public class GetScoreInsights200Response {
   public static final String SERIALIZED_NAME_SCORES = "scores";
   @SerializedName(SERIALIZED_NAME_SCORES)
