@@ -26,6 +26,8 @@ docs/CreateSessionLoginToken400Response.md
 docs/CreateSessionLoginTokenRequest.md
 docs/DefaultApi.md
 docs/Device.md
+docs/DryRunMapping200ResponseInner.md
+docs/DryRunMapping200ResponseInnerUser.md
 docs/EnrollFactorRequest.md
 docs/Envvar.md
 docs/ErrorStatus.md
@@ -37,6 +39,9 @@ docs/GenerateMfaToken200Response.md
 docs/GenerateMfaToken422Response.md
 docs/GenerateMfaToken422ResponseDetails.md
 docs/GenerateMfaTokenRequest.md
+docs/GenerateSamlAssertion200Response.md
+docs/GenerateSamlAssertion200ResponseDevicesInner.md
+docs/GenerateSamlAssertion200ResponseUser.md
 docs/GenerateSamlAssertionRequest.md
 docs/GenerateToken200Response.md
 docs/GenerateToken400Response.md
@@ -159,6 +164,8 @@ src/main/java/com/onelogin/sdk/model/CreateSessionLoginToken200ResponseDataInner
 src/main/java/com/onelogin/sdk/model/CreateSessionLoginToken400Response.java
 src/main/java/com/onelogin/sdk/model/CreateSessionLoginTokenRequest.java
 src/main/java/com/onelogin/sdk/model/Device.java
+src/main/java/com/onelogin/sdk/model/DryRunMapping200ResponseInner.java
+src/main/java/com/onelogin/sdk/model/DryRunMapping200ResponseInnerUser.java
 src/main/java/com/onelogin/sdk/model/EnrollFactorRequest.java
 src/main/java/com/onelogin/sdk/model/Envvar.java
 src/main/java/com/onelogin/sdk/model/ErrorStatus.java
@@ -170,6 +177,9 @@ src/main/java/com/onelogin/sdk/model/GenerateMfaToken200Response.java
 src/main/java/com/onelogin/sdk/model/GenerateMfaToken422Response.java
 src/main/java/com/onelogin/sdk/model/GenerateMfaToken422ResponseDetails.java
 src/main/java/com/onelogin/sdk/model/GenerateMfaTokenRequest.java
+src/main/java/com/onelogin/sdk/model/GenerateSamlAssertion200Response.java
+src/main/java/com/onelogin/sdk/model/GenerateSamlAssertion200ResponseDevicesInner.java
+src/main/java/com/onelogin/sdk/model/GenerateSamlAssertion200ResponseUser.java
 src/main/java/com/onelogin/sdk/model/GenerateSamlAssertionRequest.java
 src/main/java/com/onelogin/sdk/model/GenerateToken200Response.java
 src/main/java/com/onelogin/sdk/model/GenerateToken400Response.java
@@ -244,3 +254,8 @@ src/main/java/com/onelogin/sdk/model/VerifyFactorRequest.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorSaml200Response.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorSamlRequest.java
 src/main/java/com/onelogin/sdk/model/VerifyFactorVoice200ResponseInner.java
+src/test/java/com/onelogin/sdk/model/DryRunMapping200ResponseInnerTest.java
+src/test/java/com/onelogin/sdk/model/DryRunMapping200ResponseInnerUserTest.java
+src/test/java/com/onelogin/sdk/model/GenerateSamlAssertion200ResponseDevicesInnerTest.java
+src/test/java/com/onelogin/sdk/model/GenerateSamlAssertion200ResponseTest.java
+src/test/java/com/onelogin/sdk/model/GenerateSamlAssertion200ResponseUserTest.java

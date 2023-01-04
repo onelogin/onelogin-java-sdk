@@ -1,14 +1,23 @@
 openapi: 3.0.3
 info:
+  contact:
+    email: support@onelogin.com
+    name: OneLogin
+    url: https://support.onelogin.com
+  description: OpenAPI Specification for OneLogin
+  license:
+    name: MIT
   title: OneLogin API
-  version: 3.0.1
+  version: 3.1.0
 servers:
 - url: "https://{subdomain}.{domain}.com"
   variables:
     subdomain:
-      default: onelogininc
+      default: api.us
     domain:
       default: onelogin
+security:
+- bearer: []
 paths:
   /auth/oauth2/v2/token:
     post:
@@ -99,7 +108,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       responses:
@@ -126,6 +134,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/generateToken_400_response'
+          description: "Typically, this error means that you are using the incorrect\
+            \ method. If you receive this error, ensure that you are making a GET."
       x-accepts: application/json
   /api/2/api_authorizations:
     get:
@@ -134,7 +144,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       responses:
@@ -160,7 +169,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -194,7 +202,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -225,7 +232,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -260,7 +266,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -306,7 +311,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -343,7 +347,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -388,7 +391,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -424,7 +426,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -474,7 +475,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -511,7 +511,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -556,7 +555,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -592,7 +590,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -642,7 +639,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -679,7 +675,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -728,7 +723,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -765,7 +759,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -819,7 +812,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: "The total number of items returned per page. The maximum limit\
@@ -902,7 +894,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -937,7 +928,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -968,7 +958,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1003,7 +992,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1043,7 +1031,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1086,7 +1073,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1151,7 +1137,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1208,7 +1193,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1247,7 +1231,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1284,7 +1267,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1325,7 +1307,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1370,7 +1351,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1402,7 +1382,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1440,7 +1419,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1478,7 +1456,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1503,14 +1480,13 @@ paths:
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
-  /api/2/apps/{app_id}/rules/actions/{actuion_value}/values:
+  /api/2/apps/{app_id}/rules/actions/{action_value}/values:
     get:
       operationId: listActionValues
       parameters:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1548,7 +1524,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -1593,7 +1568,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: "The total number of items returned per page. The maximum limit\
@@ -1671,7 +1645,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1704,7 +1677,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1752,7 +1724,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1791,7 +1762,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1838,7 +1808,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1871,7 +1840,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1897,7 +1865,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1915,10 +1882,6 @@ paths:
       responses:
         "201":
           content:
-            application/json: {}
-          description: CREATED
-        "401":
-          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status'
@@ -1933,7 +1896,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -1977,7 +1939,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -2028,9 +1989,14 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
+      - description: Set to the id of the user.
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: integer
       requestBody:
         content:
           application/json:
@@ -2067,7 +2033,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: "The total number of items returned per page. The maximum limit\
@@ -2145,9 +2110,10 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
+      requestBody:
+        $ref: '#/components/requestBodies/role'
       responses:
         "201":
           content:
@@ -2164,6 +2130,7 @@ paths:
                 $ref: '#/components/schemas/status'
           description: "Typically, this error means that your access token value is\
             \ invalid."
+      x-content-type: application/json
       x-accepts: application/json
   /api/2/roles/{role_id}:
     delete:
@@ -2172,7 +2139,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2204,7 +2170,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2240,7 +2205,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2281,7 +2245,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2358,7 +2321,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2408,7 +2370,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2447,7 +2408,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2530,7 +2490,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2580,7 +2539,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2619,7 +2577,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2702,7 +2659,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the role you want to return.
@@ -2745,7 +2701,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -2757,8 +2712,22 @@ paths:
       responses:
         "200":
           content:
-            application/json: {}
+            application/json:
+              schema:
+                $ref: '#/components/schemas/generateSamlAssertion_200_response'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: BAD REQUEST
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: UNAUTHORIZED
       x-content-type: application/json
       x-accepts: application/json
   /api/2/saml_assertion/verify_factor:
@@ -2768,7 +2737,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -2811,7 +2779,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: "The total number of items returned per page. The maximum limit\
@@ -2870,11 +2837,37 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
         $ref: '#/components/requestBodies/hook'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook'
+          description: CREATED
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+          description: "Typically, this error means that your access token value is\
+            \ invalid."
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook_status'
+          description: You have tried to create another function for a hook that only
+            allows a single one to be defined.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/hook_status'
+          description: You function is not base64 encoded.
       x-content-type: application/json
       x-accepts: application/json
   /api/2/hooks/{hook_id}:
@@ -2884,7 +2877,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook that you want to return.
@@ -2917,7 +2909,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook that you want to return.
@@ -2953,7 +2944,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook that you want to return.
@@ -2993,7 +2983,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook that you want to return.
@@ -3075,7 +3064,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: "The total number of items returned per page. The maximum limit\
@@ -3134,7 +3122,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -3173,7 +3160,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook Environment Variable that you want
@@ -3207,7 +3193,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook Environment Variable that you want
@@ -3238,7 +3223,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the Hook Environment Variable that you want
@@ -3289,7 +3273,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: "The total number of items returned per page. The maximum limit\
@@ -3340,7 +3323,9 @@ paths:
         name: last_login_since
         schema:
           type: string
-      - in: query
+      - description: An ISO8601 timestamp value that returns all users that logged
+          in before a given date & time.
+        in: query
         name: last_login_until
         schema:
           type: string
@@ -3454,7 +3439,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Controls how mappings will be applied to the user on creation.
@@ -3511,7 +3495,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -3543,7 +3526,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -3579,7 +3561,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -3648,7 +3629,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Set to the id of the user.
@@ -3693,7 +3673,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Defaults to true. When set to `false` will return all disabled
@@ -3745,7 +3724,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -3779,7 +3757,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The id of the user mapping to locate.
@@ -3811,7 +3788,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The id of the user mapping to locate.
@@ -3847,7 +3823,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The id of the user mapping to locate.
@@ -3887,7 +3862,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The id of the user mapping to locate.
@@ -3912,7 +3886,7 @@ paths:
             application/json:
               schema:
                 items:
-                  type: object
+                  $ref: '#/components/schemas/dryRunMapping_200_response_inner'
                 type: array
           description: OK
         "401":
@@ -3937,7 +3911,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       responses:
@@ -3964,7 +3937,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The value for the selected condition.
@@ -3997,7 +3969,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The value for the selected condition.
@@ -4030,7 +4001,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       responses:
@@ -4050,14 +4020,13 @@ paths:
           description: "Typically, this error means that your access token value is\
             \ invalid."
       x-accepts: application/json
-  /api/2/apps/mappings/actions/{actuion_value}/values:
+  /api/2/apps/mappings/actions/{action_value}/values:
     get:
       operationId: listMappingActionValues
       parameters:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: The value for the selected action.
@@ -4090,7 +4059,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -4130,7 +4098,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -4155,7 +4122,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
@@ -4188,9 +4154,19 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/risk_rule'
+                type: array
+          description: OK
+        "401":
+          description: Invalid API Key
       x-accepts: application/json
     post:
       operationId: createRiskRule
@@ -4198,11 +4174,21 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       requestBody:
         $ref: '#/components/requestBodies/risk_rule'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/risk_rule'
+          description: CREATED
+        "400":
+          description: BAD REQUEST
+        "401":
+          description: Invalid API Key
       x-content-type: application/json
       x-accepts: application/json
   /api/2/risk/rules/{risk_rule_id}:
@@ -4212,7 +4198,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -4236,7 +4221,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -4244,6 +4228,15 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/id_5'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/risk_rule'
+          description: OK
+        "401":
+          description: Invalid API Key
       x-accepts: application/json
     put:
       operationId: updateRiskRule
@@ -4251,7 +4244,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
@@ -4281,7 +4273,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Optional ISO8601 formatted date string. Defaults to current date.
@@ -4324,7 +4315,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Optional. Comma delimited list of fields to return.
@@ -4422,11 +4412,10 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
-        name: id
+        name: event_id
         required: true
         schema:
           type: integer
@@ -4464,7 +4453,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Optional. Comma delimited list of fields to return.
@@ -4502,7 +4490,7 @@ paths:
         schema:
           type: string
       - in: query
-        name: id
+        name: group_id
         schema:
           type: integer
       responses:
@@ -4533,11 +4521,10 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - in: path
-        name: id
+        name: group_id
         required: true
         schema:
           type: integer
@@ -4575,7 +4562,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Required for CORS requests only. Set to the Origin URI from which
@@ -4618,7 +4604,6 @@ paths:
       - description: Must be in the form of 'bearer <access_token>'
         in: header
         name: Authorization
-        required: true
         schema:
           type: string
       - description: Required for CORS requests only. Set to the Origin URI from which
@@ -4699,7 +4684,6 @@ components:
       description: Must be in the form of 'bearer <access_token>'
       in: header
       name: Authorization
-      required: true
       schema:
         type: string
     id:
@@ -4974,6 +4958,8 @@ components:
       schema:
         type: string
     last_login_until:
+      description: An ISO8601 timestamp value that returns all users that logged in
+        before a given date & time.
       in: query
       name: last_login_until
       schema:
@@ -5337,6 +5323,10 @@ components:
           type: string
       type: object
     status:
+      example:
+        name: name
+        message: message
+        statusCode: 0
       properties:
         message:
           type: string
@@ -5817,9 +5807,6 @@ components:
       - timeout
       - type
       type: object
-    id_3:
-      description: The Hook unique ID in OneLogin.
-      type: string
     hook_status:
       properties:
         name:
@@ -5827,6 +5814,9 @@ components:
         message:
           type: string
       type: object
+    id_3:
+      description: The Hook unique ID in OneLogin.
+      type: string
     log:
       example:
         correlation_id: correlation_id
@@ -6134,6 +6124,7 @@ components:
         id: id
       properties:
         id:
+          description: A unique id that represents the source of the event.
           type: string
         name:
           description: The name of the source
@@ -7567,6 +7558,84 @@ components:
       - subdomain
       - username_or_email
       type: object
+    generateSamlAssertion_200_response_user:
+      description: Provides information about the user that will be logged in via
+        the SAML assertion. Returned only when MFA is required.
+      example:
+        firstname: firstname
+        id: 0
+        email: email
+        lastname: lastname
+        username: username
+      properties:
+        lastname:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        firstname:
+          type: string
+        id:
+          type: integer
+      type: object
+    generateSamlAssertion_200_response_devices_inner:
+      example:
+        device_id: 6
+        device_type: device_type
+      properties:
+        device_type:
+          description: "Lists an available MFA device type, such as OneLogin OTP SMS\
+            \ or Google Authenticator."
+          type: string
+        device_id:
+          description: Lists an ID for the device type that must be submitted with
+            the Verify Factor API call.
+          type: integer
+      type: object
+    generateSamlAssertion_200_response:
+      example:
+        callback_url: callback_url
+        data: data
+        devices:
+        - device_id: 6
+          device_type: device_type
+        - device_id: 6
+          device_type: device_type
+        state_token: state_token
+        message: message
+        user:
+          firstname: firstname
+          id: 0
+          email: email
+          lastname: lastname
+          username: username
+      properties:
+        data:
+          description: Provides the SAML assertion. Returned only when MFA is not
+            required.
+          type: string
+        message:
+          description: Plain text description describing the outcome of the response.
+          type: string
+        state_token:
+          description: State_token that must be submitted with each Verify Factor
+            API call until the SAML assertion has been issued. Returned only if MFA
+            is required.
+          type: string
+        user:
+          $ref: '#/components/schemas/generateSamlAssertion_200_response_user'
+        devices:
+          description: Provides device values that must be submitted with the Verify
+            Factor API call. Returned only when MFA is required.
+          items:
+            $ref: '#/components/schemas/generateSamlAssertion_200_response_devices_inner'
+          type: array
+        callback_url:
+          description: "Verify Factor API endpoint to which the device_id, state_token,\
+            \ app_id, and otp_token must be sent. Returned only when MFA is required."
+          type: string
+      type: object
     verifyFactorSaml_request:
       properties:
         app_id:
@@ -7692,6 +7761,40 @@ components:
           type: string
         provisioning_enabled:
           description: Indicates if provisioning is enabled for this app.
+          type: boolean
+      type: object
+    dryRunMapping_200_response_inner_user:
+      example:
+        firstname: firstname
+        id: 0
+        email: email
+        lastname: lastname
+        username: username
+      properties:
+        id:
+          type: integer
+        firstname:
+          type: string
+        lastname:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+      type: object
+    dryRunMapping_200_response_inner:
+      example:
+        mapped: true
+        user:
+          firstname: firstname
+          id: 0
+          email: email
+          lastname: lastname
+          username: username
+      properties:
+        user:
+          $ref: '#/components/schemas/dryRunMapping_200_response_inner_user'
+        mapped:
           type: boolean
       type: object
     listMappingConditions_200_response_inner:
@@ -8477,4 +8580,8 @@ components:
         value:
           type: string
       type: object
+  securitySchemes:
+    bearer:
+      scheme: Bearer
+      type: http
 
