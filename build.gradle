@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'com.diffplug.spotless'
 
 group = 'com.onelogin'
-version = '3.0.1'
+version = '3.1.0'
 
 buildscript {
     repositories {

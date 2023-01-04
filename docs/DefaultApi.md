@@ -1,6 +1,6 @@
 # DefaultApi
 
-All URIs are relative to *https://onelogininc.onelogin.com*
+All URIs are relative to *https://api.us.onelogin.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -66,7 +66,7 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 | [**getUser**](DefaultApi.md#getUser) | **GET** /api/2/users/{user_id} |  |
 | [**getUserApps**](DefaultApi.md#getUserApps) | **GET** /api/2/users/{user_id}/apps |  |
 | [**listAccessTokenClaims**](DefaultApi.md#listAccessTokenClaims) | **GET** /api/2/api_authorizations/{id}/claims |  |
-| [**listActionValues**](DefaultApi.md#listActionValues) | **GET** /api/2/apps/{app_id}/rules/actions/{actuion_value}/values |  |
+| [**listActionValues**](DefaultApi.md#listActionValues) | **GET** /api/2/apps/{app_id}/rules/actions/{action_value}/values |  |
 | [**listActions**](DefaultApi.md#listActions) | **GET** /api/2/apps/{app_id}/rules/actions |  |
 | [**listAppUsers**](DefaultApi.md#listAppUsers) | **GET** /api/2/apps/{app_id}/users |  |
 | [**listApps**](DefaultApi.md#listApps) | **GET** /api/2/apps |  |
@@ -77,7 +77,7 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 | [**listConnectors**](DefaultApi.md#listConnectors) | **GET** /api/2/connectors |  |
 | [**listEnvironmentVariables**](DefaultApi.md#listEnvironmentVariables) | **GET** /api/2/hooks/envs |  |
 | [**listHooks**](DefaultApi.md#listHooks) | **GET** /api/2/hooks |  |
-| [**listMappingActionValues**](DefaultApi.md#listMappingActionValues) | **GET** /api/2/apps/mappings/actions/{actuion_value}/values |  |
+| [**listMappingActionValues**](DefaultApi.md#listMappingActionValues) | **GET** /api/2/apps/mappings/actions/{action_value}/values |  |
 | [**listMappingActions**](DefaultApi.md#listMappingActions) | **GET** /api/2/apps/mappings/actions |  |
 | [**listMappingConditionOperators**](DefaultApi.md#listMappingConditionOperators) | **GET** /api/2/apps/mappings/conditions/{condition_value}/operators |  |
 | [**listMappingConditionValues**](DefaultApi.md#listMappingConditionValues) | **GET** /api/2/apps/mappings/conditions/{condition_value}/values |  |
@@ -116,7 +116,7 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 
 <a name="activateFactor"></a>
 # **activateFactor**
-> activateFactor(authorization, userId, activateFactorRequest)
+> Status activateFactor(userId, activateFactorRequest, authorization)
 
 
 
@@ -126,20 +126,26 @@ All URIs are relative to *https://onelogininc.onelogin.com*
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     ActivateFactorRequest activateFactorRequest = new ActivateFactorRequest(); // ActivateFactorRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.activateFactor(authorization, userId, activateFactorRequest);
+      Status result = apiInstance.activateFactor(userId, activateFactorRequest, authorization);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#activateFactor");
       System.err.println("Status code: " + e.getCode());
@@ -155,17 +161,17 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **activateFactorRequest** | [**ActivateFactorRequest**](ActivateFactorRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**Status**](Status.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -175,12 +181,11 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | CREATED |  -  |
-| **401** | Typically, this error means that your access token value is invalid. |  -  |
+| **201** | Typically, this error means that your access token value is invalid. |  -  |
 
 <a name="addAccessTokenClaim"></a>
 # **addAccessTokenClaim**
-> Id addAccessTokenClaim(authorization, id, addAccessTokenClaimRequest)
+> Id addAccessTokenClaim(id, addAccessTokenClaimRequest, authorization)
 
 
 
@@ -190,20 +195,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     AddAccessTokenClaimRequest addAccessTokenClaimRequest = new AddAccessTokenClaimRequest(); // AddAccessTokenClaimRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Id result = apiInstance.addAccessTokenClaim(authorization, id, addAccessTokenClaimRequest);
+      Id result = apiInstance.addAccessTokenClaim(id, addAccessTokenClaimRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#addAccessTokenClaim");
@@ -220,9 +230,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **addAccessTokenClaimRequest** | [**AddAccessTokenClaimRequest**](AddAccessTokenClaimRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -230,7 +240,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -247,7 +257,7 @@ No authorization required
 
 <a name="addClientApp"></a>
 # **addClientApp**
-> ClientApp addClientApp(authorization, id, addClientAppRequest)
+> ClientApp addClientApp(id, addClientAppRequest, authorization)
 
 
 
@@ -257,20 +267,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     AddClientAppRequest addClientAppRequest = new AddClientAppRequest(); // AddClientAppRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      ClientApp result = apiInstance.addClientApp(authorization, id, addClientAppRequest);
+      ClientApp result = apiInstance.addClientApp(id, addClientAppRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#addClientApp");
@@ -287,9 +302,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **addClientAppRequest** | [**AddClientAppRequest**](AddClientAppRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -297,7 +312,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -314,7 +329,7 @@ No authorization required
 
 <a name="addRoleAdmins"></a>
 # **addRoleAdmins**
-> List&lt;AddRoleUsers200ResponseInner&gt; addRoleAdmins(authorization, roleId, requestBody)
+> List&lt;AddRoleUsers200ResponseInner&gt; addRoleAdmins(roleId, requestBody, authorization)
 
 
 
@@ -324,20 +339,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<AddRoleUsers200ResponseInner> result = apiInstance.addRoleAdmins(authorization, roleId, requestBody);
+      List<AddRoleUsers200ResponseInner> result = apiInstance.addRoleAdmins(roleId, requestBody, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#addRoleAdmins");
@@ -354,9 +374,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -364,7 +384,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -379,7 +399,7 @@ No authorization required
 
 <a name="addRoleUsers"></a>
 # **addRoleUsers**
-> List&lt;AddRoleUsers200ResponseInner&gt; addRoleUsers(authorization, roleId, requestBody)
+> List&lt;AddRoleUsers200ResponseInner&gt; addRoleUsers(roleId, requestBody, authorization)
 
 
 
@@ -389,20 +409,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<AddRoleUsers200ResponseInner> result = apiInstance.addRoleUsers(authorization, roleId, requestBody);
+      List<AddRoleUsers200ResponseInner> result = apiInstance.addRoleUsers(roleId, requestBody, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#addRoleUsers");
@@ -419,9 +444,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -429,7 +454,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -445,7 +470,7 @@ No authorization required
 
 <a name="addScope"></a>
 # **addScope**
-> Id addScope(authorization, id, addScopeRequest)
+> Id addScope(id, addScopeRequest, authorization)
 
 
 
@@ -455,20 +480,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     AddScopeRequest addScopeRequest = new AddScopeRequest(); // AddScopeRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Id result = apiInstance.addScope(authorization, id, addScopeRequest);
+      Id result = apiInstance.addScope(id, addScopeRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#addScope");
@@ -485,9 +515,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **addScopeRequest** | [**AddScopeRequest**](AddScopeRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -495,7 +525,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -512,7 +542,7 @@ No authorization required
 
 <a name="bulkMappingSort"></a>
 # **bulkMappingSort**
-> List&lt;Integer&gt; bulkMappingSort(authorization, requestBody)
+> List&lt;Integer&gt; bulkMappingSort(requestBody, authorization)
 
 
 
@@ -522,19 +552,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | The request body must contain an array of User Mapping IDs in the desired order.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<Integer> result = apiInstance.bulkMappingSort(authorization, requestBody);
+      List<Integer> result = apiInstance.bulkMappingSort(requestBody, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#bulkMappingSort");
@@ -551,8 +586,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)| The request body must contain an array of User Mapping IDs in the desired order. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -560,7 +595,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -576,7 +611,7 @@ No authorization required
 
 <a name="bulkSort"></a>
 # **bulkSort**
-> List&lt;Integer&gt; bulkSort(authorization, appId, requestBody)
+> List&lt;Integer&gt; bulkSort(appId, requestBody, authorization)
 
 
 
@@ -586,20 +621,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | The request body must contain an array of App Rule IDs in the desired order.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<Integer> result = apiInstance.bulkSort(authorization, appId, requestBody);
+      List<Integer> result = apiInstance.bulkSort(appId, requestBody, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#bulkSort");
@@ -616,9 +656,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)| The request body must contain an array of App Rule IDs in the desired order. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -626,7 +666,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -642,7 +682,7 @@ No authorization required
 
 <a name="createApp"></a>
 # **createApp**
-> Schema createApp(authorization, schema)
+> Schema createApp(schema, authorization)
 
 
 
@@ -652,19 +692,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Schema schema = new Schema(); // Schema | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Schema result = apiInstance.createApp(authorization, schema);
+      Schema result = apiInstance.createApp(schema, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createApp");
@@ -681,8 +726,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **schema** | [**Schema**](Schema.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -690,7 +735,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -706,7 +751,7 @@ No authorization required
 
 <a name="createAuthorizationServer"></a>
 # **createAuthorizationServer**
-> Id createAuthorizationServer(authorization, createAuthorizationServerRequest)
+> Id createAuthorizationServer(createAuthorizationServerRequest, authorization)
 
 
 
@@ -716,19 +761,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     CreateAuthorizationServerRequest createAuthorizationServerRequest = new CreateAuthorizationServerRequest(); // CreateAuthorizationServerRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Id result = apiInstance.createAuthorizationServer(authorization, createAuthorizationServerRequest);
+      Id result = apiInstance.createAuthorizationServer(createAuthorizationServerRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createAuthorizationServer");
@@ -745,8 +795,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **createAuthorizationServerRequest** | [**CreateAuthorizationServerRequest**](CreateAuthorizationServerRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -754,7 +804,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -770,7 +820,7 @@ No authorization required
 
 <a name="createEnvironmentVariable"></a>
 # **createEnvironmentVariable**
-> Envvar createEnvironmentVariable(authorization, createEnvironmentVariableRequest)
+> Envvar createEnvironmentVariable(createEnvironmentVariableRequest, authorization)
 
 
 
@@ -780,19 +830,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     CreateEnvironmentVariableRequest createEnvironmentVariableRequest = new CreateEnvironmentVariableRequest(); // CreateEnvironmentVariableRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Envvar result = apiInstance.createEnvironmentVariable(authorization, createEnvironmentVariableRequest);
+      Envvar result = apiInstance.createEnvironmentVariable(createEnvironmentVariableRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createEnvironmentVariable");
@@ -809,8 +864,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **createEnvironmentVariableRequest** | [**CreateEnvironmentVariableRequest**](CreateEnvironmentVariableRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -818,7 +873,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -834,7 +889,7 @@ No authorization required
 
 <a name="createHook"></a>
 # **createHook**
-> createHook(authorization, hook)
+> Hook createHook(hook, authorization)
 
 
 
@@ -844,19 +899,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Hook hook = new Hook(); // Hook | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.createHook(authorization, hook);
+      Hook result = apiInstance.createHook(hook, authorization);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createHook");
       System.err.println("Status code: " + e.getCode());
@@ -872,26 +933,33 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hook** | [**Hook**](Hook.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**Hook**](Hook.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | CREATED |  -  |
+| **401** | Typically, this error means that your access token value is invalid. |  -  |
+| **409** | You have tried to create another function for a hook that only allows a single one to be defined. |  -  |
+| **422** | You function is not base64 encoded. |  -  |
 
 <a name="createMapping"></a>
 # **createMapping**
-> Integer createMapping(authorization, mapping)
+> Integer createMapping(mapping, authorization)
 
 
 
@@ -901,19 +969,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Mapping mapping = new Mapping(); // Mapping | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Integer result = apiInstance.createMapping(authorization, mapping);
+      Integer result = apiInstance.createMapping(mapping, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createMapping");
@@ -930,8 +1003,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mapping** | [**Mapping**](Mapping.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -939,7 +1012,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -955,7 +1028,7 @@ No authorization required
 
 <a name="createRiskRule"></a>
 # **createRiskRule**
-> createRiskRule(authorization, riskRule)
+> RiskRule createRiskRule(riskRule, authorization)
 
 
 
@@ -965,19 +1038,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     RiskRule riskRule = new RiskRule(); // RiskRule | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.createRiskRule(authorization, riskRule);
+      RiskRule result = apiInstance.createRiskRule(riskRule, authorization);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createRiskRule");
       System.err.println("Status code: " + e.getCode());
@@ -993,26 +1072,32 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRule** | [**RiskRule**](RiskRule.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**RiskRule**](RiskRule.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | CREATED |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | Invalid API Key |  -  |
 
 <a name="createRoles"></a>
 # **createRoles**
-> List&lt;CreateRoles201ResponseInner&gt; createRoles(authorization)
+> List&lt;CreateRoles201ResponseInner&gt; createRoles(role, authorization)
 
 
 
@@ -1022,18 +1107,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
+    Role role = new Role(); // Role | 
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<CreateRoles201ResponseInner> result = apiInstance.createRoles(authorization);
+      List<CreateRoles201ResponseInner> result = apiInstance.createRoles(role, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createRoles");
@@ -1050,7 +1141,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **role** | [**Role**](Role.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1058,11 +1150,11 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details
@@ -1073,7 +1165,7 @@ No authorization required
 
 <a name="createRule"></a>
 # **createRule**
-> RuleId createRule(authorization, appId, rule)
+> RuleId createRule(appId, rule, authorization)
 
 
 
@@ -1083,20 +1175,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Rule rule = new Rule(); // Rule | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      RuleId result = apiInstance.createRule(authorization, appId, rule);
+      RuleId result = apiInstance.createRule(appId, rule, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createRule");
@@ -1113,9 +1210,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **rule** | [**Rule**](Rule.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1123,7 +1220,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1139,7 +1236,7 @@ No authorization required
 
 <a name="createSessionLoginToken"></a>
 # **createSessionLoginToken**
-> CreateSessionLoginToken200Response createSessionLoginToken(authorization, createSessionLoginTokenRequest, customAllowedOriginHeader1)
+> CreateSessionLoginToken200Response createSessionLoginToken(createSessionLoginTokenRequest, authorization, customAllowedOriginHeader1)
 
 
 
@@ -1149,20 +1246,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     CreateSessionLoginTokenRequest createSessionLoginTokenRequest = new CreateSessionLoginTokenRequest(); // CreateSessionLoginTokenRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String customAllowedOriginHeader1 = "customAllowedOriginHeader1_example"; // String | Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
     try {
-      CreateSessionLoginToken200Response result = apiInstance.createSessionLoginToken(authorization, createSessionLoginTokenRequest, customAllowedOriginHeader1);
+      CreateSessionLoginToken200Response result = apiInstance.createSessionLoginToken(createSessionLoginTokenRequest, authorization, customAllowedOriginHeader1);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createSessionLoginToken");
@@ -1179,8 +1281,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **createSessionLoginTokenRequest** | [**CreateSessionLoginTokenRequest**](CreateSessionLoginTokenRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **customAllowedOriginHeader1** | **String**| Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS. | [optional] |
 
 ### Return type
@@ -1189,7 +1291,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1205,7 +1307,7 @@ No authorization required
 
 <a name="createUser"></a>
 # **createUser**
-> User createUser(authorization, user, mappings, validatePolicy)
+> User createUser(user, authorization, mappings, validatePolicy)
 
 
 
@@ -1215,21 +1317,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     User user = new User(); // User | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String mappings = "async"; // String | Controls how mappings will be applied to the user on creation. Defaults to async.
     Boolean validatePolicy = true; // Boolean | Will passwords validate against the User Policy? Defaults to true.
     try {
-      User result = apiInstance.createUser(authorization, user, mappings, validatePolicy);
+      User result = apiInstance.createUser(user, authorization, mappings, validatePolicy);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#createUser");
@@ -1246,8 +1353,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **user** | [**User**](User.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **mappings** | **String**| Controls how mappings will be applied to the user on creation. Defaults to async. | [optional] [enum: async, sync, disabled] |
 | **validatePolicy** | **Boolean**| Will passwords validate against the User Policy? Defaults to true. | [optional] |
 
@@ -1257,7 +1364,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1274,7 +1381,7 @@ No authorization required
 
 <a name="deleteAccessTokenClaim"></a>
 # **deleteAccessTokenClaim**
-> deleteAccessTokenClaim(authorization, id, claimId)
+> deleteAccessTokenClaim(id, claimId, authorization)
 
 
 
@@ -1284,20 +1391,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer claimId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteAccessTokenClaim(authorization, id, claimId);
+      apiInstance.deleteAccessTokenClaim(id, claimId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteAccessTokenClaim");
       System.err.println("Status code: " + e.getCode());
@@ -1313,9 +1425,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **claimId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1323,7 +1435,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1339,7 +1451,7 @@ No authorization required
 
 <a name="deleteApp"></a>
 # **deleteApp**
-> deleteApp(authorization, appId)
+> deleteApp(appId, authorization)
 
 
 
@@ -1349,19 +1461,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteApp(authorization, appId);
+      apiInstance.deleteApp(appId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteApp");
       System.err.println("Status code: " + e.getCode());
@@ -1377,8 +1494,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1386,7 +1503,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1402,7 +1519,7 @@ No authorization required
 
 <a name="deleteAppParameter"></a>
 # **deleteAppParameter**
-> deleteAppParameter(authorization, appId, parameterId)
+> deleteAppParameter(appId, parameterId, authorization)
 
 
 
@@ -1412,20 +1529,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer parameterId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteAppParameter(authorization, appId, parameterId);
+      apiInstance.deleteAppParameter(appId, parameterId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteAppParameter");
       System.err.println("Status code: " + e.getCode());
@@ -1441,9 +1563,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **parameterId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1451,7 +1573,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1468,7 +1590,7 @@ No authorization required
 
 <a name="deleteAuthorizationServer"></a>
 # **deleteAuthorizationServer**
-> deleteAuthorizationServer(authorization, id)
+> deleteAuthorizationServer(id, authorization)
 
 
 
@@ -1478,19 +1600,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteAuthorizationServer(authorization, id);
+      apiInstance.deleteAuthorizationServer(id, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteAuthorizationServer");
       System.err.println("Status code: " + e.getCode());
@@ -1506,8 +1633,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1515,7 +1642,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1531,7 +1658,7 @@ No authorization required
 
 <a name="deleteEnvironmentVariable"></a>
 # **deleteEnvironmentVariable**
-> deleteEnvironmentVariable(authorization, envvarId)
+> deleteEnvironmentVariable(envvarId, authorization)
 
 
 
@@ -1541,19 +1668,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String envvarId = "envvarId_example"; // String | Set to the id of the Hook Environment Variable that you want to fetch.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteEnvironmentVariable(authorization, envvarId);
+      apiInstance.deleteEnvironmentVariable(envvarId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteEnvironmentVariable");
       System.err.println("Status code: " + e.getCode());
@@ -1569,8 +1701,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **envvarId** | **String**| Set to the id of the Hook Environment Variable that you want to fetch. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1578,7 +1710,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1594,7 +1726,7 @@ No authorization required
 
 <a name="deleteFactor"></a>
 # **deleteFactor**
-> deleteFactor(authorization, userId, deviceId)
+> deleteFactor(userId, deviceId, authorization)
 
 
 
@@ -1604,20 +1736,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer deviceId = 56; // Integer | Set to the device_id of the MFA device.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteFactor(authorization, userId, deviceId);
+      apiInstance.deleteFactor(userId, deviceId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteFactor");
       System.err.println("Status code: " + e.getCode());
@@ -1633,9 +1770,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **deviceId** | **Integer**| Set to the device_id of the MFA device. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1643,7 +1780,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1657,7 +1794,7 @@ No authorization required
 
 <a name="deleteHook"></a>
 # **deleteHook**
-> deleteHook(authorization, hookId)
+> deleteHook(hookId, authorization)
 
 
 
@@ -1667,19 +1804,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteHook(authorization, hookId);
+      apiInstance.deleteHook(hookId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteHook");
       System.err.println("Status code: " + e.getCode());
@@ -1695,8 +1837,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1704,7 +1846,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1720,7 +1862,7 @@ No authorization required
 
 <a name="deleteMapping"></a>
 # **deleteMapping**
-> deleteMapping(authorization, mappingId)
+> deleteMapping(mappingId, authorization)
 
 
 
@@ -1730,19 +1872,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteMapping(authorization, mappingId);
+      apiInstance.deleteMapping(mappingId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteMapping");
       System.err.println("Status code: " + e.getCode());
@@ -1758,8 +1905,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1767,7 +1914,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1783,7 +1930,7 @@ No authorization required
 
 <a name="deleteRiskRule"></a>
 # **deleteRiskRule**
-> RiskRule deleteRiskRule(authorization, riskRuleId)
+> RiskRule deleteRiskRule(riskRuleId, authorization)
 
 
 
@@ -1793,19 +1940,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String riskRuleId = "riskRuleId_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      RiskRule result = apiInstance.deleteRiskRule(authorization, riskRuleId);
+      RiskRule result = apiInstance.deleteRiskRule(riskRuleId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteRiskRule");
@@ -1822,8 +1974,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRuleId** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1831,7 +1983,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1846,7 +1998,7 @@ No authorization required
 
 <a name="deleteRole"></a>
 # **deleteRole**
-> deleteRole(authorization, roleId)
+> deleteRole(roleId, authorization)
 
 
 
@@ -1856,19 +2008,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteRole(authorization, roleId);
+      apiInstance.deleteRole(roleId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteRole");
       System.err.println("Status code: " + e.getCode());
@@ -1884,8 +2041,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1893,7 +2050,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1909,7 +2066,7 @@ No authorization required
 
 <a name="deleteRule"></a>
 # **deleteRule**
-> deleteRule(authorization, appId, ruleId)
+> deleteRule(appId, ruleId, authorization)
 
 
 
@@ -1919,20 +2076,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer ruleId = 56; // Integer | The id of the app rule to locate.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteRule(authorization, appId, ruleId);
+      apiInstance.deleteRule(appId, ruleId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteRule");
       System.err.println("Status code: " + e.getCode());
@@ -1948,9 +2110,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **ruleId** | **Integer**| The id of the app rule to locate. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -1958,7 +2120,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -1974,7 +2136,7 @@ No authorization required
 
 <a name="deleteScope"></a>
 # **deleteScope**
-> deleteScope(authorization, id, scopeId)
+> deleteScope(id, scopeId, authorization)
 
 
 
@@ -1984,20 +2146,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer scopeId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteScope(authorization, id, scopeId);
+      apiInstance.deleteScope(id, scopeId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteScope");
       System.err.println("Status code: " + e.getCode());
@@ -2013,9 +2180,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **scopeId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2023,7 +2190,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2039,7 +2206,7 @@ No authorization required
 
 <a name="deleteUser"></a>
 # **deleteUser**
-> deleteUser(authorization, userId)
+> deleteUser(userId, authorization)
 
 
 
@@ -2049,19 +2216,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.deleteUser(authorization, userId);
+      apiInstance.deleteUser(userId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#deleteUser");
       System.err.println("Status code: " + e.getCode());
@@ -2077,8 +2249,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2086,7 +2258,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2102,7 +2274,7 @@ No authorization required
 
 <a name="dryRunMapping"></a>
 # **dryRunMapping**
-> List&lt;Object&gt; dryRunMapping(authorization, mappingId, requestBody)
+> List&lt;DryRunMapping200ResponseInner&gt; dryRunMapping(mappingId, requestBody, authorization)
 
 
 
@@ -2112,20 +2284,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | Request body is a list of user IDs tested against the mapping conditions to verify that the mapping would be applied
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<Object> result = apiInstance.dryRunMapping(authorization, mappingId, requestBody);
+      List<DryRunMapping200ResponseInner> result = apiInstance.dryRunMapping(mappingId, requestBody, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#dryRunMapping");
@@ -2142,17 +2319,17 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)| Request body is a list of user IDs tested against the mapping conditions to verify that the mapping would be applied | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-**List&lt;Object&gt;**
+[**List&lt;DryRunMapping200ResponseInner&gt;**](DryRunMapping200ResponseInner.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2168,7 +2345,7 @@ No authorization required
 
 <a name="enrollFactor"></a>
 # **enrollFactor**
-> List&lt;List&lt;FactorInner&gt;&gt; enrollFactor(authorization, userId, enrollFactorRequest)
+> List&lt;List&lt;FactorInner&gt;&gt; enrollFactor(userId, enrollFactorRequest, authorization)
 
 
 
@@ -2178,20 +2355,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     EnrollFactorRequest enrollFactorRequest = new EnrollFactorRequest(); // EnrollFactorRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<List<FactorInner>> result = apiInstance.enrollFactor(authorization, userId, enrollFactorRequest);
+      List<List<FactorInner>> result = apiInstance.enrollFactor(userId, enrollFactorRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#enrollFactor");
@@ -2208,9 +2390,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **enrollFactorRequest** | [**EnrollFactorRequest**](EnrollFactorRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2218,7 +2400,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2234,7 +2416,7 @@ No authorization required
 
 <a name="generateMfaToken"></a>
 # **generateMfaToken**
-> GenerateMfaToken200Response generateMfaToken(authorization, generateMfaTokenRequest)
+> GenerateMfaToken200Response generateMfaToken(userId, generateMfaTokenRequest, authorization)
 
 
 
@@ -2244,19 +2426,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
+    Integer userId = 56; // Integer | Set to the id of the user.
     GenerateMfaTokenRequest generateMfaTokenRequest = new GenerateMfaTokenRequest(); // GenerateMfaTokenRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      GenerateMfaToken200Response result = apiInstance.generateMfaToken(authorization, generateMfaTokenRequest);
+      GenerateMfaToken200Response result = apiInstance.generateMfaToken(userId, generateMfaTokenRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#generateMfaToken");
@@ -2273,8 +2461,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **userId** | **Integer**| Set to the id of the user. | |
 | **generateMfaTokenRequest** | [**GenerateMfaTokenRequest**](GenerateMfaTokenRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2282,7 +2471,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2298,7 +2487,7 @@ No authorization required
 
 <a name="generateSamlAssertion"></a>
 # **generateSamlAssertion**
-> generateSamlAssertion(authorization, generateSamlAssertionRequest)
+> GenerateSamlAssertion200Response generateSamlAssertion(generateSamlAssertionRequest, authorization)
 
 
 
@@ -2308,19 +2497,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     GenerateSamlAssertionRequest generateSamlAssertionRequest = new GenerateSamlAssertionRequest(); // GenerateSamlAssertionRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.generateSamlAssertion(authorization, generateSamlAssertionRequest);
+      GenerateSamlAssertion200Response result = apiInstance.generateSamlAssertion(generateSamlAssertionRequest, authorization);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#generateSamlAssertion");
       System.err.println("Status code: " + e.getCode());
@@ -2336,16 +2531,16 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **generateSamlAssertionRequest** | [**GenerateSamlAssertionRequest**](GenerateSamlAssertionRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**GenerateSamlAssertion200Response**](GenerateSamlAssertion200Response.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2356,6 +2551,8 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **400** | BAD REQUEST |  -  |
+| **401** | UNAUTHORIZED |  -  |
 
 <a name="generateToken"></a>
 # **generateToken**
@@ -2369,13 +2566,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String clientId = "clientId_example"; // String | 
@@ -2409,7 +2611,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2426,7 +2628,7 @@ No authorization required
 
 <a name="getApp"></a>
 # **getApp**
-> Schema getApp(authorization, appId)
+> Schema getApp(appId, authorization)
 
 
 
@@ -2436,19 +2638,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Schema result = apiInstance.getApp(authorization, appId);
+      Schema result = apiInstance.getApp(appId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getApp");
@@ -2465,8 +2672,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2474,7 +2681,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2490,7 +2697,7 @@ No authorization required
 
 <a name="getAuthorizationServer"></a>
 # **getAuthorizationServer**
-> GetAuthorizationServer200Response getAuthorizationServer(authorization, id)
+> GetAuthorizationServer200Response getAuthorizationServer(id, authorization)
 
 
 
@@ -2500,19 +2707,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      GetAuthorizationServer200Response result = apiInstance.getAuthorizationServer(authorization, id);
+      GetAuthorizationServer200Response result = apiInstance.getAuthorizationServer(id, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getAuthorizationServer");
@@ -2529,8 +2741,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2538,7 +2750,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2554,7 +2766,7 @@ No authorization required
 
 <a name="getAvailableFactors"></a>
 # **getAvailableFactors**
-> List&lt;GetAvailableFactors200ResponseInner&gt; getAvailableFactors(authorization, userId)
+> List&lt;GetAvailableFactors200ResponseInner&gt; getAvailableFactors(userId, authorization)
 
 
 
@@ -2564,19 +2776,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<GetAvailableFactors200ResponseInner> result = apiInstance.getAvailableFactors(authorization, userId);
+      List<GetAvailableFactors200ResponseInner> result = apiInstance.getAvailableFactors(userId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getAvailableFactors");
@@ -2593,8 +2810,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2602,7 +2819,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2617,7 +2834,7 @@ No authorization required
 
 <a name="getClientApps"></a>
 # **getClientApps**
-> List&lt;GetClientApps200ResponseInner&gt; getClientApps(authorization, id)
+> List&lt;GetClientApps200ResponseInner&gt; getClientApps(id, authorization)
 
 
 
@@ -2627,19 +2844,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<GetClientApps200ResponseInner> result = apiInstance.getClientApps(authorization, id);
+      List<GetClientApps200ResponseInner> result = apiInstance.getClientApps(id, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getClientApps");
@@ -2656,8 +2878,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2665,7 +2887,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2681,7 +2903,7 @@ No authorization required
 
 <a name="getEnrolledFactors"></a>
 # **getEnrolledFactors**
-> List&lt;Device&gt; getEnrolledFactors(authorization, userId)
+> List&lt;Device&gt; getEnrolledFactors(userId, authorization)
 
 
 
@@ -2691,19 +2913,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<Device> result = apiInstance.getEnrolledFactors(authorization, userId);
+      List<Device> result = apiInstance.getEnrolledFactors(userId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getEnrolledFactors");
@@ -2720,8 +2947,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2729,7 +2956,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2744,7 +2971,7 @@ No authorization required
 
 <a name="getEnvironmentVariable"></a>
 # **getEnvironmentVariable**
-> Envvar getEnvironmentVariable(authorization, envvarId)
+> Envvar getEnvironmentVariable(envvarId, authorization)
 
 
 
@@ -2754,19 +2981,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String envvarId = "envvarId_example"; // String | Set to the id of the Hook Environment Variable that you want to fetch.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Envvar result = apiInstance.getEnvironmentVariable(authorization, envvarId);
+      Envvar result = apiInstance.getEnvironmentVariable(envvarId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getEnvironmentVariable");
@@ -2783,8 +3015,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **envvarId** | **String**| Set to the id of the Hook Environment Variable that you want to fetch. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2792,7 +3024,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2807,7 +3039,7 @@ No authorization required
 
 <a name="getEventById"></a>
 # **getEventById**
-> GetEventById200Response getEventById(authorization, id)
+> GetEventById200Response getEventById(eventId, authorization)
 
 
 
@@ -2817,19 +3049,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
+    Integer eventId = 56; // Integer | 
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
-    Integer id = 56; // Integer | 
     try {
-      GetEventById200Response result = apiInstance.getEventById(authorization, id);
+      GetEventById200Response result = apiInstance.getEventById(eventId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getEventById");
@@ -2846,8 +3083,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
-| **id** | **Integer**|  | |
+| **eventId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -2855,7 +3092,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2882,13 +3119,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     try {
@@ -2914,7 +3156,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -2928,7 +3170,7 @@ No authorization required
 
 <a name="getEvents"></a>
 # **getEvents**
-> GetEvents200Response getEvents(authorization, userId, fields, until, since, limit, sort, clientId, createdAt, directoryId, eventTypeId, id, resolution)
+> GetEvents200Response getEvents(userId, authorization, fields, until, since, limit, sort, clientId, createdAt, directoryId, eventTypeId, id, resolution)
 
 
 
@@ -2938,17 +3180,22 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
     String until = "until_example"; // String | Include the until query parameter to return results with created_at before the value
     String since = "since_example"; // String | Include the until query parameter to return results with created_at after the value
@@ -2961,7 +3208,7 @@ public class Example {
     Integer id = 56; // Integer | 
     String resolution = "resolution_example"; // String | 
     try {
-      GetEvents200Response result = apiInstance.getEvents(authorization, userId, fields, until, since, limit, sort, clientId, createdAt, directoryId, eventTypeId, id, resolution);
+      GetEvents200Response result = apiInstance.getEvents(userId, authorization, fields, until, since, limit, sort, clientId, createdAt, directoryId, eventTypeId, id, resolution);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getEvents");
@@ -2978,8 +3225,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
 | **until** | **String**| Include the until query parameter to return results with created_at before the value | [optional] |
 | **since** | **String**| Include the until query parameter to return results with created_at after the value | [optional] |
@@ -2998,7 +3245,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3014,7 +3261,7 @@ No authorization required
 
 <a name="getGroupById"></a>
 # **getGroupById**
-> GetGroupById200Response getGroupById(authorization, id)
+> GetGroupById200Response getGroupById(groupId, authorization)
 
 
 
@@ -3024,19 +3271,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
+    Integer groupId = 56; // Integer | 
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
-    Integer id = 56; // Integer | 
     try {
-      GetGroupById200Response result = apiInstance.getGroupById(authorization, id);
+      GetGroupById200Response result = apiInstance.getGroupById(groupId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getGroupById");
@@ -3053,8 +3305,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
-| **id** | **Integer**|  | |
+| **groupId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3062,7 +3314,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3079,7 +3331,7 @@ No authorization required
 
 <a name="getGroups"></a>
 # **getGroups**
-> GetGroups200Response getGroups(authorization, fields, until, since, limit, sort, id)
+> GetGroups200Response getGroups(authorization, fields, until, since, limit, sort, groupId)
 
 
 
@@ -3089,13 +3341,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -3104,9 +3361,9 @@ public class Example {
     String since = "since_example"; // String | Include the until query parameter to return results with created_at after the value
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     String sort = "sort_example"; // String | When you call a resource API, include the sort query parameter to sort results by id attribute value.
-    Integer id = 56; // Integer | 
+    Integer groupId = 56; // Integer | 
     try {
-      GetGroups200Response result = apiInstance.getGroups(authorization, fields, until, since, limit, sort, id);
+      GetGroups200Response result = apiInstance.getGroups(authorization, fields, until, since, limit, sort, groupId);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getGroups");
@@ -3123,13 +3380,13 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
 | **until** | **String**| Include the until query parameter to return results with created_at before the value | [optional] |
 | **since** | **String**| Include the until query parameter to return results with created_at after the value | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **sort** | **String**| When you call a resource API, include the sort query parameter to sort results by id attribute value. | [optional] |
-| **id** | **Integer**|  | [optional] |
+| **groupId** | **Integer**|  | [optional] |
 
 ### Return type
 
@@ -3137,7 +3394,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3153,7 +3410,7 @@ No authorization required
 
 <a name="getHook"></a>
 # **getHook**
-> Hook getHook(authorization, hookId)
+> Hook getHook(hookId, authorization)
 
 
 
@@ -3163,19 +3420,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Hook result = apiInstance.getHook(authorization, hookId);
+      Hook result = apiInstance.getHook(hookId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getHook");
@@ -3192,8 +3454,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3201,7 +3463,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3217,7 +3479,7 @@ No authorization required
 
 <a name="getLogs"></a>
 # **getLogs**
-> List&lt;Log&gt; getLogs(authorization, hookId, limit, page, cursor, requestId, correlationId)
+> List&lt;Log&gt; getLogs(hookId, authorization, limit, page, cursor, requestId, correlationId)
 
 
 
@@ -3227,24 +3489,29 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
     String requestId = "requestId_example"; // String | Returns logs that contain this request_id.
     String correlationId = "correlationId_example"; // String | Returns logs that contain this correlation_id.
     try {
-      List<Log> result = apiInstance.getLogs(authorization, hookId, limit, page, cursor, requestId, correlationId);
+      List<Log> result = apiInstance.getLogs(hookId, authorization, limit, page, cursor, requestId, correlationId);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getLogs");
@@ -3261,8 +3528,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -3275,7 +3542,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3291,7 +3558,7 @@ No authorization required
 
 <a name="getMapping"></a>
 # **getMapping**
-> Mapping getMapping(authorization, mappingId)
+> Mapping getMapping(mappingId, authorization)
 
 
 
@@ -3301,19 +3568,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Mapping result = apiInstance.getMapping(authorization, mappingId);
+      Mapping result = apiInstance.getMapping(mappingId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getMapping");
@@ -3330,8 +3602,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3339,7 +3611,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3365,13 +3637,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -3393,7 +3670,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3401,7 +3678,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3414,11 +3691,11 @@ No authorization required
 | **200** | OK |  -  |
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
-| **404** |  |  -  |
+| **404** | Typically, this error means that you are using the incorrect method. If you receive this error, ensure that you are making a GET. |  -  |
 
 <a name="getRiskRule"></a>
 # **getRiskRule**
-> getRiskRule(authorization, riskRuleId)
+> RiskRule getRiskRule(riskRuleId, authorization)
 
 
 
@@ -3428,19 +3705,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String riskRuleId = "riskRuleId_example"; // String | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.getRiskRule(authorization, riskRuleId);
+      RiskRule result = apiInstance.getRiskRule(riskRuleId, authorization);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRiskRule");
       System.err.println("Status code: " + e.getCode());
@@ -3456,26 +3739,31 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRuleId** | **String**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**RiskRule**](RiskRule.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **401** | Invalid API Key |  -  |
 
 <a name="getRiskScore"></a>
 # **getRiskScore**
-> GetRiskScore200Response getRiskScore(authorization, getRiskScoreRequest)
+> GetRiskScore200Response getRiskScore(getRiskScoreRequest, authorization)
 
 
 
@@ -3485,19 +3773,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     GetRiskScoreRequest getRiskScoreRequest = new GetRiskScoreRequest(); // GetRiskScoreRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      GetRiskScore200Response result = apiInstance.getRiskScore(authorization, getRiskScoreRequest);
+      GetRiskScore200Response result = apiInstance.getRiskScore(getRiskScoreRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRiskScore");
@@ -3514,8 +3807,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **getRiskScoreRequest** | [**GetRiskScoreRequest**](GetRiskScoreRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3523,7 +3816,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3539,7 +3832,7 @@ No authorization required
 
 <a name="getRole"></a>
 # **getRole**
-> Role getRole(authorization, roleId)
+> Role getRole(roleId, authorization)
 
 
 
@@ -3549,19 +3842,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Role result = apiInstance.getRole(authorization, roleId);
+      Role result = apiInstance.getRole(roleId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRole");
@@ -3578,8 +3876,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3587,7 +3885,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3603,7 +3901,7 @@ No authorization required
 
 <a name="getRoleAdmins"></a>
 # **getRoleAdmins**
-> List&lt;Schema1&gt; getRoleAdmins(authorization, roleId, limit, page, cursor, name, includeUnassigned)
+> List&lt;Schema1&gt; getRoleAdmins(roleId, authorization, limit, page, cursor, name, includeUnassigned)
 
 
 
@@ -3613,24 +3911,29 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
     String name = "name_example"; // String | Allows you to filter on first name, last name, username, and email address.
     Boolean includeUnassigned = true; // Boolean | Optional. Defaults to false. Include users that aren’t assigned to the role.
     try {
-      List<Schema1> result = apiInstance.getRoleAdmins(authorization, roleId, limit, page, cursor, name, includeUnassigned);
+      List<Schema1> result = apiInstance.getRoleAdmins(roleId, authorization, limit, page, cursor, name, includeUnassigned);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRoleAdmins");
@@ -3647,8 +3950,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -3661,7 +3964,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3677,7 +3980,7 @@ No authorization required
 
 <a name="getRoleApps"></a>
 # **getRoleApps**
-> List&lt;Schema&gt; getRoleApps(authorization, roleId, limit, page, cursor, assigned)
+> List&lt;Schema&gt; getRoleApps(roleId, authorization, limit, page, cursor, assigned)
 
 
 
@@ -3687,23 +3990,28 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
     Boolean assigned = true; // Boolean | Optional. Defaults to true. Returns all apps not yet assigned to the role.
     try {
-      List<Schema> result = apiInstance.getRoleApps(authorization, roleId, limit, page, cursor, assigned);
+      List<Schema> result = apiInstance.getRoleApps(roleId, authorization, limit, page, cursor, assigned);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRoleApps");
@@ -3720,8 +4028,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -3733,7 +4041,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3749,7 +4057,7 @@ No authorization required
 
 <a name="getRoleUsers"></a>
 # **getRoleUsers**
-> List&lt;Schema1&gt; getRoleUsers(authorization, roleId, limit, page, cursor, name, includeUnassigned)
+> List&lt;Schema1&gt; getRoleUsers(roleId, authorization, limit, page, cursor, name, includeUnassigned)
 
 
 
@@ -3759,24 +4067,29 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
     String name = "name_example"; // String | Allows you to filter on first name, last name, username, and email address.
     Boolean includeUnassigned = true; // Boolean | Optional. Defaults to false. Include users that aren’t assigned to the role.
     try {
-      List<Schema1> result = apiInstance.getRoleUsers(authorization, roleId, limit, page, cursor, name, includeUnassigned);
+      List<Schema1> result = apiInstance.getRoleUsers(roleId, authorization, limit, page, cursor, name, includeUnassigned);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRoleUsers");
@@ -3793,8 +4106,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -3807,7 +4120,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3823,7 +4136,7 @@ No authorization required
 
 <a name="getRule"></a>
 # **getRule**
-> Rule getRule(authorization, appId, ruleId)
+> Rule getRule(appId, ruleId, authorization)
 
 
 
@@ -3833,20 +4146,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer ruleId = 56; // Integer | The id of the app rule to locate.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Rule result = apiInstance.getRule(authorization, appId, ruleId);
+      Rule result = apiInstance.getRule(appId, ruleId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getRule");
@@ -3863,9 +4181,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **ruleId** | **Integer**| The id of the app rule to locate. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -3873,7 +4191,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3899,13 +4217,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -3929,7 +4252,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **before** | **String**| Optional ISO8601 formatted date string. Defaults to current date. Maximum date is 90 days ago. | [optional] |
 | **after** | **String**| Optional ISO8601 formatted date string. Defaults to 30 days ago. Maximum date is 90 days ago. | [optional] |
 
@@ -3939,7 +4262,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -3954,7 +4277,7 @@ No authorization required
 
 <a name="getUser"></a>
 # **getUser**
-> User getUser(authorization, userId)
+> User getUser(userId, authorization)
 
 
 
@@ -3964,19 +4287,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      User result = apiInstance.getUser(authorization, userId);
+      User result = apiInstance.getUser(userId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getUser");
@@ -3993,8 +4321,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4002,7 +4330,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4018,7 +4346,7 @@ No authorization required
 
 <a name="getUserApps"></a>
 # **getUserApps**
-> List&lt;GetUserApps200ResponseInner&gt; getUserApps(authorization, userId, ignoreVisibility)
+> List&lt;GetUserApps200ResponseInner&gt; getUserApps(userId, authorization, ignoreVisibility)
 
 
 
@@ -4028,20 +4356,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Boolean ignoreVisibility = true; // Boolean | Defaults to `false`. When `true` will show all apps that are assigned to a user regardless of their portal visibility setting.
     try {
-      List<GetUserApps200ResponseInner> result = apiInstance.getUserApps(authorization, userId, ignoreVisibility);
+      List<GetUserApps200ResponseInner> result = apiInstance.getUserApps(userId, authorization, ignoreVisibility);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#getUserApps");
@@ -4058,8 +4391,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **ignoreVisibility** | **Boolean**| Defaults to &#x60;false&#x60;. When &#x60;true&#x60; will show all apps that are assigned to a user regardless of their portal visibility setting. | [optional] |
 
 ### Return type
@@ -4068,7 +4401,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4084,7 +4417,7 @@ No authorization required
 
 <a name="listAccessTokenClaims"></a>
 # **listAccessTokenClaims**
-> List&lt;ListAccessTokenClaims200ResponseInner&gt; listAccessTokenClaims(authorization, id)
+> List&lt;ListAccessTokenClaims200ResponseInner&gt; listAccessTokenClaims(id, authorization)
 
 
 
@@ -4094,19 +4427,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListAccessTokenClaims200ResponseInner> result = apiInstance.listAccessTokenClaims(authorization, id);
+      List<ListAccessTokenClaims200ResponseInner> result = apiInstance.listAccessTokenClaims(id, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listAccessTokenClaims");
@@ -4123,8 +4461,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4132,7 +4470,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4148,7 +4486,7 @@ No authorization required
 
 <a name="listActionValues"></a>
 # **listActionValues**
-> List&lt;ListConditionValues200ResponseInner&gt; listActionValues(authorization, appId, actionValue)
+> List&lt;ListConditionValues200ResponseInner&gt; listActionValues(appId, actionValue, authorization)
 
 
 
@@ -4158,20 +4496,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     String actionValue = "actionValue_example"; // String | The value for the selected action.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListConditionValues200ResponseInner> result = apiInstance.listActionValues(authorization, appId, actionValue);
+      List<ListConditionValues200ResponseInner> result = apiInstance.listActionValues(appId, actionValue, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listActionValues");
@@ -4188,9 +4531,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **actionValue** | **String**| The value for the selected action. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4198,7 +4541,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4213,7 +4556,7 @@ No authorization required
 
 <a name="listActions"></a>
 # **listActions**
-> List&lt;ListActions200ResponseInner&gt; listActions(authorization, appId)
+> List&lt;ListActions200ResponseInner&gt; listActions(appId, authorization)
 
 
 
@@ -4223,19 +4566,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListActions200ResponseInner> result = apiInstance.listActions(authorization, appId);
+      List<ListActions200ResponseInner> result = apiInstance.listActions(appId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listActions");
@@ -4252,8 +4600,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4261,7 +4609,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4276,7 +4624,7 @@ No authorization required
 
 <a name="listAppUsers"></a>
 # **listAppUsers**
-> List&lt;ListAppUsers200ResponseInner&gt; listAppUsers(authorization, appId, limit, page, cursor)
+> List&lt;ListAppUsers200ResponseInner&gt; listAppUsers(appId, authorization, limit, page, cursor)
 
 
 
@@ -4286,22 +4634,27 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
     try {
-      List<ListAppUsers200ResponseInner> result = apiInstance.listAppUsers(authorization, appId, limit, page, cursor);
+      List<ListAppUsers200ResponseInner> result = apiInstance.listAppUsers(appId, authorization, limit, page, cursor);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listAppUsers");
@@ -4318,8 +4671,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4330,7 +4683,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4355,13 +4708,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -4389,7 +4747,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4403,7 +4761,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4429,13 +4787,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -4457,7 +4820,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4465,7 +4828,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4480,7 +4843,7 @@ No authorization required
 
 <a name="listConditionOperators"></a>
 # **listConditionOperators**
-> List&lt;ListConditionOperators200ResponseInner&gt; listConditionOperators(authorization, appId, conditionValue)
+> List&lt;ListConditionOperators200ResponseInner&gt; listConditionOperators(appId, conditionValue, authorization)
 
 
 
@@ -4490,20 +4853,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListConditionOperators200ResponseInner> result = apiInstance.listConditionOperators(authorization, appId, conditionValue);
+      List<ListConditionOperators200ResponseInner> result = apiInstance.listConditionOperators(appId, conditionValue, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listConditionOperators");
@@ -4520,9 +4888,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **conditionValue** | **String**| The value for the selected condition. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4530,7 +4898,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4545,7 +4913,7 @@ No authorization required
 
 <a name="listConditionValues"></a>
 # **listConditionValues**
-> List&lt;ListConditionValues200ResponseInner&gt; listConditionValues(authorization, appId, conditionValue)
+> List&lt;ListConditionValues200ResponseInner&gt; listConditionValues(appId, conditionValue, authorization)
 
 
 
@@ -4555,20 +4923,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListConditionValues200ResponseInner> result = apiInstance.listConditionValues(authorization, appId, conditionValue);
+      List<ListConditionValues200ResponseInner> result = apiInstance.listConditionValues(appId, conditionValue, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listConditionValues");
@@ -4585,9 +4958,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **conditionValue** | **String**| The value for the selected condition. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4595,7 +4968,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4610,7 +4983,7 @@ No authorization required
 
 <a name="listConditions"></a>
 # **listConditions**
-> List&lt;ListConditions200ResponseInner&gt; listConditions(authorization, appId)
+> List&lt;ListConditions200ResponseInner&gt; listConditions(appId, authorization)
 
 
 
@@ -4620,19 +4993,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListConditions200ResponseInner> result = apiInstance.listConditions(authorization, appId);
+      List<ListConditions200ResponseInner> result = apiInstance.listConditions(appId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listConditions");
@@ -4649,8 +5027,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4658,7 +5036,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4683,13 +5061,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -4716,7 +5099,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4729,7 +5112,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4755,13 +5138,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -4786,7 +5174,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4797,7 +5185,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4822,13 +5210,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -4853,7 +5246,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -4864,7 +5257,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4879,7 +5272,7 @@ No authorization required
 
 <a name="listMappingActionValues"></a>
 # **listMappingActionValues**
-> List&lt;ListConditionValues200ResponseInner&gt; listMappingActionValues(authorization, actionValue)
+> List&lt;ListConditionValues200ResponseInner&gt; listMappingActionValues(actionValue, authorization)
 
 
 
@@ -4889,19 +5282,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String actionValue = "actionValue_example"; // String | The value for the selected action.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListConditionValues200ResponseInner> result = apiInstance.listMappingActionValues(authorization, actionValue);
+      List<ListConditionValues200ResponseInner> result = apiInstance.listMappingActionValues(actionValue, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listMappingActionValues");
@@ -4918,8 +5316,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **actionValue** | **String**| The value for the selected action. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4927,7 +5325,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -4952,13 +5350,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -4980,7 +5383,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -4988,7 +5391,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5003,7 +5406,7 @@ No authorization required
 
 <a name="listMappingConditionOperators"></a>
 # **listMappingConditionOperators**
-> List&lt;ListMappingConditionOperators200ResponseInner&gt; listMappingConditionOperators(authorization, conditionValue)
+> List&lt;ListMappingConditionOperators200ResponseInner&gt; listMappingConditionOperators(conditionValue, authorization)
 
 
 
@@ -5013,19 +5416,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListMappingConditionOperators200ResponseInner> result = apiInstance.listMappingConditionOperators(authorization, conditionValue);
+      List<ListMappingConditionOperators200ResponseInner> result = apiInstance.listMappingConditionOperators(conditionValue, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listMappingConditionOperators");
@@ -5042,8 +5450,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **conditionValue** | **String**| The value for the selected condition. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5051,7 +5459,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5066,7 +5474,7 @@ No authorization required
 
 <a name="listMappingConditionValues"></a>
 # **listMappingConditionValues**
-> List&lt;ListConditionValues200ResponseInner&gt; listMappingConditionValues(authorization, conditionValue)
+> List&lt;ListConditionValues200ResponseInner&gt; listMappingConditionValues(conditionValue, authorization)
 
 
 
@@ -5076,19 +5484,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String conditionValue = "conditionValue_example"; // String | The value for the selected condition.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListConditionValues200ResponseInner> result = apiInstance.listMappingConditionValues(authorization, conditionValue);
+      List<ListConditionValues200ResponseInner> result = apiInstance.listMappingConditionValues(conditionValue, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listMappingConditionValues");
@@ -5105,8 +5518,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **conditionValue** | **String**| The value for the selected condition. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5114,7 +5527,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5139,13 +5552,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -5167,7 +5585,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5175,7 +5593,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5200,13 +5618,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -5233,7 +5656,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **enabled** | **Boolean**| Defaults to true. When set to &#x60;false&#x60; will return all disabled rules. | [optional] |
 | **hasCondition** | **String**| Filters Rules based on their Conditions. | [optional] |
 | **hasConditionType** | **String**| Filters Rules based on their condition types. | [optional] |
@@ -5246,7 +5669,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5261,7 +5684,7 @@ No authorization required
 
 <a name="listRiskRules"></a>
 # **listRiskRules**
-> listRiskRules(authorization)
+> List&lt;RiskRule&gt; listRiskRules(authorization)
 
 
 
@@ -5271,18 +5694,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.listRiskRules(authorization);
+      List<RiskRule> result = apiInstance.listRiskRules(authorization);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listRiskRules");
       System.err.println("Status code: " + e.getCode());
@@ -5298,21 +5727,26 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**List&lt;RiskRule&gt;**](RiskRule.md)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **401** | Invalid API Key |  -  |
 
 <a name="listRoles"></a>
 # **listRoles**
@@ -5326,13 +5760,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
@@ -5360,7 +5799,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -5374,7 +5813,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5389,7 +5828,7 @@ No authorization required
 
 <a name="listRules"></a>
 # **listRules**
-> List&lt;Rule&gt; listRules(authorization, appId, enabled, hasCondition, hasConditionType, hasAction, hasActionType)
+> List&lt;Rule&gt; listRules(appId, authorization, enabled, hasCondition, hasConditionType, hasAction, hasActionType)
 
 
 
@@ -5399,24 +5838,29 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Boolean enabled = true; // Boolean | Defaults to true. When set to `false` will return all disabled rules.
     String hasCondition = "hasCondition_example"; // String | Filters Rules based on their Conditions.
     String hasConditionType = "hasConditionType_example"; // String | Filters Rules based on their condition types.
     String hasAction = "hasAction_example"; // String | Filters Rules based on their Actions.
     String hasActionType = "hasActionType_example"; // String | Filters Rules based on their action types.
     try {
-      List<Rule> result = apiInstance.listRules(authorization, appId, enabled, hasCondition, hasConditionType, hasAction, hasActionType);
+      List<Rule> result = apiInstance.listRules(appId, authorization, enabled, hasCondition, hasConditionType, hasAction, hasActionType);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listRules");
@@ -5433,8 +5877,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **enabled** | **Boolean**| Defaults to true. When set to &#x60;false&#x60; will return all disabled rules. | [optional] |
 | **hasCondition** | **String**| Filters Rules based on their Conditions. | [optional] |
 | **hasConditionType** | **String**| Filters Rules based on their condition types. | [optional] |
@@ -5447,7 +5891,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5462,7 +5906,7 @@ No authorization required
 
 <a name="listScopes"></a>
 # **listScopes**
-> List&lt;ListScopes200ResponseInner&gt; listScopes(authorization, id)
+> List&lt;ListScopes200ResponseInner&gt; listScopes(id, authorization)
 
 
 
@@ -5472,19 +5916,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<ListScopes200ResponseInner> result = apiInstance.listScopes(authorization, id);
+      List<ListScopes200ResponseInner> result = apiInstance.listScopes(id, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listScopes");
@@ -5501,8 +5950,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5510,7 +5959,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5526,7 +5975,7 @@ No authorization required
 
 <a name="listUsers"></a>
 # **listUsers**
-> List&lt;User&gt; listUsers(authorization, appId, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields)
+> List&lt;User&gt; listUsers(appId, authorization, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields)
 
 
 
@@ -5536,17 +5985,22 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer limit = 56; // Integer | The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit.
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
@@ -5555,7 +6009,7 @@ public class Example {
     String updatedSince = "updatedSince_example"; // String | An ISO8601 timestamp value that returns all users updated after a given date & time.
     String updatedUntil = "updatedUntil_example"; // String | An ISO8601 timestamp value that returns all users updated before a given date & time.
     String lastLoginSince = "lastLoginSince_example"; // String | An ISO8601 timestamp value that returns all users that logged in after a given date & time.
-    String lastLoginUntil = "lastLoginUntil_example"; // String | 
+    String lastLoginUntil = "lastLoginUntil_example"; // String | An ISO8601 timestamp value that returns all users that logged in before a given date & time.
     String firstname = "firstname_example"; // String | The first name of the user
     String lastname = "lastname_example"; // String | The last name of the user
     String email = "email_example"; // String | The email address of the user
@@ -5567,7 +6021,7 @@ public class Example {
     String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket = "customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket_example"; // String | The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes.
     String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
     try {
-      List<User> result = apiInstance.listUsers(authorization, appId, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
+      List<User> result = apiInstance.listUsers(appId, authorization, limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#listUsers");
@@ -5584,8 +6038,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **limit** | **Integer**| The total number of items returned per page. The maximum limit varies between endpoints, see the relevant endpoint documentation for the specific limit. | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
@@ -5594,7 +6048,7 @@ public class Example {
 | **updatedSince** | **String**| An ISO8601 timestamp value that returns all users updated after a given date &amp; time. | [optional] |
 | **updatedUntil** | **String**| An ISO8601 timestamp value that returns all users updated before a given date &amp; time. | [optional] |
 | **lastLoginSince** | **String**| An ISO8601 timestamp value that returns all users that logged in after a given date &amp; time. | [optional] |
-| **lastLoginUntil** | **String**|  | [optional] |
+| **lastLoginUntil** | **String**| An ISO8601 timestamp value that returns all users that logged in before a given date &amp; time. | [optional] |
 | **firstname** | **String**| The first name of the user | [optional] |
 | **lastname** | **String**| The last name of the user | [optional] |
 | **email** | **String**| The email address of the user | [optional] |
@@ -5612,7 +6066,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5629,7 +6083,7 @@ No authorization required
 
 <a name="removeClientApp"></a>
 # **removeClientApp**
-> removeClientApp(authorization, id, clientAppId)
+> removeClientApp(id, clientAppId, authorization)
 
 
 
@@ -5639,20 +6093,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer clientAppId = 56; // Integer | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.removeClientApp(authorization, id, clientAppId);
+      apiInstance.removeClientApp(id, clientAppId, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#removeClientApp");
       System.err.println("Status code: " + e.getCode());
@@ -5668,9 +6127,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **clientAppId** | **Integer**|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5678,7 +6137,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5694,7 +6153,7 @@ No authorization required
 
 <a name="removeRoleAdmins"></a>
 # **removeRoleAdmins**
-> removeRoleAdmins(authorization, roleId, removeRoleUsersRequest)
+> removeRoleAdmins(roleId, removeRoleUsersRequest, authorization)
 
 
 
@@ -5704,20 +6163,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     RemoveRoleUsersRequest removeRoleUsersRequest = new RemoveRoleUsersRequest(); // RemoveRoleUsersRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.removeRoleAdmins(authorization, roleId, removeRoleUsersRequest);
+      apiInstance.removeRoleAdmins(roleId, removeRoleUsersRequest, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#removeRoleAdmins");
       System.err.println("Status code: " + e.getCode());
@@ -5733,9 +6197,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **removeRoleUsersRequest** | [**RemoveRoleUsersRequest**](RemoveRoleUsersRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5743,7 +6207,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5759,7 +6223,7 @@ No authorization required
 
 <a name="removeRoleUsers"></a>
 # **removeRoleUsers**
-> removeRoleUsers(authorization, roleId, removeRoleUsersRequest)
+> removeRoleUsers(roleId, removeRoleUsersRequest, authorization)
 
 
 
@@ -5769,20 +6233,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     RemoveRoleUsersRequest removeRoleUsersRequest = new RemoveRoleUsersRequest(); // RemoveRoleUsersRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.removeRoleUsers(authorization, roleId, removeRoleUsersRequest);
+      apiInstance.removeRoleUsers(roleId, removeRoleUsersRequest, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#removeRoleUsers");
       System.err.println("Status code: " + e.getCode());
@@ -5798,9 +6267,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **removeRoleUsersRequest** | [**RemoveRoleUsersRequest**](RemoveRoleUsersRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5808,7 +6277,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5834,13 +6303,18 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
     String authorization = "authorization_example"; // String | 
@@ -5872,7 +6346,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5889,7 +6363,7 @@ No authorization required
 
 <a name="setRoleApps"></a>
 # **setRoleApps**
-> List&lt;SetRoleApps200ResponseInner&gt; setRoleApps(authorization, roleId, requestBody)
+> List&lt;SetRoleApps200ResponseInner&gt; setRoleApps(roleId, requestBody, authorization)
 
 
 
@@ -5899,20 +6373,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     List<Integer> requestBody = Arrays.asList(); // List<Integer> | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<SetRoleApps200ResponseInner> result = apiInstance.setRoleApps(authorization, roleId, requestBody);
+      List<SetRoleApps200ResponseInner> result = apiInstance.setRoleApps(roleId, requestBody, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#setRoleApps");
@@ -5929,9 +6408,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **requestBody** | [**List&lt;Integer&gt;**](Integer.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -5939,7 +6418,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -5955,7 +6434,7 @@ No authorization required
 
 <a name="trackEvent"></a>
 # **trackEvent**
-> trackEvent(authorization, trackEventRequest)
+> trackEvent(trackEventRequest, authorization)
 
 
 
@@ -5965,19 +6444,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     TrackEventRequest trackEventRequest = new TrackEventRequest(); // TrackEventRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      apiInstance.trackEvent(authorization, trackEventRequest);
+      apiInstance.trackEvent(trackEventRequest, authorization);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#trackEvent");
       System.err.println("Status code: " + e.getCode());
@@ -5993,8 +6477,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **trackEventRequest** | [**TrackEventRequest**](TrackEventRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6002,7 +6486,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6018,7 +6502,7 @@ No authorization required
 
 <a name="updateAccessTokenClaim"></a>
 # **updateAccessTokenClaim**
-> Id updateAccessTokenClaim(authorization, id, claimId, addAccessTokenClaimRequest)
+> Id updateAccessTokenClaim(id, claimId, addAccessTokenClaimRequest, authorization)
 
 
 
@@ -6028,21 +6512,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer claimId = 56; // Integer | 
     AddAccessTokenClaimRequest addAccessTokenClaimRequest = new AddAccessTokenClaimRequest(); // AddAccessTokenClaimRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Id result = apiInstance.updateAccessTokenClaim(authorization, id, claimId, addAccessTokenClaimRequest);
+      Id result = apiInstance.updateAccessTokenClaim(id, claimId, addAccessTokenClaimRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateAccessTokenClaim");
@@ -6059,10 +6548,10 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **claimId** | **Integer**|  | |
 | **addAccessTokenClaimRequest** | [**AddAccessTokenClaimRequest**](AddAccessTokenClaimRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6070,7 +6559,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6087,7 +6576,7 @@ No authorization required
 
 <a name="updateApp"></a>
 # **updateApp**
-> Schema updateApp(authorization, appId, schema)
+> Schema updateApp(appId, schema, authorization)
 
 
 
@@ -6097,20 +6586,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Schema schema = new Schema(); // Schema | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Schema result = apiInstance.updateApp(authorization, appId, schema);
+      Schema result = apiInstance.updateApp(appId, schema, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateApp");
@@ -6127,9 +6621,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **schema** | [**Schema**](Schema.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6137,7 +6631,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6153,7 +6647,7 @@ No authorization required
 
 <a name="updateAuthorizationServer"></a>
 # **updateAuthorizationServer**
-> Id updateAuthorizationServer(authorization, id, createAuthorizationServerRequest)
+> Id updateAuthorizationServer(id, createAuthorizationServerRequest, authorization)
 
 
 
@@ -6163,20 +6657,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     CreateAuthorizationServerRequest createAuthorizationServerRequest = new CreateAuthorizationServerRequest(); // CreateAuthorizationServerRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Id result = apiInstance.updateAuthorizationServer(authorization, id, createAuthorizationServerRequest);
+      Id result = apiInstance.updateAuthorizationServer(id, createAuthorizationServerRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateAuthorizationServer");
@@ -6193,9 +6692,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **createAuthorizationServerRequest** | [**CreateAuthorizationServerRequest**](CreateAuthorizationServerRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6203,7 +6702,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6220,7 +6719,7 @@ No authorization required
 
 <a name="updateClientApp"></a>
 # **updateClientApp**
-> ClientApp updateClientApp(authorization, id, clientAppId, updateClientAppRequest)
+> ClientApp updateClientApp(id, clientAppId, updateClientAppRequest, authorization)
 
 
 
@@ -6230,21 +6729,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer clientAppId = 56; // Integer | 
     UpdateClientAppRequest updateClientAppRequest = new UpdateClientAppRequest(); // UpdateClientAppRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      ClientApp result = apiInstance.updateClientApp(authorization, id, clientAppId, updateClientAppRequest);
+      ClientApp result = apiInstance.updateClientApp(id, clientAppId, updateClientAppRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateClientApp");
@@ -6261,10 +6765,10 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **clientAppId** | **Integer**|  | |
 | **updateClientAppRequest** | [**UpdateClientAppRequest**](UpdateClientAppRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6272,7 +6776,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6289,7 +6793,7 @@ No authorization required
 
 <a name="updateEnvironmentVariable"></a>
 # **updateEnvironmentVariable**
-> Envvar updateEnvironmentVariable(authorization, envvarId, updateEnvironmentVariableRequest)
+> Envvar updateEnvironmentVariable(envvarId, updateEnvironmentVariableRequest, authorization)
 
 
 
@@ -6299,20 +6803,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String envvarId = "envvarId_example"; // String | Set to the id of the Hook Environment Variable that you want to fetch.
     UpdateEnvironmentVariableRequest updateEnvironmentVariableRequest = new UpdateEnvironmentVariableRequest(); // UpdateEnvironmentVariableRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Envvar result = apiInstance.updateEnvironmentVariable(authorization, envvarId, updateEnvironmentVariableRequest);
+      Envvar result = apiInstance.updateEnvironmentVariable(envvarId, updateEnvironmentVariableRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateEnvironmentVariable");
@@ -6329,9 +6838,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **envvarId** | **String**| Set to the id of the Hook Environment Variable that you want to fetch. | |
 | **updateEnvironmentVariableRequest** | [**UpdateEnvironmentVariableRequest**](UpdateEnvironmentVariableRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6339,7 +6848,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6356,7 +6865,7 @@ No authorization required
 
 <a name="updateHook"></a>
 # **updateHook**
-> Hook updateHook(authorization, hookId, hook)
+> Hook updateHook(hookId, hook, authorization)
 
 
 
@@ -6366,20 +6875,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String hookId = "hookId_example"; // String | Set to the id of the Hook that you want to return.
     Hook hook = new Hook(); // Hook | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Hook result = apiInstance.updateHook(authorization, hookId, hook);
+      Hook result = apiInstance.updateHook(hookId, hook, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateHook");
@@ -6396,9 +6910,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **hookId** | **String**| Set to the id of the Hook that you want to return. | |
 | **hook** | [**Hook**](Hook.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6406,7 +6920,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6422,7 +6936,7 @@ No authorization required
 
 <a name="updateMapping"></a>
 # **updateMapping**
-> Integer updateMapping(authorization, mappingId, mapping)
+> Integer updateMapping(mappingId, mapping, authorization)
 
 
 
@@ -6432,20 +6946,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer mappingId = 56; // Integer | The id of the user mapping to locate.
     Mapping mapping = new Mapping(); // Mapping | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Integer result = apiInstance.updateMapping(authorization, mappingId, mapping);
+      Integer result = apiInstance.updateMapping(mappingId, mapping, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateMapping");
@@ -6462,9 +6981,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **mappingId** | **Integer**| The id of the user mapping to locate. | |
 | **mapping** | [**Mapping**](Mapping.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6472,7 +6991,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6488,7 +7007,7 @@ No authorization required
 
 <a name="updateRiskRule"></a>
 # **updateRiskRule**
-> RiskRule updateRiskRule(authorization, riskRuleId, riskRule)
+> RiskRule updateRiskRule(riskRuleId, riskRule, authorization)
 
 
 
@@ -6498,20 +7017,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String riskRuleId = "riskRuleId_example"; // String | 
     RiskRule riskRule = new RiskRule(); // RiskRule | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      RiskRule result = apiInstance.updateRiskRule(authorization, riskRuleId, riskRule);
+      RiskRule result = apiInstance.updateRiskRule(riskRuleId, riskRule, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateRiskRule");
@@ -6528,9 +7052,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **riskRuleId** | **String**|  | |
 | **riskRule** | [**RiskRule**](RiskRule.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6538,7 +7062,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6554,7 +7078,7 @@ No authorization required
 
 <a name="updateRole"></a>
 # **updateRole**
-> UpdateRole200Response updateRole(authorization, roleId, role)
+> UpdateRole200Response updateRole(roleId, role, authorization)
 
 
 
@@ -6564,20 +7088,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer roleId = 56; // Integer | Set to the id of the role you want to return.
     Role role = new Role(); // Role | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      UpdateRole200Response result = apiInstance.updateRole(authorization, roleId, role);
+      UpdateRole200Response result = apiInstance.updateRole(roleId, role, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateRole");
@@ -6594,9 +7123,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **roleId** | **Integer**| Set to the id of the role you want to return. | |
 | **role** | [**Role**](Role.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6604,7 +7133,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6620,7 +7149,7 @@ No authorization required
 
 <a name="updateRule"></a>
 # **updateRule**
-> RuleId updateRule(authorization, appId, ruleId, rule)
+> RuleId updateRule(appId, ruleId, rule, authorization)
 
 
 
@@ -6630,21 +7159,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer appId = 56; // Integer | 
     Integer ruleId = 56; // Integer | The id of the app rule to locate.
     Rule rule = new Rule(); // Rule | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      RuleId result = apiInstance.updateRule(authorization, appId, ruleId, rule);
+      RuleId result = apiInstance.updateRule(appId, ruleId, rule, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateRule");
@@ -6661,10 +7195,10 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **appId** | **Integer**|  | |
 | **ruleId** | **Integer**| The id of the app rule to locate. | |
 | **rule** | [**Rule**](Rule.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6672,7 +7206,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6688,7 +7222,7 @@ No authorization required
 
 <a name="updateScope"></a>
 # **updateScope**
-> Id updateScope(authorization, id, scopeId, addScopeRequest)
+> Id updateScope(id, scopeId, addScopeRequest, authorization)
 
 
 
@@ -6698,21 +7232,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer id = 56; // Integer | 
     Integer scopeId = 56; // Integer | 
     AddScopeRequest addScopeRequest = new AddScopeRequest(); // AddScopeRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      Id result = apiInstance.updateScope(authorization, id, scopeId, addScopeRequest);
+      Id result = apiInstance.updateScope(id, scopeId, addScopeRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateScope");
@@ -6729,10 +7268,10 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **id** | **Integer**|  | |
 | **scopeId** | **Integer**|  | |
 | **addScopeRequest** | [**AddScopeRequest**](AddScopeRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6740,7 +7279,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6757,7 +7296,7 @@ No authorization required
 
 <a name="updateUser"></a>
 # **updateUser**
-> User updateUser(authorization, userId, user, mappings, validatePolicy)
+> User updateUser(userId, user, authorization, mappings, validatePolicy)
 
 
 
@@ -6767,22 +7306,27 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     User user = new User(); // User | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String mappings = "async"; // String | Controls how mappings will be applied to the user on creation. Defaults to async.
     Boolean validatePolicy = true; // Boolean | Will passwords validate against the User Policy? Defaults to true.
     try {
-      User result = apiInstance.updateUser(authorization, userId, user, mappings, validatePolicy);
+      User result = apiInstance.updateUser(userId, user, authorization, mappings, validatePolicy);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#updateUser");
@@ -6799,9 +7343,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **user** | [**User**](User.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **mappings** | **String**| Controls how mappings will be applied to the user on creation. Defaults to async. | [optional] [enum: async, sync, disabled] |
 | **validatePolicy** | **Boolean**| Will passwords validate against the User Policy? Defaults to true. | [optional] |
 
@@ -6811,7 +7355,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6829,7 +7373,7 @@ No authorization required
 
 <a name="v1VerifyFactor"></a>
 # **v1VerifyFactor**
-> V1VerifyFactor200Response v1VerifyFactor(authorization, v1VerifyFactorRequest, customAllowedOriginHeader1)
+> V1VerifyFactor200Response v1VerifyFactor(v1VerifyFactorRequest, authorization, customAllowedOriginHeader1)
 
 
 
@@ -6839,20 +7383,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     V1VerifyFactorRequest v1VerifyFactorRequest = new V1VerifyFactorRequest(); // V1VerifyFactorRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     String customAllowedOriginHeader1 = "customAllowedOriginHeader1_example"; // String | Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS.
     try {
-      V1VerifyFactor200Response result = apiInstance.v1VerifyFactor(authorization, v1VerifyFactorRequest, customAllowedOriginHeader1);
+      V1VerifyFactor200Response result = apiInstance.v1VerifyFactor(v1VerifyFactorRequest, authorization, customAllowedOriginHeader1);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#v1VerifyFactor");
@@ -6869,8 +7418,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **v1VerifyFactorRequest** | [**V1VerifyFactorRequest**](V1VerifyFactorRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 | **customAllowedOriginHeader1** | **String**| Required for CORS requests only. Set to the Origin URI from which you are allowed to send a request using CORS. | [optional] |
 
 ### Return type
@@ -6879,7 +7428,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6895,7 +7444,7 @@ No authorization required
 
 <a name="verifyEnrollment"></a>
 # **verifyEnrollment**
-> List&lt;Registration&gt; verifyEnrollment(authorization, userId, registrationId, verifyEnrollmentRequest)
+> List&lt;Registration&gt; verifyEnrollment(userId, registrationId, verifyEnrollmentRequest, authorization)
 
 
 
@@ -6905,21 +7454,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer registrationId = 56; // Integer | Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor.
     VerifyEnrollmentRequest verifyEnrollmentRequest = new VerifyEnrollmentRequest(); // VerifyEnrollmentRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<Registration> result = apiInstance.verifyEnrollment(authorization, userId, registrationId, verifyEnrollmentRequest);
+      List<Registration> result = apiInstance.verifyEnrollment(userId, registrationId, verifyEnrollmentRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#verifyEnrollment");
@@ -6936,10 +7490,10 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **registrationId** | **Integer**| Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor. | |
 | **verifyEnrollmentRequest** | [**VerifyEnrollmentRequest**](VerifyEnrollmentRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -6947,7 +7501,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -6962,7 +7516,7 @@ No authorization required
 
 <a name="verifyEnrollmentVoiceProtect"></a>
 # **verifyEnrollmentVoiceProtect**
-> List&lt;Registration&gt; verifyEnrollmentVoiceProtect(authorization, userId, registrationId)
+> List&lt;Registration&gt; verifyEnrollmentVoiceProtect(userId, registrationId, authorization)
 
 
 
@@ -6972,20 +7526,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer registrationId = 56; // Integer | Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<Registration> result = apiInstance.verifyEnrollmentVoiceProtect(authorization, userId, registrationId);
+      List<Registration> result = apiInstance.verifyEnrollmentVoiceProtect(userId, registrationId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#verifyEnrollmentVoiceProtect");
@@ -7002,9 +7561,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **registrationId** | **Integer**| Set to the uuid of the registration. This was included in the response as part of the initial request in Enroll Factor. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -7012,7 +7571,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -7027,7 +7586,7 @@ No authorization required
 
 <a name="verifyFactor"></a>
 # **verifyFactor**
-> GenerateToken400Response verifyFactor(authorization, userId, verificationId, verifyFactorRequest)
+> GenerateToken400Response verifyFactor(userId, verificationId, verifyFactorRequest, authorization)
 
 
 
@@ -7037,21 +7596,26 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer verificationId = 56; // Integer | The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call.
     VerifyFactorRequest verifyFactorRequest = new VerifyFactorRequest(); // VerifyFactorRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      GenerateToken400Response result = apiInstance.verifyFactor(authorization, userId, verificationId, verifyFactorRequest);
+      GenerateToken400Response result = apiInstance.verifyFactor(userId, verificationId, verifyFactorRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#verifyFactor");
@@ -7068,10 +7632,10 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **verificationId** | **Integer**| The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call. | |
 | **verifyFactorRequest** | [**VerifyFactorRequest**](VerifyFactorRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -7079,7 +7643,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -7095,7 +7659,7 @@ No authorization required
 
 <a name="verifyFactorSaml"></a>
 # **verifyFactorSaml**
-> VerifyFactorSaml200Response verifyFactorSaml(authorization, verifyFactorSamlRequest)
+> VerifyFactorSaml200Response verifyFactorSaml(verifyFactorSamlRequest, authorization)
 
 
 
@@ -7105,19 +7669,24 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     VerifyFactorSamlRequest verifyFactorSamlRequest = new VerifyFactorSamlRequest(); // VerifyFactorSamlRequest | 
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      VerifyFactorSaml200Response result = apiInstance.verifyFactorSaml(authorization, verifyFactorSamlRequest);
+      VerifyFactorSaml200Response result = apiInstance.verifyFactorSaml(verifyFactorSamlRequest, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#verifyFactorSaml");
@@ -7134,8 +7703,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **verifyFactorSamlRequest** | [**VerifyFactorSamlRequest**](VerifyFactorSamlRequest.md)|  | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -7143,7 +7712,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
@@ -7160,7 +7729,7 @@ No authorization required
 
 <a name="verifyFactorVoice"></a>
 # **verifyFactorVoice**
-> List&lt;VerifyFactorVoice200ResponseInner&gt; verifyFactorVoice(authorization, userId, verificationId)
+> List&lt;VerifyFactorVoice200ResponseInner&gt; verifyFactorVoice(userId, verificationId, authorization)
 
 
 
@@ -7170,20 +7739,25 @@ No authorization required
 import com.onelogin.sdk.ApiClient;
 import com.onelogin.sdk.ApiException;
 import com.onelogin.sdk.Configuration;
+import com.onelogin.sdk.auth.*;
 import com.onelogin.sdk.models.*;
 import com.onelogin.sdk.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://onelogininc.onelogin.com");
+    defaultClient.setBasePath("https://api.us.onelogin.com");
+    
+    // Configure HTTP bearer authorization: bearer
+    HttpBearerAuth bearer = (HttpBearerAuth) defaultClient.getAuthentication("bearer");
+    bearer.setBearerToken("BEARER TOKEN");
 
     DefaultApi apiInstance = new DefaultApi(defaultClient);
-    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     Integer userId = 56; // Integer | Set to the id of the user.
     Integer verificationId = 56; // Integer | The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call.
+    String authorization = "authorization_example"; // String | Must be in the form of 'bearer <access_token>'
     try {
-      List<VerifyFactorVoice200ResponseInner> result = apiInstance.verifyFactorVoice(authorization, userId, verificationId);
+      List<VerifyFactorVoice200ResponseInner> result = apiInstance.verifyFactorVoice(userId, verificationId, authorization);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DefaultApi#verifyFactorVoice");
@@ -7200,9 +7774,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | |
 | **userId** | **Integer**| Set to the id of the user. | |
 | **verificationId** | **Integer**| The verification_id is returned on activation of the factor or you can get the device_id using the Activate Factor API call. | |
+| **authorization** | **String**| Must be in the form of &#39;bearer &lt;access_token&gt;&#39; | [optional] |
 
 ### Return type
 
@@ -7210,7 +7784,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[bearer](../README.md#bearer)
 
 ### HTTP request headers
 
