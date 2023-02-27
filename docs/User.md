@@ -25,7 +25,7 @@
 |**trustedIdpId** | **Integer** | The ID of the OneLogin Trusted IDP of the user. |  [optional] |
 |**managerAdId** | **String** | The ID of the user&#39;s manager in Active Directory. |  [optional] |
 |**managerUserId** | **String** | The OneLogin User ID for the user&#39;s manager. |  [optional] |
-|**samaccountName** | **String** | The user&#39;s Active Directory username. |  [optional] |
+|**samaccountname** | **String** | The user&#39;s Active Directory username. |  [optional] |
 |**memberOf** | **String** | The user&#39;s directory membership. |  [optional] |
 |**userprincipalname** | **String** | The principle name of the user. |  [optional] |
 |**distinguishedName** | **String** | The distinguished name of the user. |  [optional] |

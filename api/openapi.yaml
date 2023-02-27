@@ -5885,7 +5885,7 @@ components:
         - null
         - null
         custom_attributes: "{}"
-        samaccount_name: samaccount_name
+        samaccountname: samaccountname
         password: password
         updated_at: updated_at
         password_algorithm: password_algorithm
@@ -5981,7 +5981,7 @@ components:
         manager_user_id:
           description: The OneLogin User ID for the user's manager.
           type: string
-        samaccount_name:
+        samaccountname:
           description: The user's Active Directory username.
           type: string
         member_of:

@@ -186,11 +186,11 @@ public class UserTest {
     }
 
     /**
-     * Test the property 'samaccountName'
+     * Test the property 'samaccountname'
      */
     @Test
-    public void samaccountNameTest() {
-        // TODO: test samaccountName
+    public void samaccountnameTest() {
+        // TODO: test samaccountname
     }
 
     /**

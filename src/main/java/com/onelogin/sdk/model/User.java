@@ -49,7 +49,7 @@ import com.onelogin.sdk.JSON;
 /**
  * User
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-11-18T10:01:18.133614-08:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-02-27T15:18:08.440770200+13:00[Pacific/Auckland]")
 public class User {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -233,9 +233,9 @@ public class User {
   @SerializedName(SERIALIZED_NAME_MANAGER_USER_ID)
   private String managerUserId;
 
-  public static final String SERIALIZED_NAME_SAMACCOUNT_NAME = "samaccount_name";
-  @SerializedName(SERIALIZED_NAME_SAMACCOUNT_NAME)
-  private String samaccountName;
+  public static final String SERIALIZED_NAME_SAMACCOUNTNAME = "samaccountname";
+  @SerializedName(SERIALIZED_NAME_SAMACCOUNTNAME)
+  private String samaccountname;
 
   public static final String SERIALIZED_NAME_MEMBER_OF = "member_of";
   @SerializedName(SERIALIZED_NAME_MEMBER_OF)
@@ -734,26 +734,26 @@ public class User {
   }
 
 
-  public User samaccountName(String samaccountName) {
+  public User samaccountname(String samaccountname) {
     
-    this.samaccountName = samaccountName;
+    this.samaccountname = samaccountname;
     return this;
   }
 
    /**
    * The user&#39;s Active Directory username.
-   * @return samaccountName
+   * @return samaccountname
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "The user's Active Directory username.")
 
-  public String getSamaccountName() {
-    return samaccountName;
+  public String getSamaccountname() {
+    return samaccountname;
   }
 
 
-  public void setSamaccountName(String samaccountName) {
-    this.samaccountName = samaccountName;
+  public void setSamaccountname(String samaccountname) {
+    this.samaccountname = samaccountname;
   }
 
 
@@ -1199,7 +1199,7 @@ public class User {
         Objects.equals(this.trustedIdpId, user.trustedIdpId) &&
         Objects.equals(this.managerAdId, user.managerAdId) &&
         Objects.equals(this.managerUserId, user.managerUserId) &&
-        Objects.equals(this.samaccountName, user.samaccountName) &&
+        Objects.equals(this.samaccountname, user.samaccountname) &&
         Objects.equals(this.memberOf, user.memberOf) &&
         Objects.equals(this.userprincipalname, user.userprincipalname) &&
         Objects.equals(this.distinguishedName, user.distinguishedName) &&
@@ -1222,7 +1222,7 @@ public class User {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, firstname, lastname, title, department, company, comment, groupId, roleIds, phone, state, status, directoryId, trustedIdpId, managerAdId, managerUserId, samaccountName, memberOf, userprincipalname, distinguishedName, externalId, activatedAt, lastLogin, invitationSentAt, updatedAt, preferredLocaleCode, createdAt, customAttributes, invalidLoginAttempts, lockedUntil, passwordChangedAt, password, passwordConfirmation, passwordAlgorithm, salt);
+    return Objects.hash(id, username, email, firstname, lastname, title, department, company, comment, groupId, roleIds, phone, state, status, directoryId, trustedIdpId, managerAdId, managerUserId, samaccountname, memberOf, userprincipalname, distinguishedName, externalId, activatedAt, lastLogin, invitationSentAt, updatedAt, preferredLocaleCode, createdAt, customAttributes, invalidLoginAttempts, lockedUntil, passwordChangedAt, password, passwordConfirmation, passwordAlgorithm, salt);
   }
 
   @Override
@@ -1247,7 +1247,7 @@ public class User {
     sb.append("    trustedIdpId: ").append(toIndentedString(trustedIdpId)).append("\n");
     sb.append("    managerAdId: ").append(toIndentedString(managerAdId)).append("\n");
     sb.append("    managerUserId: ").append(toIndentedString(managerUserId)).append("\n");
-    sb.append("    samaccountName: ").append(toIndentedString(samaccountName)).append("\n");
+    sb.append("    samaccountname: ").append(toIndentedString(samaccountname)).append("\n");
     sb.append("    memberOf: ").append(toIndentedString(memberOf)).append("\n");
     sb.append("    userprincipalname: ").append(toIndentedString(userprincipalname)).append("\n");
     sb.append("    distinguishedName: ").append(toIndentedString(distinguishedName)).append("\n");
@@ -1306,7 +1306,7 @@ public class User {
     openapiFields.add("trusted_idp_id");
     openapiFields.add("manager_ad_id");
     openapiFields.add("manager_user_id");
-    openapiFields.add("samaccount_name");
+    openapiFields.add("samaccountname");
     openapiFields.add("member_of");
     openapiFields.add("userprincipalname");
     openapiFields.add("distinguished_name");
@@ -1389,8 +1389,8 @@ public class User {
       if ((jsonObj.get("manager_user_id") != null && !jsonObj.get("manager_user_id").isJsonNull()) && !jsonObj.get("manager_user_id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `manager_user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("manager_user_id").toString()));
       }
-      if ((jsonObj.get("samaccount_name") != null && !jsonObj.get("samaccount_name").isJsonNull()) && !jsonObj.get("samaccount_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `samaccount_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("samaccount_name").toString()));
+      if ((jsonObj.get("samaccountname") != null && !jsonObj.get("samaccountname").isJsonNull()) && !jsonObj.get("samaccountname").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `samaccountname` to be a primitive type in the JSON string but got `%s`", jsonObj.get("samaccountname").toString()));
       }
       if ((jsonObj.get("member_of") != null && !jsonObj.get("member_of").isJsonNull()) && !jsonObj.get("member_of").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `member_of` to be a primitive type in the JSON string but got `%s`", jsonObj.get("member_of").toString()));
