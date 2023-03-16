@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**status** | [**V1Status**](V1Status.md) |  |  [optional] |
-|**data** | [**GetRateLimit200ResponseData**](GetRateLimit200ResponseData.md) |  |  [optional] |
+|**status** | [**Error**](Error.md) |  |  [optional] |
+|**data** | [**RateLimit**](RateLimit.md) |  |  [optional] |
 
 
 

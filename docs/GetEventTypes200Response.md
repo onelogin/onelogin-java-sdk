@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**status** | [**V1Status**](V1Status.md) |  |  [optional] |
+|**status** | [**Error**](Error.md) |  |  [optional] |
 |**data** | [**List&lt;GetEventTypes200ResponseDataInner&gt;**](GetEventTypes200ResponseDataInner.md) |  |  [optional] |
 
 

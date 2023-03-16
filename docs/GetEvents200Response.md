@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**status** | [**V1Status**](V1Status.md) |  |  [optional] |
-|**pagination** | [**V1Pagination**](V1Pagination.md) |  |  [optional] |
+|**status** | [**Error**](Error.md) |  |  [optional] |
+|**pagination** | [**GetEvents200ResponsePagination**](GetEvents200ResponsePagination.md) |  |  [optional] |
 |**data** | [**List&lt;Event&gt;**](Event.md) |  |  [optional] |
 
 
