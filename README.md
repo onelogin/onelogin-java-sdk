@@ -2,7 +2,7 @@
 
 OneLogin API
 - API version: 3.1.1
-  - Build date: 2023-03-16T12:13:23.145217-07:00[America/Los_Angeles]
+  - Build date: 2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]
 
 OpenAPI Specification for OneLogin
 
@@ -86,7 +86,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.ApiAuthClaimsApi;
+import com.onelogin.client.api.ApiAuthClaimsApi;
 
 public class Example {
   public static void main(String[] args) {

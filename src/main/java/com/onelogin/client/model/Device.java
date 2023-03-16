@@ -46,7 +46,7 @@ import com.onelogin.client.JSON;
 /**
  * Device
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T12:13:23.145217-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
 public class Device {
   public static final String SERIALIZED_NAME_DEVICE_ID = "device_id";
   @SerializedName(SERIALIZED_NAME_DEVICE_ID)

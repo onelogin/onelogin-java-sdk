@@ -33,7 +33,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -104,7 +104,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -174,7 +174,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -245,7 +245,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -315,7 +315,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -383,7 +383,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -461,7 +461,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -531,7 +531,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -601,7 +601,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -669,7 +669,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -740,7 +740,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.AppRulesApi;
+import com.onelogin.client.api.AppRulesApi;
 
 public class Example {
   public static void main(String[] args) {

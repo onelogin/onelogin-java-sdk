@@ -28,7 +28,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.BrandingServiceApi;
+import com.onelogin.client.api.BrandingServiceApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -97,7 +97,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.BrandingServiceApi;
+import com.onelogin.client.api.BrandingServiceApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -165,7 +165,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.BrandingServiceApi;
+import com.onelogin.client.api.BrandingServiceApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -234,7 +234,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.BrandingServiceApi;
+import com.onelogin.client.api.BrandingServiceApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -303,7 +303,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.BrandingServiceApi;
+import com.onelogin.client.api.BrandingServiceApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -366,7 +366,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.BrandingServiceApi;
+import com.onelogin.client.api.BrandingServiceApi;
 
 public class Example {
   public static void main(String[] args) {

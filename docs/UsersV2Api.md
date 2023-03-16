@@ -27,7 +27,7 @@ import com.onelogin.client.ApiClient;
 import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.UsersV2Api;
+import com.onelogin.client.api.UsersV2Api;
 
 public class Example {
   public static void main(String[] args) {
@@ -97,7 +97,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.UsersV2Api;
+import com.onelogin.client.api.UsersV2Api;
 
 public class Example {
   public static void main(String[] args) {
@@ -165,7 +165,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.UsersV2Api;
+import com.onelogin.client.api.UsersV2Api;
 
 public class Example {
   public static void main(String[] args) {
@@ -234,7 +234,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.UsersV2Api;
+import com.onelogin.client.api.UsersV2Api;
 
 public class Example {
   public static void main(String[] args) {
@@ -305,7 +305,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.UsersV2Api;
+import com.onelogin.client.api.UsersV2Api;
 
 public class Example {
   public static void main(String[] args) {
@@ -410,7 +410,7 @@ import com.onelogin.client.ApiClient;
 import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.UsersV2Api;
+import com.onelogin.client.api.UsersV2Api;
 
 public class Example {
   public static void main(String[] args) {

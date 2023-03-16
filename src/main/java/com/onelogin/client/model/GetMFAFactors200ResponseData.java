@@ -49,7 +49,7 @@ import com.onelogin.client.JSON;
 /**
  * GetMFAFactors200ResponseData
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T12:13:23.145217-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
 public class GetMFAFactors200ResponseData {
   public static final String SERIALIZED_NAME_AUTH_FACTORS = "auth_factors";
   @SerializedName(SERIALIZED_NAME_AUTH_FACTORS)

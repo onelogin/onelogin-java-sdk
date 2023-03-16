@@ -24,7 +24,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.InviteLinksApi;
+import com.onelogin.client.api.InviteLinksApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -93,7 +93,7 @@ import com.onelogin.client.ApiException;
 import com.onelogin.client.Configuration;
 import com.onelogin.client.auth.*;
 import com.onelogin.client.models.*;
-import org.openapitools.client.api.InviteLinksApi;
+import com.onelogin.client.api.InviteLinksApi;
 
 public class Example {
   public static void main(String[] args) {

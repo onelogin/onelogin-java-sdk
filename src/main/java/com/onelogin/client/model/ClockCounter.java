@@ -46,7 +46,7 @@ import com.onelogin.client.JSON;
 /**
  * unit: - 0 &#x3D; Seconds - 1 &#x3D; Minutes - 2 &#x3D; Hours value: - When Unit &#x3D; 0 or 1 value must be 0-60 - When Unit &#x3D; 2 value must be 0-24
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T12:13:23.145217-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
 public class ClockCounter {
   public static final String SERIALIZED_NAME_VALUE = "value";
   @SerializedName(SERIALIZED_NAME_VALUE)

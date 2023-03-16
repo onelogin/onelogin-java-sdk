@@ -46,7 +46,7 @@ import com.onelogin.client.JSON;
 /**
  * The parameters section contains parameterized attributes that have defined at the connector level as well as custom attributes that have been defined specifically for this app. Regardless of how they are defined, all parameters have the following attributes. Each parameter is an object with the key for the object being set as the parameters short name.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T12:13:23.145217-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
 public class AppParameters {
   public static final String SERIALIZED_NAME_USER_ATTRIBUTE_MAPPINGS = "user_attribute_mappings";
   @SerializedName(SERIALIZED_NAME_USER_ATTRIBUTE_MAPPINGS)

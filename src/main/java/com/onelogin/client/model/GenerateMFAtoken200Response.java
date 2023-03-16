@@ -46,7 +46,7 @@ import com.onelogin.client.JSON;
 /**
  * GenerateMFAtoken200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T12:13:23.145217-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
 public class GenerateMFAtoken200Response {
   public static final String SERIALIZED_NAME_MFA_TOKEN = "mfa_token";
   @SerializedName(SERIALIZED_NAME_MFA_TOKEN)
