@@ -7,9 +7,9 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **Integer** |  |  [optional] |
-|**name** | **String** |  |  [optional] |
-|**reference** | **String** |  |  [optional] |
+|**id** | **Integer** | Group&#39;s unique Onelogin ID |  [optional] |
+|**name** | **String** | Group name |  [optional] |
+|**reference** | **String** | Deprecated. Will always show the attribute nil&#x3D;\&quot;true\&quot;. |  [optional] |
 
 
 

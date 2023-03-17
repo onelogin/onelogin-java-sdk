@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**name** | **String** | The name of the Condition. |  [optional] |
+|**name** | **String** | Name of the rule condition |  [optional] |
 |**value** | **String** | The unique identifier of the condition. This should be used when defining conditions for a rule. |  [optional] |
 
 

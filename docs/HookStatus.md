@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**name** | **String** |  |  [optional] |
-|**message** | **String** |  |  [optional] |
+|**name** | **String** | responses status nam |  [optional] |
+|**message** | **String** | your operation was successful |  [optional] |
 
 
 
