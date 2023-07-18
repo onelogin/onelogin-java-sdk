@@ -14,7 +14,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateApp**](AppsApi.md#updateApp) | **PUT** /api/2/apps/{app_id} | Update App |
 
 
-<a name="createApp"></a>
+<a id="createApp"></a>
 # **createApp**
 > CreateApp200Response createApp(contentType, createAppRequest)
 
@@ -85,7 +85,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="deleteApp"></a>
+<a id="deleteApp"></a>
 # **deleteApp**
 > deleteApp(appId)
 
@@ -153,7 +153,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="deleteAppParameter"></a>
+<a id="deleteAppParameter"></a>
 # **deleteAppParameter**
 > deleteAppParameter(appId, parameterId)
 
@@ -224,7 +224,7 @@ null (empty response body)
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getApp"></a>
+<a id="getApp"></a>
 # **getApp**
 > GenericApp getApp(appId)
 
@@ -293,7 +293,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getAppUsers"></a>
+<a id="getAppUsers"></a>
 # **getAppUsers**
 > List&lt;User&gt; getAppUsers(appId)
 
@@ -361,7 +361,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listApps"></a>
+<a id="listApps"></a>
 # **listApps**
 > List&lt;GenericApp&gt; listApps()
 
@@ -426,7 +426,7 @@ This endpoint does not need any parameter.
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="listConnectors"></a>
+<a id="listConnectors"></a>
 # **listConnectors**
 > Connector listConnectors(name)
 
@@ -495,7 +495,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="updateApp"></a>
+<a id="updateApp"></a>
 # **updateApp**
 > GenericApp updateApp(appId, requestBody)
 

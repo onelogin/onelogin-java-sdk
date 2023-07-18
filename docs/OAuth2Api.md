@@ -9,7 +9,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**revokeTokens**](OAuth2Api.md#revokeTokens) | **POST** /auth/oauth2/revoke | Revoke Tokens |
 
 
-<a name="generateToken"></a>
+<a id="generateToken"></a>
 # **generateToken**
 > OauthToken generateToken(generateTokenRequest, contentType)
 
@@ -82,7 +82,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getRateLimit"></a>
+<a id="getRateLimit"></a>
 # **getRateLimit**
 > GetRateLimit200Response getRateLimit()
 
@@ -148,7 +148,7 @@ This endpoint does not need any parameter.
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="revokeTokens"></a>
+<a id="revokeTokens"></a>
 # **revokeTokens**
 > Error revokeTokens(contentType, revokeTokensRequest)
 

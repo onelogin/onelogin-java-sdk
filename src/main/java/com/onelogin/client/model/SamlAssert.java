@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * SamlAssert
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class SamlAssert {
   public static final String SERIALIZED_NAME_USERNAME_OR_EMAIL = "username_or_email";
   @SerializedName(SERIALIZED_NAME_USERNAME_OR_EMAIL)
@@ -82,7 +86,6 @@ public class SamlAssert {
    * @return usernameOrEmail
   **/
   @javax.annotation.Nonnull
-
   public String getUsernameOrEmail() {
     return usernameOrEmail;
   }
@@ -104,7 +107,6 @@ public class SamlAssert {
    * @return password
   **/
   @javax.annotation.Nonnull
-
   public String getPassword() {
     return password;
   }
@@ -126,7 +128,6 @@ public class SamlAssert {
    * @return appId
   **/
   @javax.annotation.Nonnull
-
   public String getAppId() {
     return appId;
   }
@@ -148,7 +149,6 @@ public class SamlAssert {
    * @return subdomain
   **/
   @javax.annotation.Nonnull
-
   public String getSubdomain() {
     return subdomain;
   }
@@ -170,7 +170,6 @@ public class SamlAssert {
    * @return ipAddress
   **/
   @javax.annotation.Nullable
-
   public String getIpAddress() {
     return ipAddress;
   }

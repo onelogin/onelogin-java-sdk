@@ -40,6 +40,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -54,7 +58,7 @@ import com.onelogin.client.JSON;
 /**
  * SamlApp
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class SamlApp {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -110,7 +114,7 @@ public class SamlApp {
 
   public static final String SERIALIZED_NAME_ROLE_IDS = "role_ids";
   @SerializedName(SERIALIZED_NAME_ROLE_IDS)
-  private List<Integer> roleIds = null;
+  private List<Integer> roleIds;
 
   public static final String SERIALIZED_NAME_PROVISIONING = "provisioning";
   @SerializedName(SERIALIZED_NAME_PROVISIONING)
@@ -148,7 +152,6 @@ public class SamlApp {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -166,8 +169,7 @@ public class SamlApp {
    * The name of the app.
    * @return name
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public String getName() {
     return name;
   }
@@ -188,8 +190,7 @@ public class SamlApp {
    * Indicates if the app is visible in the OneLogin portal.
    * @return visible
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public Boolean getVisible() {
     return visible;
   }
@@ -210,8 +211,7 @@ public class SamlApp {
    * Freeform description of the app.
    * @return description
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public String getDescription() {
     return description;
   }
@@ -233,7 +233,6 @@ public class SamlApp {
    * @return notes
   **/
   @javax.annotation.Nullable
-
   public String getNotes() {
     return notes;
   }
@@ -255,7 +254,6 @@ public class SamlApp {
    * @return iconUrl
   **/
   @javax.annotation.Nullable
-
   public String getIconUrl() {
     return iconUrl;
   }
@@ -277,7 +275,6 @@ public class SamlApp {
    * @return authMethod
   **/
   @javax.annotation.Nullable
-
   public AuthMethod getAuthMethod() {
     return authMethod;
   }
@@ -298,8 +295,7 @@ public class SamlApp {
    * The security policy assigned to the app.
    * @return policyId
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public Integer getPolicyId() {
     return policyId;
   }
@@ -321,7 +317,6 @@ public class SamlApp {
    * @return allowAssumedSignin
   **/
   @javax.annotation.Nullable
-
   public Boolean getAllowAssumedSignin() {
     return allowAssumedSignin;
   }
@@ -343,7 +338,6 @@ public class SamlApp {
    * @return tabId
   **/
   @javax.annotation.Nullable
-
   public Integer getTabId() {
     return tabId;
   }
@@ -364,8 +358,7 @@ public class SamlApp {
    * ID of the connector to base the app from.
    * @return connectorId
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public Integer getConnectorId() {
     return connectorId;
   }
@@ -387,7 +380,6 @@ public class SamlApp {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -409,7 +401,6 @@ public class SamlApp {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-
   public String getUpdatedAt() {
     return updatedAt;
   }
@@ -439,7 +430,6 @@ public class SamlApp {
    * @return roleIds
   **/
   @javax.annotation.Nullable
-
   public List<Integer> getRoleIds() {
     return roleIds;
   }
@@ -461,7 +451,6 @@ public class SamlApp {
    * @return provisioning
   **/
   @javax.annotation.Nullable
-
   public GenericAppProvisioning getProvisioning() {
     return provisioning;
   }
@@ -482,8 +471,7 @@ public class SamlApp {
    * Get parameters
    * @return parameters
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public SamlAppAllOfParameters getParameters() {
     return parameters;
   }
@@ -505,7 +493,6 @@ public class SamlApp {
    * @return enforcementPoint
   **/
   @javax.annotation.Nullable
-
   public EnforcementPoint getEnforcementPoint() {
     return enforcementPoint;
   }
@@ -526,8 +513,7 @@ public class SamlApp {
    * Get _configuration
    * @return _configuration
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public ConfigurationSaml getConfiguration() {
     return _configuration;
   }
@@ -549,7 +535,6 @@ public class SamlApp {
    * @return sso
   **/
   @javax.annotation.Nullable
-
   public SsoSaml getSso() {
     return sso;
   }
@@ -663,13 +648,6 @@ public class SamlApp {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("name");
-    openapiRequiredFields.add("visible");
-    openapiRequiredFields.add("description");
-    openapiRequiredFields.add("policy_id");
-    openapiRequiredFields.add("connector_id");
-    openapiRequiredFields.add("parameters");
-    openapiRequiredFields.add("configuration");
   }
 
  /**
@@ -692,17 +670,10 @@ public class SamlApp {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SamlApp` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : SamlApp.openapiRequiredFields) {
-        if (jsonObj.get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
-        }
-      }
-      if (!jsonObj.get("name").isJsonPrimitive()) {
+      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
-      if (!jsonObj.get("description").isJsonPrimitive()) {
+      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
       }
       if ((jsonObj.get("notes") != null && !jsonObj.get("notes").isJsonNull()) && !jsonObj.get("notes").isJsonPrimitive()) {
@@ -725,14 +696,18 @@ public class SamlApp {
       if (jsonObj.get("provisioning") != null && !jsonObj.get("provisioning").isJsonNull()) {
         GenericAppProvisioning.validateJsonObject(jsonObj.getAsJsonObject("provisioning"));
       }
-      // validate the required field `parameters`
-      SamlAppAllOfParameters.validateJsonObject(jsonObj.getAsJsonObject("parameters"));
+      // validate the optional field `parameters`
+      if (jsonObj.get("parameters") != null && !jsonObj.get("parameters").isJsonNull()) {
+        SamlAppAllOfParameters.validateJsonObject(jsonObj.getAsJsonObject("parameters"));
+      }
       // validate the optional field `enforcement_point`
       if (jsonObj.get("enforcement_point") != null && !jsonObj.get("enforcement_point").isJsonNull()) {
         EnforcementPoint.validateJsonObject(jsonObj.getAsJsonObject("enforcement_point"));
       }
-      // validate the required field `configuration`
-      ConfigurationSaml.validateJsonObject(jsonObj.getAsJsonObject("configuration"));
+      // validate the optional field `configuration`
+      if (jsonObj.get("configuration") != null && !jsonObj.get("configuration").isJsonNull()) {
+        ConfigurationSaml.validateJsonObject(jsonObj.getAsJsonObject("configuration"));
+      }
       // validate the optional field `sso`
       if (jsonObj.get("sso") != null && !jsonObj.get("sso").isJsonNull()) {
         SsoSaml.validateJsonObject(jsonObj.getAsJsonObject("sso"));

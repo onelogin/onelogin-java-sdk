@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * unit: - 0 &#x3D; Seconds - 1 &#x3D; Minutes - 2 &#x3D; Hours value: - When Unit &#x3D; 0 or 1 value must be 0-60 - When Unit &#x3D; 2 value must be 0-24
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class ClockCounter {
   public static final String SERIALIZED_NAME_VALUE = "value";
   @SerializedName(SERIALIZED_NAME_VALUE)
@@ -70,7 +74,6 @@ public class ClockCounter {
    * @return value
   **/
   @javax.annotation.Nullable
-
   public Integer getValue() {
     return value;
   }
@@ -92,7 +95,6 @@ public class ClockCounter {
    * @return unit
   **/
   @javax.annotation.Nullable
-
   public Integer getUnit() {
     return unit;
   }

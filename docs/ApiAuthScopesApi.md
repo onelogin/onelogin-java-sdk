@@ -10,7 +10,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateScope**](ApiAuthScopesApi.md#updateScope) | **PUT** /api/2/api_authorizations/{api_auth_id}/scopes/{scope_id} | Update Api Auth Server Scope |
 
 
-<a name="createScope"></a>
+<a id="createScope"></a>
 # **createScope**
 > AuthScope createScope(apiAuthId, contentType, authScope)
 
@@ -84,7 +84,7 @@ public class Example {
 | **404** | Not Found |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteScope"></a>
+<a id="deleteScope"></a>
 # **deleteScope**
 > deleteScope(apiAuthId, scopeId, contentType)
 
@@ -156,7 +156,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getScopes"></a>
+<a id="getScopes"></a>
 # **getScopes**
 > List&lt;AuthScope&gt; getScopes(apiAuthId, contentType)
 
@@ -226,7 +226,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="updateScope"></a>
+<a id="updateScope"></a>
 # **updateScope**
 > AuthId updateScope(apiAuthId, scopeId, contentType, authScope)
 

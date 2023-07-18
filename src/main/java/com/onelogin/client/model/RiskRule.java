@@ -35,6 +35,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -49,7 +53,7 @@ import com.onelogin.client.JSON;
 /**
  * RiskRule
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class RiskRule {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -167,7 +171,7 @@ public class RiskRule {
 
   public static final String SERIALIZED_NAME_FILTERS = "filters";
   @SerializedName(SERIALIZED_NAME_FILTERS)
-  private List<String> filters = null;
+  private List<String> filters;
 
   public static final String SERIALIZED_NAME_SOURCE = "source";
   @SerializedName(SERIALIZED_NAME_SOURCE)
@@ -187,7 +191,6 @@ public class RiskRule {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public String getId() {
     return id;
   }
@@ -209,7 +212,6 @@ public class RiskRule {
    * @return name
   **/
   @javax.annotation.Nullable
-
   public String getName() {
     return name;
   }
@@ -231,7 +233,6 @@ public class RiskRule {
    * @return description
   **/
   @javax.annotation.Nullable
-
   public String getDescription() {
     return description;
   }
@@ -253,7 +254,6 @@ public class RiskRule {
    * @return type
   **/
   @javax.annotation.Nullable
-
   public TypeEnum getType() {
     return type;
   }
@@ -275,7 +275,6 @@ public class RiskRule {
    * @return target
   **/
   @javax.annotation.Nullable
-
   public TargetEnum getTarget() {
     return target;
   }
@@ -305,7 +304,6 @@ public class RiskRule {
    * @return filters
   **/
   @javax.annotation.Nullable
-
   public List<String> getFilters() {
     return filters;
   }
@@ -327,7 +325,6 @@ public class RiskRule {
    * @return source
   **/
   @javax.annotation.Nullable
-
   public Source getSource() {
     return source;
   }

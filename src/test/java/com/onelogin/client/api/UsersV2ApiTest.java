@@ -120,7 +120,8 @@ public class UsersV2ApiTest {
         String userIds = null;
         String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket = null;
         String fields = null;
-        List<User> response = api.listUsers2(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
+        Integer appId = null;
+        List<User> response = api.listUsers2(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId);
         // TODO: test validations
     }
 

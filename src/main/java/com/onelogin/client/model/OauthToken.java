@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * OauthToken
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class OauthToken {
   public static final String SERIALIZED_NAME_ACCESS_TOKEN = "access_token";
   @SerializedName(SERIALIZED_NAME_ACCESS_TOKEN)
@@ -86,7 +90,6 @@ public class OauthToken {
    * @return accessToken
   **/
   @javax.annotation.Nullable
-
   public String getAccessToken() {
     return accessToken;
   }
@@ -108,7 +111,6 @@ public class OauthToken {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -130,7 +132,6 @@ public class OauthToken {
    * @return expiresIn
   **/
   @javax.annotation.Nullable
-
   public Integer getExpiresIn() {
     return expiresIn;
   }
@@ -152,7 +153,6 @@ public class OauthToken {
    * @return refreshToken
   **/
   @javax.annotation.Nullable
-
   public String getRefreshToken() {
     return refreshToken;
   }
@@ -174,7 +174,6 @@ public class OauthToken {
    * @return tokenType
   **/
   @javax.annotation.Nullable
-
   public String getTokenType() {
     return tokenType;
   }
@@ -196,7 +195,6 @@ public class OauthToken {
    * @return accountId
   **/
   @javax.annotation.Nullable
-
   public Integer getAccountId() {
     return accountId;
   }

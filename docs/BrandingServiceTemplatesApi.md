@@ -14,7 +14,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateTemplateByLocale**](BrandingServiceTemplatesApi.md#updateTemplateByLocale) | **PUT** /api/2/branding/brands/{brand_id}/templates/{template_type}/{locale} | Update Template by Type &amp; Locale |
 
 
-<a name="createMessageTemplate"></a>
+<a id="createMessageTemplate"></a>
 # **createMessageTemplate**
 > MessageTemplate createMessageTemplate(brandId, locale, messageTemplate)
 
@@ -87,7 +87,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteMessageTemplate"></a>
+<a id="deleteMessageTemplate"></a>
 # **deleteMessageTemplate**
 > deleteMessageTemplate(brandId, templateId)
 
@@ -156,7 +156,7 @@ null (empty response body)
 | **204** | No Content |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getMasterByType"></a>
+<a id="getMasterByType"></a>
 # **getMasterByType**
 > MessageTemplate getMasterByType(templateType)
 
@@ -225,7 +225,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getMessageTemplateById"></a>
+<a id="getMessageTemplateById"></a>
 # **getMessageTemplateById**
 > MessageTemplate getMessageTemplateById(brandId, templateId)
 
@@ -296,7 +296,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getTemplateByLocale"></a>
+<a id="getTemplateByLocale"></a>
 # **getTemplateByLocale**
 > MessageTemplate getTemplateByLocale(brandId, templateType, locale)
 
@@ -369,7 +369,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listMessageTemplates"></a>
+<a id="listMessageTemplates"></a>
 # **listMessageTemplates**
 > List&lt;ListMessageTemplates200ResponseInner&gt; listMessageTemplates(brandId, locale)
 
@@ -440,7 +440,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="updateMessageTemplateById"></a>
+<a id="updateMessageTemplateById"></a>
 # **updateMessageTemplateById**
 > MessageTemplate updateMessageTemplateById(brandId, templateId)
 
@@ -511,7 +511,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="updateTemplateByLocale"></a>
+<a id="updateTemplateByLocale"></a>
 # **updateTemplateByLocale**
 > MessageTemplate updateTemplateByLocale(brandId, templateType, locale)
 

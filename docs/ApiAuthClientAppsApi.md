@@ -10,7 +10,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateClientApp**](ApiAuthClientAppsApi.md#updateClientApp) | **PUT** /api/2/api_authorizations/{api_auth_id}/clients/{client_app_id} | Update Client App |
 
 
-<a name="addClientApp"></a>
+<a id="addClientApp"></a>
 # **addClientApp**
 > AddClientApp201Response addClientApp(apiAuthId, contentType, addClientAppRequest)
 
@@ -84,7 +84,7 @@ public class Example {
 | **404** | Not Found |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteClientApp"></a>
+<a id="deleteClientApp"></a>
 # **deleteClientApp**
 > AddClientApp201Response deleteClientApp(apiAuthId, clientAppId, contentType)
 
@@ -158,7 +158,7 @@ public class Example {
 | **404** | Not Found |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="listClientApps"></a>
+<a id="listClientApps"></a>
 # **listClientApps**
 > ClientAppFull listClientApps(apiAuthId, contentType)
 
@@ -229,7 +229,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updateClientApp"></a>
+<a id="updateClientApp"></a>
 # **updateClientApp**
 > AddClientApp201Response updateClientApp(apiAuthId, clientAppId, contentType, updateClientAppRequest)
 

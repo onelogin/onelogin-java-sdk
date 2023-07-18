@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * GenerateMFAtoken200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GenerateMFAtoken200Response {
   public static final String SERIALIZED_NAME_MFA_TOKEN = "mfa_token";
   @SerializedName(SERIALIZED_NAME_MFA_TOKEN)
@@ -74,7 +78,6 @@ public class GenerateMFAtoken200Response {
    * @return mfaToken
   **/
   @javax.annotation.Nullable
-
   public String getMfaToken() {
     return mfaToken;
   }
@@ -96,7 +99,6 @@ public class GenerateMFAtoken200Response {
    * @return resuable
   **/
   @javax.annotation.Nullable
-
   public Boolean getResuable() {
     return resuable;
   }
@@ -118,7 +120,6 @@ public class GenerateMFAtoken200Response {
    * @return expiresAt
   **/
   @javax.annotation.Nullable
-
   public String getExpiresAt() {
     return expiresAt;
   }

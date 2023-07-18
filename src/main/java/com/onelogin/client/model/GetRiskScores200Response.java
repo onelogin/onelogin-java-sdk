@@ -33,6 +33,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -47,7 +51,7 @@ import com.onelogin.client.JSON;
 /**
  * GetRiskScores200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GetRiskScores200Response {
   public static final String SERIALIZED_NAME_SCORES = "scores";
   @SerializedName(SERIALIZED_NAME_SCORES)
@@ -71,7 +75,6 @@ public class GetRiskScores200Response {
    * @return scores
   **/
   @javax.annotation.Nullable
-
   public GetRiskScores200ResponseScores getScores() {
     return scores;
   }
@@ -93,7 +96,6 @@ public class GetRiskScores200Response {
    * @return total
   **/
   @javax.annotation.Nullable
-
   public Integer getTotal() {
     return total;
   }

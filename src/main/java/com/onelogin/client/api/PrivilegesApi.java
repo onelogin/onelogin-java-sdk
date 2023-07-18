@@ -31,9 +31,8 @@ import com.onelogin.client.model.AddPrivilegeToRole201Response;
 import com.onelogin.client.model.AddPrivilegeToRoleRequest;
 import com.onelogin.client.model.AltErr;
 import com.onelogin.client.model.AssignUsersToPrivilegeRequest;
-import com.onelogin.client.model.CreatePrivilege200Response;
 import com.onelogin.client.model.GetAssignedUser200Response;
-import com.onelogin.client.model.ListPrivelegeRoles200Response;
+import com.onelogin.client.model.ListPrivilegeRoles200Response;
 import com.onelogin.client.model.Privilege;
 import com.onelogin.client.model.UpdatePrivilege200Response;
 
@@ -422,7 +421,7 @@ public class PrivilegesApi {
      * Create a Privilege
      * Create privilege
      * @param privilege  (optional)
-     * @return CreatePrivilege200Response
+     * @return Privilege
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -432,8 +431,8 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public CreatePrivilege200Response createPrivilege(Privilege privilege) throws ApiException {
-        ApiResponse<CreatePrivilege200Response> localVarResp = createPrivilegeWithHttpInfo(privilege);
+    public Privilege createPrivilege(Privilege privilege) throws ApiException {
+        ApiResponse<Privilege> localVarResp = createPrivilegeWithHttpInfo(privilege);
         return localVarResp.getData();
     }
 
@@ -441,7 +440,7 @@ public class PrivilegesApi {
      * Create a Privilege
      * Create privilege
      * @param privilege  (optional)
-     * @return ApiResponse&lt;CreatePrivilege200Response&gt;
+     * @return ApiResponse&lt;Privilege&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -451,9 +450,9 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<CreatePrivilege200Response> createPrivilegeWithHttpInfo(Privilege privilege) throws ApiException {
+    public ApiResponse<Privilege> createPrivilegeWithHttpInfo(Privilege privilege) throws ApiException {
         okhttp3.Call localVarCall = createPrivilegeValidateBeforeCall(privilege, null);
-        Type localVarReturnType = new TypeToken<CreatePrivilege200Response>(){}.getType();
+        Type localVarReturnType = new TypeToken<Privilege>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
@@ -472,10 +471,10 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call createPrivilegeAsync(Privilege privilege, final ApiCallback<CreatePrivilege200Response> _callback) throws ApiException {
+    public okhttp3.Call createPrivilegeAsync(Privilege privilege, final ApiCallback<Privilege> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createPrivilegeValidateBeforeCall(privilege, _callback);
-        Type localVarReturnType = new TypeToken<CreatePrivilege200Response>(){}.getType();
+        Type localVarReturnType = new TypeToken<Privilege>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
@@ -1006,7 +1005,7 @@ public class PrivilegesApi {
         return localVarCall;
     }
     /**
-     * Build call for listPrivelegeRoles
+     * Build call for listPrivilegeRoles
      * @param privilegeId  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -1019,7 +1018,7 @@ public class PrivilegesApi {
         <tr><td> 404 </td><td> Not Found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listPrivelegeRolesCall(String privilegeId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listPrivilegeRolesCall(String privilegeId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1065,13 +1064,13 @@ public class PrivilegesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listPrivelegeRolesValidateBeforeCall(String privilegeId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call listPrivilegeRolesValidateBeforeCall(String privilegeId, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'privilegeId' is set
         if (privilegeId == null) {
-            throw new ApiException("Missing the required parameter 'privilegeId' when calling listPrivelegeRoles(Async)");
+            throw new ApiException("Missing the required parameter 'privilegeId' when calling listPrivilegeRoles(Async)");
         }
 
-        return listPrivelegeRolesCall(privilegeId, _callback);
+        return listPrivilegeRolesCall(privilegeId, _callback);
 
     }
 
@@ -1079,7 +1078,7 @@ public class PrivilegesApi {
      * Get Roles assigned to Privilege
      * List roles for privilege
      * @param privilegeId  (required)
-     * @return ListPrivelegeRoles200Response
+     * @return ListPrivilegeRoles200Response
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -1089,8 +1088,8 @@ public class PrivilegesApi {
         <tr><td> 404 </td><td> Not Found </td><td>  -  </td></tr>
      </table>
      */
-    public ListPrivelegeRoles200Response listPrivelegeRoles(String privilegeId) throws ApiException {
-        ApiResponse<ListPrivelegeRoles200Response> localVarResp = listPrivelegeRolesWithHttpInfo(privilegeId);
+    public ListPrivilegeRoles200Response listPrivilegeRoles(String privilegeId) throws ApiException {
+        ApiResponse<ListPrivilegeRoles200Response> localVarResp = listPrivilegeRolesWithHttpInfo(privilegeId);
         return localVarResp.getData();
     }
 
@@ -1098,7 +1097,7 @@ public class PrivilegesApi {
      * Get Roles assigned to Privilege
      * List roles for privilege
      * @param privilegeId  (required)
-     * @return ApiResponse&lt;ListPrivelegeRoles200Response&gt;
+     * @return ApiResponse&lt;ListPrivilegeRoles200Response&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -1108,9 +1107,9 @@ public class PrivilegesApi {
         <tr><td> 404 </td><td> Not Found </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<ListPrivelegeRoles200Response> listPrivelegeRolesWithHttpInfo(String privilegeId) throws ApiException {
-        okhttp3.Call localVarCall = listPrivelegeRolesValidateBeforeCall(privilegeId, null);
-        Type localVarReturnType = new TypeToken<ListPrivelegeRoles200Response>(){}.getType();
+    public ApiResponse<ListPrivilegeRoles200Response> listPrivilegeRolesWithHttpInfo(String privilegeId) throws ApiException {
+        okhttp3.Call localVarCall = listPrivilegeRolesValidateBeforeCall(privilegeId, null);
+        Type localVarReturnType = new TypeToken<ListPrivilegeRoles200Response>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
@@ -1129,15 +1128,15 @@ public class PrivilegesApi {
         <tr><td> 404 </td><td> Not Found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listPrivelegeRolesAsync(String privilegeId, final ApiCallback<ListPrivelegeRoles200Response> _callback) throws ApiException {
+    public okhttp3.Call listPrivilegeRolesAsync(String privilegeId, final ApiCallback<ListPrivilegeRoles200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listPrivelegeRolesValidateBeforeCall(privilegeId, _callback);
-        Type localVarReturnType = new TypeToken<ListPrivelegeRoles200Response>(){}.getType();
+        okhttp3.Call localVarCall = listPrivilegeRolesValidateBeforeCall(privilegeId, _callback);
+        Type localVarReturnType = new TypeToken<ListPrivilegeRoles200Response>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for listPriveleges
+     * Build call for listPrivileges
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -1148,7 +1147,7 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listPrivelegesCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listPrivilegesCall(final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1193,8 +1192,8 @@ public class PrivilegesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listPrivelegesValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return listPrivelegesCall(_callback);
+    private okhttp3.Call listPrivilegesValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return listPrivilegesCall(_callback);
 
     }
 
@@ -1210,8 +1209,8 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public List<Privilege> listPriveleges() throws ApiException {
-        ApiResponse<List<Privilege>> localVarResp = listPrivelegesWithHttpInfo();
+    public List<Privilege> listPrivileges() throws ApiException {
+        ApiResponse<List<Privilege>> localVarResp = listPrivilegesWithHttpInfo();
         return localVarResp.getData();
     }
 
@@ -1227,8 +1226,8 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<List<Privilege>> listPrivelegesWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = listPrivelegesValidateBeforeCall(null);
+    public ApiResponse<List<Privilege>> listPrivilegesWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = listPrivilegesValidateBeforeCall(null);
         Type localVarReturnType = new TypeToken<List<Privilege>>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -1246,9 +1245,9 @@ public class PrivilegesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listPrivelegesAsync(final ApiCallback<List<Privilege>> _callback) throws ApiException {
+    public okhttp3.Call listPrivilegesAsync(final ApiCallback<List<Privilege>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listPrivelegesValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = listPrivilegesValidateBeforeCall(_callback);
         Type localVarReturnType = new TypeToken<List<Privilege>>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

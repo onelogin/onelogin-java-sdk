@@ -9,7 +9,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**getEvents**](EventsApi.md#getEvents) | **GET** /api/1/events | Get Events |
 
 
-<a name="getEventById"></a>
+<a id="getEventById"></a>
 # **getEventById**
 > GetEventById200Response getEventById(eventId)
 
@@ -79,7 +79,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getEventTypes"></a>
+<a id="getEventTypes"></a>
 # **getEventTypes**
 > GetEventTypes200Response getEventTypes(contentType)
 
@@ -141,7 +141,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | Successful response |  -  |
 
-<a name="getEvents"></a>
+<a id="getEvents"></a>
 # **getEvents**
 > GetEvents200Response getEvents(eventTypeId, clientId, directoryId, id, createdAt, resolution, since, until, userId)
 

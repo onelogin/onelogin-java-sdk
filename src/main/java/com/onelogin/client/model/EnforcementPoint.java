@@ -37,6 +37,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -51,7 +55,7 @@ import com.onelogin.client.JSON;
 /**
  * For apps that connect to a OneLogin Access Enforcement Point the following enforcement_point object will be included with the app payload.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class EnforcementPoint {
   public static final String SERIALIZED_NAME_REQUIRE_SITEWIDE_AUTHENTICATION = "require_sitewide_authentication";
   @SerializedName(SERIALIZED_NAME_REQUIRE_SITEWIDE_AUTHENTICATION)
@@ -132,7 +136,7 @@ public class EnforcementPoint {
 
   public static final String SERIALIZED_NAME_RESOURCES = "resources";
   @SerializedName(SERIALIZED_NAME_RESOURCES)
-  private List<EnforcementPointResourcesInner> resources = null;
+  private List<EnforcementPointResourcesInner> resources;
 
   public static final String SERIALIZED_NAME_CONTEXT_ROOT = "context_root";
   @SerializedName(SERIALIZED_NAME_CONTEXT_ROOT)
@@ -176,7 +180,6 @@ public class EnforcementPoint {
    * @return requireSitewideAuthentication
   **/
   @javax.annotation.Nullable
-
   public Boolean getRequireSitewideAuthentication() {
     return requireSitewideAuthentication;
   }
@@ -198,7 +201,6 @@ public class EnforcementPoint {
    * @return conditions
   **/
   @javax.annotation.Nullable
-
   public String getConditions() {
     return conditions;
   }
@@ -220,7 +222,6 @@ public class EnforcementPoint {
    * @return sessionExpiryFixed
   **/
   @javax.annotation.Nullable
-
   public ClockCounter getSessionExpiryFixed() {
     return sessionExpiryFixed;
   }
@@ -242,7 +243,6 @@ public class EnforcementPoint {
    * @return sessionExpiryInactivity
   **/
   @javax.annotation.Nullable
-
   public ClockCounter getSessionExpiryInactivity() {
     return sessionExpiryInactivity;
   }
@@ -264,7 +264,6 @@ public class EnforcementPoint {
    * @return permissions
   **/
   @javax.annotation.Nullable
-
   public PermissionsEnum getPermissions() {
     return permissions;
   }
@@ -280,7 +279,6 @@ public class EnforcementPoint {
    * @return token
   **/
   @javax.annotation.Nullable
-
   public String getToken() {
     return token;
   }
@@ -299,7 +297,6 @@ public class EnforcementPoint {
    * @return target
   **/
   @javax.annotation.Nullable
-
   public String getTarget() {
     return target;
   }
@@ -329,7 +326,6 @@ public class EnforcementPoint {
    * @return resources
   **/
   @javax.annotation.Nullable
-
   public List<EnforcementPointResourcesInner> getResources() {
     return resources;
   }
@@ -351,7 +347,6 @@ public class EnforcementPoint {
    * @return contextRoot
   **/
   @javax.annotation.Nullable
-
   public String getContextRoot() {
     return contextRoot;
   }
@@ -373,7 +368,6 @@ public class EnforcementPoint {
    * @return useTargetHostHeader
   **/
   @javax.annotation.Nullable
-
   public Boolean getUseTargetHostHeader() {
     return useTargetHostHeader;
   }
@@ -395,7 +389,6 @@ public class EnforcementPoint {
    * @return vhost
   **/
   @javax.annotation.Nullable
-
   public String getVhost() {
     return vhost;
   }
@@ -417,7 +410,6 @@ public class EnforcementPoint {
    * @return landingPage
   **/
   @javax.annotation.Nullable
-
   public String getLandingPage() {
     return landingPage;
   }
@@ -439,7 +431,6 @@ public class EnforcementPoint {
    * @return caseSensitive
   **/
   @javax.annotation.Nullable
-
   public Boolean getCaseSensitive() {
     return caseSensitive;
   }

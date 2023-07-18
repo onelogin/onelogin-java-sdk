@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * RequestBrand
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class RequestBrand {
   public static final String SERIALIZED_NAME_ENABLED = "enabled";
   @SerializedName(SERIALIZED_NAME_ENABLED)
@@ -122,7 +126,6 @@ public class RequestBrand {
    * @return enabled
   **/
   @javax.annotation.Nullable
-
   public Boolean getEnabled() {
     return enabled;
   }
@@ -144,7 +147,6 @@ public class RequestBrand {
    * @return name
   **/
   @javax.annotation.Nonnull
-
   public String getName() {
     return name;
   }
@@ -166,7 +168,6 @@ public class RequestBrand {
    * @return customSupportEnabled
   **/
   @javax.annotation.Nullable
-
   public Boolean getCustomSupportEnabled() {
     return customSupportEnabled;
   }
@@ -188,7 +189,6 @@ public class RequestBrand {
    * @return customColor
   **/
   @javax.annotation.Nullable
-
   public String getCustomColor() {
     return customColor;
   }
@@ -210,7 +210,6 @@ public class RequestBrand {
    * @return customAccentColor
   **/
   @javax.annotation.Nullable
-
   public String getCustomAccentColor() {
     return customAccentColor;
   }
@@ -232,7 +231,6 @@ public class RequestBrand {
    * @return customMaskingColor
   **/
   @javax.annotation.Nullable
-
   public String getCustomMaskingColor() {
     return customMaskingColor;
   }
@@ -254,7 +252,6 @@ public class RequestBrand {
    * @return customMaskingOpacity
   **/
   @javax.annotation.Nullable
-
   public Integer getCustomMaskingOpacity() {
     return customMaskingOpacity;
   }
@@ -276,7 +273,6 @@ public class RequestBrand {
    * @return enableCustomLabelForLoginScreen
   **/
   @javax.annotation.Nullable
-
   public Boolean getEnableCustomLabelForLoginScreen() {
     return enableCustomLabelForLoginScreen;
   }
@@ -298,7 +294,6 @@ public class RequestBrand {
    * @return customLabelTextForLoginScreen
   **/
   @javax.annotation.Nullable
-
   public String getCustomLabelTextForLoginScreen() {
     return customLabelTextForLoginScreen;
   }
@@ -320,7 +315,6 @@ public class RequestBrand {
    * @return loginInstructionTitle
   **/
   @javax.annotation.Nullable
-
   public String getLoginInstructionTitle() {
     return loginInstructionTitle;
   }
@@ -342,7 +336,6 @@ public class RequestBrand {
    * @return loginInstruction
   **/
   @javax.annotation.Nullable
-
   public String getLoginInstruction() {
     return loginInstruction;
   }
@@ -364,7 +357,6 @@ public class RequestBrand {
    * @return hideOneloginFooter
   **/
   @javax.annotation.Nullable
-
   public Boolean getHideOneloginFooter() {
     return hideOneloginFooter;
   }
@@ -386,7 +378,6 @@ public class RequestBrand {
    * @return mfaEnrollmentMessage
   **/
   @javax.annotation.Nullable
-
   public String getMfaEnrollmentMessage() {
     return mfaEnrollmentMessage;
   }
@@ -408,7 +399,6 @@ public class RequestBrand {
    * @return background
   **/
   @javax.annotation.Nullable
-
   public String getBackground() {
     return background;
   }
@@ -430,7 +420,6 @@ public class RequestBrand {
    * @return logo
   **/
   @javax.annotation.Nullable
-
   public String getLogo() {
     return logo;
   }

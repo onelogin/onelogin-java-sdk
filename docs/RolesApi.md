@@ -21,7 +21,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateRole**](RolesApi.md#updateRole) | **PUT** /api/2/roles/{role_id} | Update Role |
 
 
-<a name="addRoleAdmins"></a>
+<a id="addRoleAdmins"></a>
 # **addRoleAdmins**
 > List&lt;CreateRole201ResponseInner&gt; addRoleAdmins(roleId, requestBody)
 
@@ -91,7 +91,7 @@ public class Example {
 | **200** | OK |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="addRoleUsers"></a>
+<a id="addRoleUsers"></a>
 # **addRoleUsers**
 > List&lt;CreateRole201ResponseInner&gt; addRoleUsers(roleId, requestBody)
 
@@ -162,7 +162,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="createRole"></a>
+<a id="createRole"></a>
 # **createRole**
 > List&lt;CreateRole201ResponseInner&gt; createRole(role)
 
@@ -230,7 +230,7 @@ public class Example {
 | **201** | CREATED |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="deleteRole"></a>
+<a id="deleteRole"></a>
 # **deleteRole**
 > deleteRole(roleId)
 
@@ -299,7 +299,7 @@ null (empty response body)
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getRole"></a>
+<a id="getRole"></a>
 # **getRole**
 > Role getRole(roleId)
 
@@ -368,7 +368,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getRoleAdmins"></a>
+<a id="getRoleAdmins"></a>
 # **getRoleAdmins**
 > List&lt;User&gt; getRoleAdmins(roleId, limit, page, cursor, name, includeUnassigned)
 
@@ -447,7 +447,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getRoleApps"></a>
+<a id="getRoleApps"></a>
 # **getRoleApps**
 > List&lt;GetRoleApps200ResponseInner&gt; getRoleApps(roleId, limit, page, cursor, assigned)
 
@@ -524,7 +524,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getRoleById"></a>
+<a id="getRoleById"></a>
 # **getRoleById**
 > GetRoleById200Response getRoleById(roleId)
 
@@ -595,7 +595,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getRoleByName"></a>
+<a id="getRoleByName"></a>
 # **getRoleByName**
 > GetRoleByName200Response getRoleByName(name)
 
@@ -664,7 +664,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getRoleUsers"></a>
+<a id="getRoleUsers"></a>
 # **getRoleUsers**
 > List&lt;User&gt; getRoleUsers(roleId, limit, page, cursor, name, includeUnassigned)
 
@@ -743,9 +743,9 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listRoles"></a>
+<a id="listRoles"></a>
 # **listRoles**
-> List&lt;Role&gt; listRoles(appId, limit, page, cursor, roleName, appName, fields)
+> List&lt;Role&gt; listRoles(limit, page, cursor, roleName, appId, appName, fields)
 
 List Roles
 
@@ -771,15 +771,15 @@ public class Example {
     OAuth2.setAccessToken("YOUR ACCESS TOKEN");
 
     RolesApi apiInstance = new RolesApi(defaultClient);
-    Integer appId = 56; // Integer | 
     Integer limit = 56; // Integer | How many items to return at one time (max 100)
     Integer page = 56; // Integer | The page number of results to return.
     String cursor = "cursor_example"; // String | Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page.
     String roleName = "roleName_example"; // String | Optional. Filters by role name.
+    Integer appId = 56; // Integer | 
     String appName = "appName_example"; // String | Optional. Returns roles that contain this app name.
     String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
     try {
-      List<Role> result = apiInstance.listRoles(appId, limit, page, cursor, roleName, appName, fields);
+      List<Role> result = apiInstance.listRoles(limit, page, cursor, roleName, appId, appName, fields);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling RolesApi#listRoles");
@@ -796,11 +796,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **appId** | **Integer**|  | |
 | **limit** | **Integer**| How many items to return at one time (max 100) | [optional] |
 | **page** | **Integer**| The page number of results to return. | [optional] |
 | **cursor** | **String**| Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. | [optional] |
 | **roleName** | **String**| Optional. Filters by role name. | [optional] |
+| **appId** | **Integer**|  | [optional] |
 | **appName** | **String**| Optional. Returns roles that contain this app name. | [optional] |
 | **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
 
@@ -823,7 +823,7 @@ public class Example {
 | **200** | OK |  * Current-Page -  <br>  * Page-Items -  <br>  * Total-Count -  <br>  * Total-Pages -  <br>  * Link -  <br>  * Before-Cursor -  <br>  * After-Cursor -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="removeRoleAdmins"></a>
+<a id="removeRoleAdmins"></a>
 # **removeRoleAdmins**
 > removeRoleAdmins(roleId, removeRoleUsersRequest)
 
@@ -893,7 +893,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="removeRoleUsers"></a>
+<a id="removeRoleUsers"></a>
 # **removeRoleUsers**
 > removeRoleUsers(roleId, removeRoleUsersRequest)
 
@@ -963,7 +963,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="setRoleApps"></a>
+<a id="setRoleApps"></a>
 # **setRoleApps**
 > List&lt;CreateRole201ResponseInner&gt; setRoleApps(roleId, requestBody)
 
@@ -1034,7 +1034,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updateRole"></a>
+<a id="updateRole"></a>
 # **updateRole**
 > UpdateRole200Response updateRole(roleId, role)
 

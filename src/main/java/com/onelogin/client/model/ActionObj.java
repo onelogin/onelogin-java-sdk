@@ -34,6 +34,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -48,7 +52,7 @@ import com.onelogin.client.JSON;
 /**
  * ActionObj
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class ActionObj {
   public static final String SERIALIZED_NAME_ACTION = "action";
   @SerializedName(SERIALIZED_NAME_ACTION)
@@ -56,7 +60,7 @@ public class ActionObj {
 
   public static final String SERIALIZED_NAME_VALUE = "value";
   @SerializedName(SERIALIZED_NAME_VALUE)
-  private List<String> value = null;
+  private List<String> value;
 
   public ActionObj() {
   }
@@ -72,7 +76,6 @@ public class ActionObj {
    * @return action
   **/
   @javax.annotation.Nullable
-
   public String getAction() {
     return action;
   }
@@ -102,7 +105,6 @@ public class ActionObj {
    * @return value
   **/
   @javax.annotation.Nullable
-
   public List<String> getValue() {
     return value;
   }

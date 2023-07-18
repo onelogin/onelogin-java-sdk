@@ -17,7 +17,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateAppRule**](AppRulesApi.md#updateAppRule) | **PUT** /api/2/apps/{app_id}/rules/{rule_id} | Update Rule |
 
 
-<a name="createAppRule"></a>
+<a id="createAppRule"></a>
 # **createAppRule**
 > AppRule createAppRule(appId, appRule)
 
@@ -88,7 +88,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteRule"></a>
+<a id="deleteRule"></a>
 # **deleteRule**
 > deleteRule(appId, ruleId)
 
@@ -158,7 +158,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getAppRule"></a>
+<a id="getAppRule"></a>
 # **getAppRule**
 > AppRule getAppRule(appId, ruleId)
 
@@ -229,7 +229,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listActionValies"></a>
+<a id="listActionValies"></a>
 # **listActionValies**
 > List&lt;RuleAction&gt; listActionValies(appId, ruleActionValue)
 
@@ -299,7 +299,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listActions"></a>
+<a id="listActions"></a>
 # **listActions**
 > List&lt;RuleAction&gt; listActions(appId)
 
@@ -367,7 +367,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listAppRules"></a>
+<a id="listAppRules"></a>
 # **listAppRules**
 > List&lt;AppRule&gt; listAppRules(appId, hasCondition, hasConditionType, hasAction, hasActionType, enabled)
 
@@ -445,7 +445,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listConditionOperators"></a>
+<a id="listConditionOperators"></a>
 # **listConditionOperators**
 > List&lt;RuleCondition&gt; listConditionOperators(appId, ruleConditionValue)
 
@@ -515,7 +515,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listConditionValues"></a>
+<a id="listConditionValues"></a>
 # **listConditionValues**
 > RuleCondition listConditionValues(appId, ruleConditionValue)
 
@@ -585,7 +585,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listConditions"></a>
+<a id="listConditions"></a>
 # **listConditions**
 > List&lt;ListConditions200ResponseInner&gt; listConditions(appId)
 
@@ -653,7 +653,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="sortAppRules"></a>
+<a id="sortAppRules"></a>
 # **sortAppRules**
 > List&lt;Integer&gt; sortAppRules(appId, requestBody)
 
@@ -724,7 +724,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="updateAppRule"></a>
+<a id="updateAppRule"></a>
 # **updateAppRule**
 > AppRule updateAppRule(appId, ruleId, appRule)
 

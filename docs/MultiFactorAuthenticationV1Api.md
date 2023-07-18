@@ -13,7 +13,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**verifyMfaFactor**](MultiFactorAuthenticationV1Api.md#verifyMfaFactor) | **POST** /api/1/users/{user_id}/otp_devices/{device_id}/verify | Verify a Factor |
 
 
-<a name="activateMfaFactors"></a>
+<a id="activateMfaFactors"></a>
 # **activateMfaFactors**
 > GetEnrolledFactors200Response activateMfaFactors(userId, deviceId, activateMfaFactorsRequest)
 
@@ -86,7 +86,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="enrollMfaFactor"></a>
+<a id="enrollMfaFactor"></a>
 # **enrollMfaFactor**
 > EnrollMfaFactor200Response enrollMfaFactor(userId, otpDevice)
 
@@ -157,7 +157,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="generateMFAtoken"></a>
+<a id="generateMFAtoken"></a>
 # **generateMFAtoken**
 > GenerateMFAtoken200Response generateMFAtoken(userId, generateMFAtokenRequest)
 
@@ -226,7 +226,7 @@ public class Example {
 |-------------|-------------|------------------|
 | **200** | Successful response |  -  |
 
-<a name="getEnrolledFactors"></a>
+<a id="getEnrolledFactors"></a>
 # **getEnrolledFactors**
 > GetEnrolledFactors200Response getEnrolledFactors(userId)
 
@@ -295,7 +295,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getMFAFactors"></a>
+<a id="getMFAFactors"></a>
 # **getMFAFactors**
 > GetMFAFactors200Response getMFAFactors(userId)
 
@@ -365,7 +365,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="removeMfaFactors"></a>
+<a id="removeMfaFactors"></a>
 # **removeMfaFactors**
 > removeMfaFactors(userId, deviceId)
 
@@ -435,7 +435,7 @@ null (empty response body)
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="verifyMfaFactor"></a>
+<a id="verifyMfaFactor"></a>
 # **verifyMfaFactor**
 > Error verifyMfaFactor(userId, deviceId, verifyMfaFactorRequest)
 

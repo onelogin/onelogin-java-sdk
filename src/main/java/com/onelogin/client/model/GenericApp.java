@@ -38,6 +38,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -52,7 +56,7 @@ import com.onelogin.client.JSON;
 /**
  * GenericApp
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GenericApp {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -108,7 +112,7 @@ public class GenericApp {
 
   public static final String SERIALIZED_NAME_ROLE_IDS = "role_ids";
   @SerializedName(SERIALIZED_NAME_ROLE_IDS)
-  private List<Integer> roleIds = null;
+  private List<Integer> roleIds;
 
   public static final String SERIALIZED_NAME_PROVISIONING = "provisioning";
   @SerializedName(SERIALIZED_NAME_PROVISIONING)
@@ -138,7 +142,6 @@ public class GenericApp {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -157,7 +160,6 @@ public class GenericApp {
    * @return name
   **/
   @javax.annotation.Nullable
-
   public String getName() {
     return name;
   }
@@ -179,7 +181,6 @@ public class GenericApp {
    * @return visible
   **/
   @javax.annotation.Nullable
-
   public Boolean getVisible() {
     return visible;
   }
@@ -201,7 +202,6 @@ public class GenericApp {
    * @return description
   **/
   @javax.annotation.Nullable
-
   public String getDescription() {
     return description;
   }
@@ -223,7 +223,6 @@ public class GenericApp {
    * @return notes
   **/
   @javax.annotation.Nullable
-
   public String getNotes() {
     return notes;
   }
@@ -245,7 +244,6 @@ public class GenericApp {
    * @return iconUrl
   **/
   @javax.annotation.Nullable
-
   public String getIconUrl() {
     return iconUrl;
   }
@@ -267,7 +265,6 @@ public class GenericApp {
    * @return authMethod
   **/
   @javax.annotation.Nullable
-
   public AuthMethod getAuthMethod() {
     return authMethod;
   }
@@ -289,7 +286,6 @@ public class GenericApp {
    * @return policyId
   **/
   @javax.annotation.Nullable
-
   public Integer getPolicyId() {
     return policyId;
   }
@@ -311,7 +307,6 @@ public class GenericApp {
    * @return allowAssumedSignin
   **/
   @javax.annotation.Nullable
-
   public Boolean getAllowAssumedSignin() {
     return allowAssumedSignin;
   }
@@ -333,7 +328,6 @@ public class GenericApp {
    * @return tabId
   **/
   @javax.annotation.Nullable
-
   public Integer getTabId() {
     return tabId;
   }
@@ -355,7 +349,6 @@ public class GenericApp {
    * @return connectorId
   **/
   @javax.annotation.Nullable
-
   public Integer getConnectorId() {
     return connectorId;
   }
@@ -377,7 +370,6 @@ public class GenericApp {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -399,7 +391,6 @@ public class GenericApp {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-
   public String getUpdatedAt() {
     return updatedAt;
   }
@@ -429,7 +420,6 @@ public class GenericApp {
    * @return roleIds
   **/
   @javax.annotation.Nullable
-
   public List<Integer> getRoleIds() {
     return roleIds;
   }
@@ -451,7 +441,6 @@ public class GenericApp {
    * @return provisioning
   **/
   @javax.annotation.Nullable
-
   public GenericAppProvisioning getProvisioning() {
     return provisioning;
   }
@@ -473,7 +462,6 @@ public class GenericApp {
    * @return parameters
   **/
   @javax.annotation.Nullable
-
   public AppParameters getParameters() {
     return parameters;
   }
@@ -495,7 +483,6 @@ public class GenericApp {
    * @return enforcementPoint
   **/
   @javax.annotation.Nullable
-
   public EnforcementPoint getEnforcementPoint() {
     return enforcementPoint;
   }

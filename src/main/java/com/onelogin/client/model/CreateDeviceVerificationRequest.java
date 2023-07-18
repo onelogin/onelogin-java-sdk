@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * CreateDeviceVerificationRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class CreateDeviceVerificationRequest {
   public static final String SERIALIZED_NAME_DEVICE_ID = "device_id";
   @SerializedName(SERIALIZED_NAME_DEVICE_ID)
@@ -82,7 +86,6 @@ public class CreateDeviceVerificationRequest {
    * @return deviceId
   **/
   @javax.annotation.Nonnull
-
   public Integer getDeviceId() {
     return deviceId;
   }
@@ -104,7 +107,6 @@ public class CreateDeviceVerificationRequest {
    * @return displayName
   **/
   @javax.annotation.Nullable
-
   public String getDisplayName() {
     return displayName;
   }
@@ -126,7 +128,6 @@ public class CreateDeviceVerificationRequest {
    * @return expiresIn
   **/
   @javax.annotation.Nullable
-
   public String getExpiresIn() {
     return expiresIn;
   }
@@ -148,7 +149,6 @@ public class CreateDeviceVerificationRequest {
    * @return redirectTo
   **/
   @javax.annotation.Nullable
-
   public String getRedirectTo() {
     return redirectTo;
   }
@@ -170,7 +170,6 @@ public class CreateDeviceVerificationRequest {
    * @return customMessage
   **/
   @javax.annotation.Nullable
-
   public String getCustomMessage() {
     return customMessage;
   }

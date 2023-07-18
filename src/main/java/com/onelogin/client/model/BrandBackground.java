@@ -33,6 +33,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -47,7 +51,7 @@ import com.onelogin.client.JSON;
 /**
  * BrandBackground
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class BrandBackground {
   public static final String SERIALIZED_NAME_URLS = "urls";
   @SerializedName(SERIALIZED_NAME_URLS)
@@ -79,7 +83,6 @@ public class BrandBackground {
    * @return urls
   **/
   @javax.annotation.Nonnull
-
   public BrandBackgroundUrls getUrls() {
     return urls;
   }
@@ -101,7 +104,6 @@ public class BrandBackground {
    * @return fileSize
   **/
   @javax.annotation.Nonnull
-
   public Integer getFileSize() {
     return fileSize;
   }
@@ -123,7 +125,6 @@ public class BrandBackground {
    * @return updatedAt
   **/
   @javax.annotation.Nonnull
-
   public String getUpdatedAt() {
     return updatedAt;
   }
@@ -145,7 +146,6 @@ public class BrandBackground {
    * @return contentType
   **/
   @javax.annotation.Nonnull
-
   public String getContentType() {
     return contentType;
   }

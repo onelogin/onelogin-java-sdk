@@ -205,14 +205,14 @@ public class RolesApiTest {
      */
     @Test
     public void listRolesTest() throws ApiException {
-        Integer appId = null;
         Integer limit = null;
         Integer page = null;
         String cursor = null;
         String roleName = null;
+        Integer appId = null;
         String appName = null;
         String fields = null;
-        List<Role> response = api.listRoles(appId, limit, page, cursor, roleName, appName, fields);
+        List<Role> response = api.listRoles(limit, page, cursor, roleName, appId, appName, fields);
         // TODO: test validations
     }
 

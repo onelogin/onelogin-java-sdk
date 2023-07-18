@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * BrandApp
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class BrandApp {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -98,7 +102,6 @@ public class BrandApp {
    * @return id
   **/
   @javax.annotation.Nonnull
-
   public Integer getId() {
     return id;
   }
@@ -120,7 +123,6 @@ public class BrandApp {
    * @return updatedAt
   **/
   @javax.annotation.Nonnull
-
   public String getUpdatedAt() {
     return updatedAt;
   }
@@ -142,7 +144,6 @@ public class BrandApp {
    * @return name
   **/
   @javax.annotation.Nonnull
-
   public String getName() {
     return name;
   }
@@ -164,7 +165,6 @@ public class BrandApp {
    * @return connectorId
   **/
   @javax.annotation.Nonnull
-
   public Integer getConnectorId() {
     return connectorId;
   }
@@ -186,7 +186,6 @@ public class BrandApp {
    * @return authMethodDescription
   **/
   @javax.annotation.Nonnull
-
   public String getAuthMethodDescription() {
     return authMethodDescription;
   }
@@ -208,7 +207,6 @@ public class BrandApp {
    * @return description
   **/
   @javax.annotation.Nonnull
-
   public String getDescription() {
     return description;
   }
@@ -230,7 +228,6 @@ public class BrandApp {
    * @return authMethod
   **/
   @javax.annotation.Nonnull
-
   public Integer getAuthMethod() {
     return authMethod;
   }
@@ -252,7 +249,6 @@ public class BrandApp {
    * @return createdAt
   **/
   @javax.annotation.Nonnull
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -274,7 +270,6 @@ public class BrandApp {
    * @return visible
   **/
   @javax.annotation.Nonnull
-
   public Boolean getVisible() {
     return visible;
   }

@@ -12,7 +12,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateBrand**](BrandingServiceApi.md#updateBrand) | **PUT** /api/2/branding/brands/{brand_id} | Update Brand |
 
 
-<a name="createBrand"></a>
+<a id="createBrand"></a>
 # **createBrand**
 > Brand createBrand(brand)
 
@@ -81,7 +81,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteBrand"></a>
+<a id="deleteBrand"></a>
 # **deleteBrand**
 > deleteBrand(brandId)
 
@@ -149,7 +149,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getBrand"></a>
+<a id="getBrand"></a>
 # **getBrand**
 > Brand getBrand(brandId)
 
@@ -218,7 +218,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getBrandApps"></a>
+<a id="getBrandApps"></a>
 # **getBrandApps**
 > List&lt;BrandApp&gt; getBrandApps(brandId)
 
@@ -287,7 +287,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listBrands"></a>
+<a id="listBrands"></a>
 # **listBrands**
 > List&lt;BrandReq&gt; listBrands()
 
@@ -350,7 +350,7 @@ This endpoint does not need any parameter.
 |-------------|-------------|------------------|
 | **200** | Successful response |  -  |
 
-<a name="updateBrand"></a>
+<a id="updateBrand"></a>
 # **updateBrand**
 > Brand updateBrand(brandId, requestBrand)
 

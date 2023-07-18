@@ -2,7 +2,7 @@
 
 OneLogin API
 - API version: 3.1.1
-  - Build date: 2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]
+  - Build date: 2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]
 
 OpenAPI Specification for OneLogin
 
@@ -209,8 +209,8 @@ Class | Method | HTTP request | Description
 *PrivilegesApi* | [**deleteRoleFromPrivilege**](docs/PrivilegesApi.md#deleteRoleFromPrivilege) | **DELETE** /api/1/privileges/{privilege_id}/roles/{role_id} | Remove a Privilege from a Role
 *PrivilegesApi* | [**getAssignedUser**](docs/PrivilegesApi.md#getAssignedUser) | **GET** /api/1/privileges/{privilege_id}/users | Get Users assigned to a Privilege
 *PrivilegesApi* | [**getPrivilege**](docs/PrivilegesApi.md#getPrivilege) | **GET** /api/1/privileges/{privilege_id} | Get a Privilege
-*PrivilegesApi* | [**listPrivelegeRoles**](docs/PrivilegesApi.md#listPrivelegeRoles) | **GET** /api/1/privileges/{privilege_id}/roles | Get Roles assigned to Privilege
-*PrivilegesApi* | [**listPriveleges**](docs/PrivilegesApi.md#listPriveleges) | **GET** /api/1/privileges | List Privileges
+*PrivilegesApi* | [**listPrivilegeRoles**](docs/PrivilegesApi.md#listPrivilegeRoles) | **GET** /api/1/privileges/{privilege_id}/roles | Get Roles assigned to Privilege
+*PrivilegesApi* | [**listPrivileges**](docs/PrivilegesApi.md#listPrivileges) | **GET** /api/1/privileges | List Privileges
 *PrivilegesApi* | [**removeUserFromPrivilege**](docs/PrivilegesApi.md#removeUserFromPrivilege) | **DELETE** /api/1/privileges/{privilege_id}/users/{user_id} | Remove a Privilege from Users
 *PrivilegesApi* | [**updatePrivilege**](docs/PrivilegesApi.md#updatePrivilege) | **PUT** /api/1/privileges/{privilege_id} | Update a Privilege
 *RolesApi* | [**addRoleAdmins**](docs/RolesApi.md#addRoleAdmins) | **POST** /api/2/roles/{role_id}/admins | Add Role Admins
@@ -323,7 +323,6 @@ Class | Method | HTTP request | Description
  - [CreateDeviceVerificationRequest](docs/CreateDeviceVerificationRequest.md)
  - [CreateFactorRegistration201Response](docs/CreateFactorRegistration201Response.md)
  - [CreateFactorRegistrationRequest](docs/CreateFactorRegistrationRequest.md)
- - [CreatePrivilege200Response](docs/CreatePrivilege200Response.md)
  - [CreateRole201ResponseInner](docs/CreateRole201ResponseInner.md)
  - [Device](docs/Device.md)
  - [EmailConfig](docs/EmailConfig.md)
@@ -387,7 +386,7 @@ Class | Method | HTTP request | Description
  - [ListMappingContionValues200ResponseInner](docs/ListMappingContionValues200ResponseInner.md)
  - [ListMappingsActions200ResponseInner](docs/ListMappingsActions200ResponseInner.md)
  - [ListMessageTemplates200ResponseInner](docs/ListMessageTemplates200ResponseInner.md)
- - [ListPrivelegeRoles200Response](docs/ListPrivelegeRoles200Response.md)
+ - [ListPrivilegeRoles200Response](docs/ListPrivilegeRoles200Response.md)
  - [Locale](docs/Locale.md)
  - [LockAccountUserRequest](docs/LockAccountUserRequest.md)
  - [Mapping](docs/Mapping.md)
@@ -447,9 +446,12 @@ Class | Method | HTTP request | Description
  - [VerifyUserVerificationRequest](docs/VerifyUserVerificationRequest.md)
 
 
+<a id="documentation-for-authorization"></a>
 ## Documentation for Authorization
 
+
 Authentication schemes defined for the API:
+<a id="OAuth2"></a>
 ### OAuth2
 
 - **Type**: OAuth
@@ -462,6 +464,7 @@ Authentication schemes defined for the API:
   - Manage All: Gives the credential pair the ability to generate an access token that can perform GET, POST, PUT, and DELETE calls for all available API resources, including the ability to set passwords and assign and remove roles.
   - Read All: Gives the credential pair the ability to generate an access token that can perform GET calls available for all API resources.
 
+<a id="basicAuth"></a>
 ### basicAuth
 
 - **Type**: HTTP basic authentication

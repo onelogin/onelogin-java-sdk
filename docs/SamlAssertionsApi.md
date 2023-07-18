@@ -10,7 +10,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**verFactorSaml2**](SamlAssertionsApi.md#verFactorSaml2) | **POST** /api/2/saml_assertion/verify_factor | Verify Factor SAML |
 
 
-<a name="generateSamlAssert"></a>
+<a id="generateSamlAssert"></a>
 # **generateSamlAssert**
 > GenerateSamlAssert200Response generateSamlAssert(contentType, samlAssert)
 
@@ -81,7 +81,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="generateSamlAssert2"></a>
+<a id="generateSamlAssert2"></a>
 # **generateSamlAssert2**
 > GenerateSamlAssert200Response generateSamlAssert2(contentType, samlAssert)
 
@@ -152,7 +152,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="verFactorSaml"></a>
+<a id="verFactorSaml"></a>
 # **verFactorSaml**
 > VerFactorSaml200Response verFactorSaml(contentType, samlFactor)
 
@@ -224,7 +224,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="verFactorSaml2"></a>
+<a id="verFactorSaml2"></a>
 # **verFactorSaml2**
 > VerFactorSaml200Response verFactorSaml2(contentType, samlFactor)
 

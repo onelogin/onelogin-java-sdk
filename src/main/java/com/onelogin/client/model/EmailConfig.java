@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * EmailConfig
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class EmailConfig {
   public static final String SERIALIZED_NAME_ADDRESS = "address";
   @SerializedName(SERIALIZED_NAME_ADDRESS)
@@ -90,7 +94,6 @@ public class EmailConfig {
    * @return address
   **/
   @javax.annotation.Nonnull
-
   public String getAddress() {
     return address;
   }
@@ -112,7 +115,6 @@ public class EmailConfig {
    * @return useTls
   **/
   @javax.annotation.Nullable
-
   public Boolean getUseTls() {
     return useTls;
   }
@@ -134,7 +136,6 @@ public class EmailConfig {
    * @return from
   **/
   @javax.annotation.Nonnull
-
   public String getFrom() {
     return from;
   }
@@ -156,7 +157,6 @@ public class EmailConfig {
    * @return domain
   **/
   @javax.annotation.Nonnull
-
   public String getDomain() {
     return domain;
   }
@@ -178,7 +178,6 @@ public class EmailConfig {
    * @return userName
   **/
   @javax.annotation.Nullable
-
   public String getUserName() {
     return userName;
   }
@@ -200,7 +199,6 @@ public class EmailConfig {
    * @return password
   **/
   @javax.annotation.Nullable
-
   public String getPassword() {
     return password;
   }
@@ -222,7 +220,6 @@ public class EmailConfig {
    * @return port
   **/
   @javax.annotation.Nullable
-
   public Integer getPort() {
     return port;
   }

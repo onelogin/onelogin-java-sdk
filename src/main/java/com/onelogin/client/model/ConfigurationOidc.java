@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * ConfigurationOidc
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class ConfigurationOidc {
   public static final String SERIALIZED_NAME_LOGIN_URL = "login_url";
   @SerializedName(SERIALIZED_NAME_LOGIN_URL)
@@ -182,7 +186,6 @@ public class ConfigurationOidc {
    * @return loginUrl
   **/
   @javax.annotation.Nonnull
-
   public String getLoginUrl() {
     return loginUrl;
   }
@@ -204,7 +207,6 @@ public class ConfigurationOidc {
    * @return redirectUri
   **/
   @javax.annotation.Nonnull
-
   public String getRedirectUri() {
     return redirectUri;
   }
@@ -226,7 +228,6 @@ public class ConfigurationOidc {
    * @return accessTokenExpirationMinutes
   **/
   @javax.annotation.Nonnull
-
   public Integer getAccessTokenExpirationMinutes() {
     return accessTokenExpirationMinutes;
   }
@@ -248,7 +249,6 @@ public class ConfigurationOidc {
    * @return refreshTokenExpirationMinutes
   **/
   @javax.annotation.Nonnull
-
   public Integer getRefreshTokenExpirationMinutes() {
     return refreshTokenExpirationMinutes;
   }
@@ -270,7 +270,6 @@ public class ConfigurationOidc {
    * @return tokenEndpointAuthMethod
   **/
   @javax.annotation.Nonnull
-
   public TokenEndpointAuthMethodEnum getTokenEndpointAuthMethod() {
     return tokenEndpointAuthMethod;
   }
@@ -292,7 +291,6 @@ public class ConfigurationOidc {
    * @return oidcApplicationType
   **/
   @javax.annotation.Nonnull
-
   public OidcApplicationTypeEnum getOidcApplicationType() {
     return oidcApplicationType;
   }

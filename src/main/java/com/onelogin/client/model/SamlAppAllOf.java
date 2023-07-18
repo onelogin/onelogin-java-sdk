@@ -35,6 +35,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -49,7 +53,7 @@ import com.onelogin.client.JSON;
 /**
  * SamlAppAllOf
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class SamlAppAllOf {
   public static final String SERIALIZED_NAME_CONFIGURATION = "configuration";
   @SerializedName(SERIALIZED_NAME_CONFIGURATION)
@@ -76,8 +80,7 @@ public class SamlAppAllOf {
    * Get _configuration
    * @return _configuration
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public ConfigurationSaml getConfiguration() {
     return _configuration;
   }
@@ -99,7 +102,6 @@ public class SamlAppAllOf {
    * @return sso
   **/
   @javax.annotation.Nullable
-
   public SsoSaml getSso() {
     return sso;
   }
@@ -120,8 +122,7 @@ public class SamlAppAllOf {
    * Get parameters
    * @return parameters
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public SamlAppAllOfParameters getParameters() {
     return parameters;
   }
@@ -187,8 +188,6 @@ public class SamlAppAllOf {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("configuration");
-    openapiRequiredFields.add("parameters");
   }
 
  /**
@@ -211,21 +210,18 @@ public class SamlAppAllOf {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SamlAppAllOf` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : SamlAppAllOf.openapiRequiredFields) {
-        if (jsonObj.get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
-        }
+      // validate the optional field `configuration`
+      if (jsonObj.get("configuration") != null && !jsonObj.get("configuration").isJsonNull()) {
+        ConfigurationSaml.validateJsonObject(jsonObj.getAsJsonObject("configuration"));
       }
-      // validate the required field `configuration`
-      ConfigurationSaml.validateJsonObject(jsonObj.getAsJsonObject("configuration"));
       // validate the optional field `sso`
       if (jsonObj.get("sso") != null && !jsonObj.get("sso").isJsonNull()) {
         SsoSaml.validateJsonObject(jsonObj.getAsJsonObject("sso"));
       }
-      // validate the required field `parameters`
-      SamlAppAllOfParameters.validateJsonObject(jsonObj.getAsJsonObject("parameters"));
+      // validate the optional field `parameters`
+      if (jsonObj.get("parameters") != null && !jsonObj.get("parameters").isJsonNull()) {
+        SamlAppAllOfParameters.validateJsonObject(jsonObj.getAsJsonObject("parameters"));
+      }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

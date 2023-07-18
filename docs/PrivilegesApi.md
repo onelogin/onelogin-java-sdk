@@ -11,13 +11,13 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**deleteRoleFromPrivilege**](PrivilegesApi.md#deleteRoleFromPrivilege) | **DELETE** /api/1/privileges/{privilege_id}/roles/{role_id} | Remove a Privilege from a Role |
 | [**getAssignedUser**](PrivilegesApi.md#getAssignedUser) | **GET** /api/1/privileges/{privilege_id}/users | Get Users assigned to a Privilege |
 | [**getPrivilege**](PrivilegesApi.md#getPrivilege) | **GET** /api/1/privileges/{privilege_id} | Get a Privilege |
-| [**listPrivelegeRoles**](PrivilegesApi.md#listPrivelegeRoles) | **GET** /api/1/privileges/{privilege_id}/roles | Get Roles assigned to Privilege |
-| [**listPriveleges**](PrivilegesApi.md#listPriveleges) | **GET** /api/1/privileges | List Privileges |
+| [**listPrivilegeRoles**](PrivilegesApi.md#listPrivilegeRoles) | **GET** /api/1/privileges/{privilege_id}/roles | Get Roles assigned to Privilege |
+| [**listPrivileges**](PrivilegesApi.md#listPrivileges) | **GET** /api/1/privileges | List Privileges |
 | [**removeUserFromPrivilege**](PrivilegesApi.md#removeUserFromPrivilege) | **DELETE** /api/1/privileges/{privilege_id}/users/{user_id} | Remove a Privilege from Users |
 | [**updatePrivilege**](PrivilegesApi.md#updatePrivilege) | **PUT** /api/1/privileges/{privilege_id} | Update a Privilege |
 
 
-<a name="addPrivilegeToRole"></a>
+<a id="addPrivilegeToRole"></a>
 # **addPrivilegeToRole**
 > AddPrivilegeToRole201Response addPrivilegeToRole(privilegeId, addPrivilegeToRoleRequest)
 
@@ -88,7 +88,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="assignUsersToPrivilege"></a>
+<a id="assignUsersToPrivilege"></a>
 # **assignUsersToPrivilege**
 > AddPrivilegeToRole201Response assignUsersToPrivilege(privilegeId, assignUsersToPrivilegeRequest)
 
@@ -159,9 +159,9 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="createPrivilege"></a>
+<a id="createPrivilege"></a>
 # **createPrivilege**
-> CreatePrivilege200Response createPrivilege(privilege)
+> Privilege createPrivilege(privilege)
 
 Create a Privilege
 
@@ -189,7 +189,7 @@ public class Example {
     PrivilegesApi apiInstance = new PrivilegesApi(defaultClient);
     Privilege privilege = new Privilege(); // Privilege | 
     try {
-      CreatePrivilege200Response result = apiInstance.createPrivilege(privilege);
+      Privilege result = apiInstance.createPrivilege(privilege);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling PrivilegesApi#createPrivilege");
@@ -210,7 +210,7 @@ public class Example {
 
 ### Return type
 
-[**CreatePrivilege200Response**](CreatePrivilege200Response.md)
+[**Privilege**](Privilege.md)
 
 ### Authorization
 
@@ -228,7 +228,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="deletePrivilege"></a>
+<a id="deletePrivilege"></a>
 # **deletePrivilege**
 > deletePrivilege(privilegeId)
 
@@ -296,7 +296,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="deleteRoleFromPrivilege"></a>
+<a id="deleteRoleFromPrivilege"></a>
 # **deleteRoleFromPrivilege**
 > deleteRoleFromPrivilege(privilegeId, roleId)
 
@@ -366,7 +366,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getAssignedUser"></a>
+<a id="getAssignedUser"></a>
 # **getAssignedUser**
 > GetAssignedUser200Response getAssignedUser(privilegeId)
 
@@ -435,7 +435,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getPrivilege"></a>
+<a id="getPrivilege"></a>
 # **getPrivilege**
 > Privilege getPrivilege(privilegeId)
 
@@ -504,9 +504,9 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listPrivelegeRoles"></a>
-# **listPrivelegeRoles**
-> ListPrivelegeRoles200Response listPrivelegeRoles(privilegeId)
+<a id="listPrivilegeRoles"></a>
+# **listPrivilegeRoles**
+> ListPrivilegeRoles200Response listPrivilegeRoles(privilegeId)
 
 Get Roles assigned to Privilege
 
@@ -534,10 +534,10 @@ public class Example {
     PrivilegesApi apiInstance = new PrivilegesApi(defaultClient);
     String privilegeId = "privilegeId_example"; // String | 
     try {
-      ListPrivelegeRoles200Response result = apiInstance.listPrivelegeRoles(privilegeId);
+      ListPrivilegeRoles200Response result = apiInstance.listPrivilegeRoles(privilegeId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PrivilegesApi#listPrivelegeRoles");
+      System.err.println("Exception when calling PrivilegesApi#listPrivilegeRoles");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -555,7 +555,7 @@ public class Example {
 
 ### Return type
 
-[**ListPrivelegeRoles200Response**](ListPrivelegeRoles200Response.md)
+[**ListPrivilegeRoles200Response**](ListPrivilegeRoles200Response.md)
 
 ### Authorization
 
@@ -573,9 +573,9 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listPriveleges"></a>
-# **listPriveleges**
-> List&lt;Privilege&gt; listPriveleges()
+<a id="listPrivileges"></a>
+# **listPrivileges**
+> List&lt;Privilege&gt; listPrivileges()
 
 List Privileges
 
@@ -602,10 +602,10 @@ public class Example {
 
     PrivilegesApi apiInstance = new PrivilegesApi(defaultClient);
     try {
-      List<Privilege> result = apiInstance.listPriveleges();
+      List<Privilege> result = apiInstance.listPrivileges();
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PrivilegesApi#listPriveleges");
+      System.err.println("Exception when calling PrivilegesApi#listPrivileges");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -637,7 +637,7 @@ This endpoint does not need any parameter.
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="removeUserFromPrivilege"></a>
+<a id="removeUserFromPrivilege"></a>
 # **removeUserFromPrivilege**
 > removeUserFromPrivilege(privilegeId, userId)
 
@@ -707,7 +707,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updatePrivilege"></a>
+<a id="updatePrivilege"></a>
 # **updatePrivilege**
 > UpdatePrivilege200Response updatePrivilege(privilegeId, privilege)
 

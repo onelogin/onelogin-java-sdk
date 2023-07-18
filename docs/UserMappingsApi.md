@@ -17,7 +17,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateMapping**](UserMappingsApi.md#updateMapping) | **PUT** /api/2/mappings/{mapping_id} | Update Mapping |
 
 
-<a name="createMapping"></a>
+<a id="createMapping"></a>
 # **createMapping**
 > List&lt;Mapping&gt; createMapping(contentType, mapping)
 
@@ -88,7 +88,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="deleteMapping"></a>
+<a id="deleteMapping"></a>
 # **deleteMapping**
 > deleteMapping(mappingId)
 
@@ -156,7 +156,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getMapping"></a>
+<a id="getMapping"></a>
 # **getMapping**
 > Mapping getMapping(mappingId)
 
@@ -225,7 +225,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listMappingActionValues"></a>
+<a id="listMappingActionValues"></a>
 # **listMappingActionValues**
 > List&lt;ListMappingActionValues200ResponseInner&gt; listMappingActionValues(mappingActionValue)
 
@@ -293,7 +293,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listMappingConditions"></a>
+<a id="listMappingConditions"></a>
 # **listMappingConditions**
 > ListMappingConditions200Response listMappingConditions()
 
@@ -357,7 +357,7 @@ This endpoint does not need any parameter.
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listMappingConditionsOperators"></a>
+<a id="listMappingConditionsOperators"></a>
 # **listMappingConditionsOperators**
 > List&lt;ListMappingConditionsOperators200ResponseInner&gt; listMappingConditionsOperators(mappingConditionValue)
 
@@ -425,7 +425,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listMappingContionValues"></a>
+<a id="listMappingContionValues"></a>
 # **listMappingContionValues**
 > List&lt;ListMappingContionValues200ResponseInner&gt; listMappingContionValues(mappingConditionValue)
 
@@ -493,7 +493,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listMappings"></a>
+<a id="listMappings"></a>
 # **listMappings**
 > List&lt;Mapping&gt; listMappings(enabled, hasCondition, hasConditionType, hasAction, hasActionType)
 
@@ -569,7 +569,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listMappingsActions"></a>
+<a id="listMappingsActions"></a>
 # **listMappingsActions**
 > List&lt;ListMappingsActions200ResponseInner&gt; listMappingsActions()
 
@@ -633,7 +633,7 @@ This endpoint does not need any parameter.
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="sortMappings"></a>
+<a id="sortMappings"></a>
 # **sortMappings**
 > List&lt;Integer&gt; sortMappings(requestBody)
 
@@ -702,7 +702,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="updateMapping"></a>
+<a id="updateMapping"></a>
 # **updateMapping**
 > Integer updateMapping(mappingId, contentType, body)
 
