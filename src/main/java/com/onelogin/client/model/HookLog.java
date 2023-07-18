@@ -34,6 +34,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -48,7 +52,7 @@ import com.onelogin.client.JSON;
 /**
  * HookLog
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class HookLog {
   public static final String SERIALIZED_NAME_REQUEST_ID = "request_id";
   @SerializedName(SERIALIZED_NAME_REQUEST_ID)
@@ -64,7 +68,7 @@ public class HookLog {
 
   public static final String SERIALIZED_NAME_EVENTS = "events";
   @SerializedName(SERIALIZED_NAME_EVENTS)
-  private List<String> events = null;
+  private List<String> events;
 
   public HookLog() {
   }
@@ -80,7 +84,6 @@ public class HookLog {
    * @return requestId
   **/
   @javax.annotation.Nullable
-
   public String getRequestId() {
     return requestId;
   }
@@ -102,7 +105,6 @@ public class HookLog {
    * @return correlationId
   **/
   @javax.annotation.Nullable
-
   public String getCorrelationId() {
     return correlationId;
   }
@@ -124,7 +126,6 @@ public class HookLog {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -154,7 +155,6 @@ public class HookLog {
    * @return events
   **/
   @javax.annotation.Nullable
-
   public List<String> getEvents() {
     return events;
   }

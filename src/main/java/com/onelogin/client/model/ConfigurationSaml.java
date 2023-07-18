@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * ConfigurationSaml
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class ConfigurationSaml {
   public static final String SERIALIZED_NAME_SIGNATURE_ALGORITHM = "signature_algorithm";
   @SerializedName(SERIALIZED_NAME_SIGNATURE_ALGORITHM)
@@ -69,8 +73,7 @@ public class ConfigurationSaml {
    * One of the following:   - SHA-1   - SHA-256   - SHA-348   - SHA-512
    * @return signatureAlgorithm
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public String getSignatureAlgorithm() {
     return signatureAlgorithm;
   }
@@ -91,8 +94,7 @@ public class ConfigurationSaml {
    * When creating apps the default certificate will be used unless the &#x60;certificate_id&#x60; attribute is applied in the &#x60;configuration&#x60; object.
    * @return certificateId
   **/
-  @javax.annotation.Nonnull
-
+  @javax.annotation.Nullable
   public Integer getCertificateId() {
     return certificateId;
   }
@@ -155,8 +157,6 @@ public class ConfigurationSaml {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("signature_algorithm");
-    openapiRequiredFields.add("certificate_id");
   }
 
  /**
@@ -179,14 +179,7 @@ public class ConfigurationSaml {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConfigurationSaml` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ConfigurationSaml.openapiRequiredFields) {
-        if (jsonObj.get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
-        }
-      }
-      if (!jsonObj.get("signature_algorithm").isJsonPrimitive()) {
+      if ((jsonObj.get("signature_algorithm") != null && !jsonObj.get("signature_algorithm").isJsonNull()) && !jsonObj.get("signature_algorithm").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `signature_algorithm` to be a primitive type in the JSON string but got `%s`", jsonObj.get("signature_algorithm").toString()));
       }
   }

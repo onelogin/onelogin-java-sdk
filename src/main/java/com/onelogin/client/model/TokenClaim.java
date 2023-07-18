@@ -34,6 +34,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -48,7 +52,7 @@ import com.onelogin.client.JSON;
 /**
  * TokenClaim
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class TokenClaim {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -76,7 +80,7 @@ public class TokenClaim {
 
   public static final String SERIALIZED_NAME_VALUES = "values";
   @SerializedName(SERIALIZED_NAME_VALUES)
-  private List<String> values = null;
+  private List<String> values;
 
   public static final String SERIALIZED_NAME_DEFAULT_VALUES = "default_values";
   @SerializedName(SERIALIZED_NAME_DEFAULT_VALUES)
@@ -100,7 +104,6 @@ public class TokenClaim {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -122,7 +125,6 @@ public class TokenClaim {
    * @return label
   **/
   @javax.annotation.Nullable
-
   public String getLabel() {
     return label;
   }
@@ -144,7 +146,6 @@ public class TokenClaim {
    * @return userAttributeMappings
   **/
   @javax.annotation.Nullable
-
   public String getUserAttributeMappings() {
     return userAttributeMappings;
   }
@@ -166,7 +167,6 @@ public class TokenClaim {
    * @return userAttributeMacros
   **/
   @javax.annotation.Nullable
-
   public String getUserAttributeMacros() {
     return userAttributeMacros;
   }
@@ -188,7 +188,6 @@ public class TokenClaim {
    * @return attributeTransformations
   **/
   @javax.annotation.Nullable
-
   public String getAttributeTransformations() {
     return attributeTransformations;
   }
@@ -210,7 +209,6 @@ public class TokenClaim {
    * @return skipIfBlank
   **/
   @javax.annotation.Nullable
-
   public Boolean getSkipIfBlank() {
     return skipIfBlank;
   }
@@ -240,7 +238,6 @@ public class TokenClaim {
    * @return values
   **/
   @javax.annotation.Nullable
-
   public List<String> getValues() {
     return values;
   }
@@ -262,7 +259,6 @@ public class TokenClaim {
    * @return defaultValues
   **/
   @javax.annotation.Nullable
-
   public String getDefaultValues() {
     return defaultValues;
   }
@@ -284,7 +280,6 @@ public class TokenClaim {
    * @return provisionedEntitlements
   **/
   @javax.annotation.Nullable
-
   public Boolean getProvisionedEntitlements() {
     return provisionedEntitlements;
   }

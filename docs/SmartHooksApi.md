@@ -17,7 +17,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateHook**](SmartHooksApi.md#updateHook) | **PUT** /api/2/hooks/{hook_id} | Update Smart Hook by ID |
 
 
-<a name="createEnvironmentVariable"></a>
+<a id="createEnvironmentVariable"></a>
 # **createEnvironmentVariable**
 > HookEnvvar createEnvironmentVariable(hookEnvvar)
 
@@ -86,7 +86,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="createHook"></a>
+<a id="createHook"></a>
 # **createHook**
 > Hook createHook(hook)
 
@@ -156,7 +156,7 @@ public class Example {
 | **409** | Conflict |  -  |
 | **422** | You function is not base64 encoded. |  -  |
 
-<a name="deleteEnvironmentVariable"></a>
+<a id="deleteEnvironmentVariable"></a>
 # **deleteEnvironmentVariable**
 > deleteEnvironmentVariable(envvarId)
 
@@ -224,7 +224,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="deleteHook"></a>
+<a id="deleteHook"></a>
 # **deleteHook**
 > deleteHook(hookId)
 
@@ -292,7 +292,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getEnvironmentVariable"></a>
+<a id="getEnvironmentVariable"></a>
 # **getEnvironmentVariable**
 > HookEnvvar getEnvironmentVariable(envvarId)
 
@@ -360,7 +360,7 @@ public class Example {
 | **200** | OK |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getHook"></a>
+<a id="getHook"></a>
 # **getHook**
 > Hook getHook(hookId)
 
@@ -429,7 +429,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getLogs"></a>
+<a id="getLogs"></a>
 # **getLogs**
 > List&lt;HookLog&gt; getLogs(hookId, limit, page, cursor, requestId, correlationId)
 
@@ -508,7 +508,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listEnvironmentVariables"></a>
+<a id="listEnvironmentVariables"></a>
 # **listEnvironmentVariables**
 > List&lt;HookEnvvar&gt; listEnvironmentVariables(limit, page, cursor)
 
@@ -580,7 +580,7 @@ public class Example {
 | **200** | OK |  * Current-Page -  <br>  * Page-Items -  <br>  * Total-Count -  <br>  * Total-Pages -  <br>  * Link -  <br>  * Before-Cursor -  <br>  * After-Cursor -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="listHooks"></a>
+<a id="listHooks"></a>
 # **listHooks**
 > List&lt;Hook&gt; listHooks(limit, page, cursor)
 
@@ -652,7 +652,7 @@ public class Example {
 | **200** | OK |  * Current-Page -  <br>  * Page-Items -  <br>  * Total-Count -  <br>  * Total-Pages -  <br>  * Link -  <br>  * Before-Cursor -  <br>  * After-Cursor -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="updateEnvironmentVariable"></a>
+<a id="updateEnvironmentVariable"></a>
 # **updateEnvironmentVariable**
 > HookEnvvar updateEnvironmentVariable(envvarId, updateEnvironmentVariableRequest)
 
@@ -724,7 +724,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="updateHook"></a>
+<a id="updateHook"></a>
 # **updateHook**
 > Hook updateHook(hookId, hook)
 

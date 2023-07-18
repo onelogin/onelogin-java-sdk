@@ -12,7 +12,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateUser2**](UsersV2Api.md#updateUser2) | **PUT** /api/2/users/{user_id} | Update User |
 
 
-<a name="createUser2"></a>
+<a id="createUser2"></a>
 # **createUser2**
 > User createUser2(mappings, validatePolicy, user)
 
@@ -81,7 +81,7 @@ No authorization required
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="deleteUser2"></a>
+<a id="deleteUser2"></a>
 # **deleteUser2**
 > deleteUser2(userId)
 
@@ -149,7 +149,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getUser2"></a>
+<a id="getUser2"></a>
 # **getUser2**
 > User getUser2(userId)
 
@@ -218,7 +218,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getUserApps2"></a>
+<a id="getUserApps2"></a>
 # **getUserApps2**
 > List&lt;GetUserApps200ResponseInner&gt; getUserApps2(userId, ignoreVisibility)
 
@@ -289,9 +289,9 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listUsers2"></a>
+<a id="listUsers2"></a>
 # **listUsers2**
-> List&lt;User&gt; listUsers2(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields)
+> List&lt;User&gt; listUsers2(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId)
 
 List Users
 
@@ -336,8 +336,9 @@ public class Example {
     String userIds = "userIds_example"; // String | A comma separated list of OneLogin User IDs
     String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket = "customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket_example"; // String | The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes.
     String fields = "apps"; // String | Optional. Comma delimited list of fields to return.
+    Integer appId = 56; // Integer | 
     try {
-      List<User> result = apiInstance.listUsers2(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
+      List<User> result = apiInstance.listUsers2(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling UsersV2Api#listUsers2");
@@ -373,6 +374,7 @@ public class Example {
 | **userIds** | **String**| A comma separated list of OneLogin User IDs | [optional] |
 | **customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket** | **String**| The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes. | [optional] |
 | **fields** | **String**| Optional. Comma delimited list of fields to return. | [optional] [enum: apps, users, admins] |
+| **appId** | **Integer**|  | [optional] |
 
 ### Return type
 
@@ -395,7 +397,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="updateUser2"></a>
+<a id="updateUser2"></a>
 # **updateUser2**
 > User updateUser2(userId, mappings, validatePolicy, user)
 

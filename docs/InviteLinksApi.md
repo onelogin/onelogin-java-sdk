@@ -8,7 +8,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**sendInviteLink**](InviteLinksApi.md#sendInviteLink) | **POST** /api/1/invites/send_invite_link | Send  Invite Link |
 
 
-<a name="getInviteLink"></a>
+<a id="getInviteLink"></a>
 # **getInviteLink**
 > GetInviteLink200Response getInviteLink(getInviteLinkRequest)
 
@@ -77,7 +77,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="sendInviteLink"></a>
+<a id="sendInviteLink"></a>
 # **sendInviteLink**
 > SendInviteLink200Response sendInviteLink(sendInviteLinkRequest)
 

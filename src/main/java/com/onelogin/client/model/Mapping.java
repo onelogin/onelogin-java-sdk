@@ -36,6 +36,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -50,7 +54,7 @@ import com.onelogin.client.JSON;
 /**
  * Mapping
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class Mapping {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -141,7 +145,6 @@ public class Mapping {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -163,7 +166,6 @@ public class Mapping {
    * @return name
   **/
   @javax.annotation.Nonnull
-
   public String getName() {
     return name;
   }
@@ -185,7 +187,6 @@ public class Mapping {
    * @return enabled
   **/
   @javax.annotation.Nonnull
-
   public Boolean getEnabled() {
     return enabled;
   }
@@ -207,7 +208,6 @@ public class Mapping {
    * @return match
   **/
   @javax.annotation.Nonnull
-
   public MatchEnum getMatch() {
     return match;
   }
@@ -229,7 +229,6 @@ public class Mapping {
    * @return position
   **/
   @javax.annotation.Nonnull
-
   public Integer getPosition() {
     return position;
   }
@@ -247,6 +246,9 @@ public class Mapping {
   }
 
   public Mapping addConditionsItem(Condition conditionsItem) {
+    if (this.conditions == null) {
+      this.conditions = new ArrayList<>();
+    }
     this.conditions.add(conditionsItem);
     return this;
   }
@@ -256,7 +258,6 @@ public class Mapping {
    * @return conditions
   **/
   @javax.annotation.Nonnull
-
   public List<Condition> getConditions() {
     return conditions;
   }
@@ -274,6 +275,9 @@ public class Mapping {
   }
 
   public Mapping addActionsItem(ActionObj actionsItem) {
+    if (this.actions == null) {
+      this.actions = new ArrayList<>();
+    }
     this.actions.add(actionsItem);
     return this;
   }
@@ -283,7 +287,6 @@ public class Mapping {
    * @return actions
   **/
   @javax.annotation.Nonnull
-
   public List<ActionObj> getActions() {
     return actions;
   }

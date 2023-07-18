@@ -149,7 +149,6 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.CreateDeviceVerificationRequest.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.CreateFactorRegistration201Response.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.CreateFactorRegistrationRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.CreatePrivilege200Response.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.CreateRole201ResponseInner.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.Device.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.EmailConfig.CustomTypeAdapterFactory());
@@ -213,7 +212,7 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.ListMappingContionValues200ResponseInner.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.ListMappingsActions200ResponseInner.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.ListMessageTemplates200ResponseInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.ListPrivelegeRoles200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.ListPrivilegeRoles200Response.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.Locale.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.LockAccountUserRequest.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.onelogin.client.model.Mapping.CustomTypeAdapterFactory());

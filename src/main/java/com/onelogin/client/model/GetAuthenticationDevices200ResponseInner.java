@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * GetAuthenticationDevices200ResponseInner
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GetAuthenticationDevices200ResponseInner {
   public static final String SERIALIZED_NAME_DEVICE_ID = "device_id";
   @SerializedName(SERIALIZED_NAME_DEVICE_ID)
@@ -82,7 +86,6 @@ public class GetAuthenticationDevices200ResponseInner {
    * @return deviceId
   **/
   @javax.annotation.Nullable
-
   public String getDeviceId() {
     return deviceId;
   }
@@ -104,7 +107,6 @@ public class GetAuthenticationDevices200ResponseInner {
    * @return userDisplayName
   **/
   @javax.annotation.Nullable
-
   public String getUserDisplayName() {
     return userDisplayName;
   }
@@ -126,7 +128,6 @@ public class GetAuthenticationDevices200ResponseInner {
    * @return typeDisplayName
   **/
   @javax.annotation.Nullable
-
   public String getTypeDisplayName() {
     return typeDisplayName;
   }
@@ -148,7 +149,6 @@ public class GetAuthenticationDevices200ResponseInner {
    * @return authFactorName
   **/
   @javax.annotation.Nullable
-
   public String getAuthFactorName() {
     return authFactorName;
   }
@@ -170,7 +170,6 @@ public class GetAuthenticationDevices200ResponseInner {
    * @return _default
   **/
   @javax.annotation.Nullable
-
   public Boolean getDefault() {
     return _default;
   }

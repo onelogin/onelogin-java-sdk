@@ -18,9 +18,8 @@ import com.onelogin.client.model.AddPrivilegeToRole201Response;
 import com.onelogin.client.model.AddPrivilegeToRoleRequest;
 import com.onelogin.client.model.AltErr;
 import com.onelogin.client.model.AssignUsersToPrivilegeRequest;
-import com.onelogin.client.model.CreatePrivilege200Response;
 import com.onelogin.client.model.GetAssignedUser200Response;
-import com.onelogin.client.model.ListPrivelegeRoles200Response;
+import com.onelogin.client.model.ListPrivilegeRoles200Response;
 import com.onelogin.client.model.Privilege;
 import com.onelogin.client.model.UpdatePrivilege200Response;
 import org.junit.jupiter.api.Disabled;
@@ -79,7 +78,7 @@ public class PrivilegesApiTest {
     @Test
     public void createPrivilegeTest() throws ApiException {
         Privilege privilege = null;
-        CreatePrivilege200Response response = api.createPrivilege(privilege);
+        Privilege response = api.createPrivilege(privilege);
         // TODO: test validations
     }
 
@@ -148,9 +147,9 @@ public class PrivilegesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void listPrivelegeRolesTest() throws ApiException {
+    public void listPrivilegeRolesTest() throws ApiException {
         String privilegeId = null;
-        ListPrivelegeRoles200Response response = api.listPrivelegeRoles(privilegeId);
+        ListPrivilegeRoles200Response response = api.listPrivilegeRoles(privilegeId);
         // TODO: test validations
     }
 
@@ -162,8 +161,8 @@ public class PrivilegesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void listPrivelegesTest() throws ApiException {
-        List<Privilege> response = api.listPriveleges();
+    public void listPrivilegesTest() throws ApiException {
+        List<Privilege> response = api.listPrivileges();
         // TODO: test validations
     }
 

@@ -16,7 +16,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**verifyUserVerification**](MultiFactorAuthenticationApi.md#verifyUserVerification) | **PUT** /api/2/mfa/users/{user_id}/verifications/{verification_id} | Verify User Verification |
 
 
-<a name="createDeviceVerification"></a>
+<a id="createDeviceVerification"></a>
 # **createDeviceVerification**
 > CreateDeviceVerification201Response createDeviceVerification(userId, contentType, createDeviceVerificationRequest)
 
@@ -88,7 +88,7 @@ public class Example {
 | **201** | Created |  * Content-Type -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="createFactorRegistration"></a>
+<a id="createFactorRegistration"></a>
 # **createFactorRegistration**
 > CreateFactorRegistration201Response createFactorRegistration(userId, contentType, createFactorRegistrationRequest)
 
@@ -160,7 +160,7 @@ public class Example {
 | **201** | Created |  * Accept-Language -  <br>  * Cache-Control -  <br>  * Content-Length -  <br>  * Content-Type -  <br>  * X-Content-Type-Options -  <br>  * X-Request-Id -  <br>  * Date -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="deleteEnrolledFactor"></a>
+<a id="deleteEnrolledFactor"></a>
 # **deleteEnrolledFactor**
 > deleteEnrolledFactor(userId, deviceId)
 
@@ -228,7 +228,7 @@ null (empty response body)
 |-------------|-------------|------------------|
 | **204** | No Content |  -  |
 
-<a name="generateOTP"></a>
+<a id="generateOTP"></a>
 # **generateOTP**
 > GenerateOTP201Response generateOTP(userId, contentType, generateOTPRequest)
 
@@ -301,7 +301,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="getAuthFactors"></a>
+<a id="getAuthFactors"></a>
 # **getAuthFactors**
 > GetAuthFactors200Response getAuthFactors(userId)
 
@@ -369,7 +369,7 @@ public class Example {
 | **200** | OK |  * Content-Type -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="getAuthenticationDevices"></a>
+<a id="getAuthenticationDevices"></a>
 # **getAuthenticationDevices**
 > List&lt;GetAuthenticationDevices200ResponseInner&gt; getAuthenticationDevices(userId)
 
@@ -437,7 +437,7 @@ public class Example {
 | **200** | OK |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getUserRegistration"></a>
+<a id="getUserRegistration"></a>
 # **getUserRegistration**
 > Object getUserRegistration(userId, registrationId)
 
@@ -507,7 +507,7 @@ public class Example {
 | **200** | OK |  * Accept-Language -  <br>  * Cache-Control -  <br>  * Content-Length -  <br>  * Content-Type -  <br>  * X-Content-Type-Options -  <br>  * X-Request-Id -  <br>  * Date -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="getUserVerification"></a>
+<a id="getUserVerification"></a>
 # **getUserVerification**
 > GetUserVerification200Response getUserVerification(userId, verificationId)
 
@@ -578,7 +578,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="verifyUserRegistration"></a>
+<a id="verifyUserRegistration"></a>
 # **verifyUserRegistration**
 > VerifyUserRegistration200Response verifyUserRegistration(userId, registrationId, contentType, verifyUserRegistrationRequest)
 
@@ -652,7 +652,7 @@ public class Example {
 | **200** | OK |  * Accept-Language -  <br>  * Cache-Control -  <br>  * Content-Length -  <br>  * Content-Type -  <br>  * X-Content-Type-Options -  <br>  * X-Request-Id -  <br>  * Date -  <br>  |
 | **401** | Unauthorized |  -  |
 
-<a name="verifyUserVerification"></a>
+<a id="verifyUserVerification"></a>
 # **verifyUserVerification**
 > Error verifyUserVerification(userId, verificationId, contentType, verifyUserVerificationRequest)
 

@@ -1522,11 +1522,11 @@ public class RolesApi {
     }
     /**
      * Build call for listRoles
-     * @param appId  (required)
      * @param limit How many items to return at one time (max 100) (optional)
      * @param page The page number of results to return. (optional)
      * @param cursor Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. (optional)
      * @param roleName Optional. Filters by role name. (optional)
+     * @param appId  (optional)
      * @param appName Optional. Returns roles that contain this app name. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
      * @param _callback Callback for upload/download progress
@@ -1539,7 +1539,7 @@ public class RolesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listRolesCall(Integer appId, Integer limit, Integer page, String cursor, String roleName, String appName, String fields, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listRolesCall(Integer limit, Integer page, String cursor, String roleName, Integer appId, String appName, String fields, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1612,24 +1612,19 @@ public class RolesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listRolesValidateBeforeCall(Integer appId, Integer limit, Integer page, String cursor, String roleName, String appName, String fields, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'appId' is set
-        if (appId == null) {
-            throw new ApiException("Missing the required parameter 'appId' when calling listRoles(Async)");
-        }
-
-        return listRolesCall(appId, limit, page, cursor, roleName, appName, fields, _callback);
+    private okhttp3.Call listRolesValidateBeforeCall(Integer limit, Integer page, String cursor, String roleName, Integer appId, String appName, String fields, final ApiCallback _callback) throws ApiException {
+        return listRolesCall(limit, page, cursor, roleName, appId, appName, fields, _callback);
 
     }
 
     /**
      * List Roles
      * List Roles
-     * @param appId  (required)
      * @param limit How many items to return at one time (max 100) (optional)
      * @param page The page number of results to return. (optional)
      * @param cursor Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. (optional)
      * @param roleName Optional. Filters by role name. (optional)
+     * @param appId  (optional)
      * @param appName Optional. Returns roles that contain this app name. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
      * @return List&lt;Role&gt;
@@ -1641,19 +1636,19 @@ public class RolesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public List<Role> listRoles(Integer appId, Integer limit, Integer page, String cursor, String roleName, String appName, String fields) throws ApiException {
-        ApiResponse<List<Role>> localVarResp = listRolesWithHttpInfo(appId, limit, page, cursor, roleName, appName, fields);
+    public List<Role> listRoles(Integer limit, Integer page, String cursor, String roleName, Integer appId, String appName, String fields) throws ApiException {
+        ApiResponse<List<Role>> localVarResp = listRolesWithHttpInfo(limit, page, cursor, roleName, appId, appName, fields);
         return localVarResp.getData();
     }
 
     /**
      * List Roles
      * List Roles
-     * @param appId  (required)
      * @param limit How many items to return at one time (max 100) (optional)
      * @param page The page number of results to return. (optional)
      * @param cursor Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. (optional)
      * @param roleName Optional. Filters by role name. (optional)
+     * @param appId  (optional)
      * @param appName Optional. Returns roles that contain this app name. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
      * @return ApiResponse&lt;List&lt;Role&gt;&gt;
@@ -1665,8 +1660,8 @@ public class RolesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<List<Role>> listRolesWithHttpInfo(Integer appId, Integer limit, Integer page, String cursor, String roleName, String appName, String fields) throws ApiException {
-        okhttp3.Call localVarCall = listRolesValidateBeforeCall(appId, limit, page, cursor, roleName, appName, fields, null);
+    public ApiResponse<List<Role>> listRolesWithHttpInfo(Integer limit, Integer page, String cursor, String roleName, Integer appId, String appName, String fields) throws ApiException {
+        okhttp3.Call localVarCall = listRolesValidateBeforeCall(limit, page, cursor, roleName, appId, appName, fields, null);
         Type localVarReturnType = new TypeToken<List<Role>>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -1674,11 +1669,11 @@ public class RolesApi {
     /**
      * List Roles (asynchronously)
      * List Roles
-     * @param appId  (required)
      * @param limit How many items to return at one time (max 100) (optional)
      * @param page The page number of results to return. (optional)
      * @param cursor Set to the value extracted from Before-Cursor or After-Cursor headers to return the previous or next page. (optional)
      * @param roleName Optional. Filters by role name. (optional)
+     * @param appId  (optional)
      * @param appName Optional. Returns roles that contain this app name. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
      * @param _callback The callback to be executed when the API call finishes
@@ -1691,9 +1686,9 @@ public class RolesApi {
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listRolesAsync(Integer appId, Integer limit, Integer page, String cursor, String roleName, String appName, String fields, final ApiCallback<List<Role>> _callback) throws ApiException {
+    public okhttp3.Call listRolesAsync(Integer limit, Integer page, String cursor, String roleName, Integer appId, String appName, String fields, final ApiCallback<List<Role>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listRolesValidateBeforeCall(appId, limit, page, cursor, roleName, appName, fields, _callback);
+        okhttp3.Call localVarCall = listRolesValidateBeforeCall(limit, page, cursor, roleName, appId, appName, fields, _callback);
         Type localVarReturnType = new TypeToken<List<Role>>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

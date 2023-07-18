@@ -22,7 +22,7 @@
 |**updatedAt** | **String** | the date the app was last updated |  [optional] |
 |**roleIds** | **List&lt;Integer&gt;** | List of Role IDs that are assigned to the app. On App Create or Update the entire array is replaced with the values provided. |  [optional] |
 |**provisioning** | [**GenericAppProvisioning**](GenericAppProvisioning.md) |  |  [optional] |
-|**parameters** | **AppParameters** |  |  |
+|**parameters** | **AppParameters** |  |  [optional] |
 |**enforcementPoint** | [**EnforcementPoint**](EnforcementPoint.md) |  |  [optional] |
 |**_configuration** | [**ConfigurationSaml**](ConfigurationSaml.md) |  |  |
 |**sso** | [**SsoSaml**](SsoSaml.md) |  |  [optional] |

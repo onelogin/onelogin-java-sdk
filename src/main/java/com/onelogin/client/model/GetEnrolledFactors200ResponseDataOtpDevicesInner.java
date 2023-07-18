@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * GetEnrolledFactors200ResponseDataOtpDevicesInner
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
   public static final String SERIALIZED_NAME_ACTIVE = "active";
   @SerializedName(SERIALIZED_NAME_ACTIVE)
@@ -98,7 +102,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return active
   **/
   @javax.annotation.Nullable
-
   public Boolean getActive() {
     return active;
   }
@@ -120,7 +123,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return _default
   **/
   @javax.annotation.Nullable
-
   public Boolean getDefault() {
     return _default;
   }
@@ -142,7 +144,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return stateToken
   **/
   @javax.annotation.Nullable
-
   public String getStateToken() {
     return stateToken;
   }
@@ -164,7 +165,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return authFactorName
   **/
   @javax.annotation.Nullable
-
   public String getAuthFactorName() {
     return authFactorName;
   }
@@ -186,7 +186,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return phoneNumber
   **/
   @javax.annotation.Nullable
-
   public String getPhoneNumber() {
     return phoneNumber;
   }
@@ -208,7 +207,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return typeDisplayName
   **/
   @javax.annotation.Nullable
-
   public String getTypeDisplayName() {
     return typeDisplayName;
   }
@@ -230,7 +228,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return needsTrigger
   **/
   @javax.annotation.Nullable
-
   public Boolean getNeedsTrigger() {
     return needsTrigger;
   }
@@ -252,7 +249,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return userDisplayName
   **/
   @javax.annotation.Nullable
-
   public String getUserDisplayName() {
     return userDisplayName;
   }
@@ -274,7 +270,6 @@ public class GetEnrolledFactors200ResponseDataOtpDevicesInner {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }

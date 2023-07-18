@@ -9,7 +9,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateEmailSettings**](BrandingServiceSmtpApi.md#updateEmailSettings) | **PUT** /api/2/branding/email_settings | Update Email Settings |
 
 
-<a name="deleteEmailSettings"></a>
+<a id="deleteEmailSettings"></a>
 # **deleteEmailSettings**
 > AltErr deleteEmailSettings()
 
@@ -73,7 +73,7 @@ This endpoint does not need any parameter.
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getEmailSettings"></a>
+<a id="getEmailSettings"></a>
 # **getEmailSettings**
 > GetEmailSettings200Response getEmailSettings()
 
@@ -137,7 +137,7 @@ This endpoint does not need any parameter.
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="updateEmailSettings"></a>
+<a id="updateEmailSettings"></a>
 # **updateEmailSettings**
 > AltErr updateEmailSettings(emailConfig)
 

@@ -36,6 +36,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -50,7 +54,7 @@ import com.onelogin.client.JSON;
 /**
  * TrackRiskEventRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class TrackRiskEventRequest {
   public static final String SERIALIZED_NAME_VERB = "verb";
   @SerializedName(SERIALIZED_NAME_VERB)
@@ -102,7 +106,6 @@ public class TrackRiskEventRequest {
    * @return verb
   **/
   @javax.annotation.Nonnull
-
   public String getVerb() {
     return verb;
   }
@@ -124,7 +127,6 @@ public class TrackRiskEventRequest {
    * @return ip
   **/
   @javax.annotation.Nonnull
-
   public String getIp() {
     return ip;
   }
@@ -146,7 +148,6 @@ public class TrackRiskEventRequest {
    * @return userAgent
   **/
   @javax.annotation.Nonnull
-
   public String getUserAgent() {
     return userAgent;
   }
@@ -168,7 +169,6 @@ public class TrackRiskEventRequest {
    * @return user
   **/
   @javax.annotation.Nonnull
-
   public RiskUser getUser() {
     return user;
   }
@@ -190,7 +190,6 @@ public class TrackRiskEventRequest {
    * @return source
   **/
   @javax.annotation.Nullable
-
   public Source getSource() {
     return source;
   }
@@ -212,7 +211,6 @@ public class TrackRiskEventRequest {
    * @return session
   **/
   @javax.annotation.Nullable
-
   public Session getSession() {
     return session;
   }
@@ -234,7 +232,6 @@ public class TrackRiskEventRequest {
    * @return device
   **/
   @javax.annotation.Nullable
-
   public RiskDevice getDevice() {
     return device;
   }
@@ -256,7 +253,6 @@ public class TrackRiskEventRequest {
    * @return fp
   **/
   @javax.annotation.Nullable
-
   public String getFp() {
     return fp;
   }
@@ -278,7 +274,6 @@ public class TrackRiskEventRequest {
    * @return published
   **/
   @javax.annotation.Nullable
-
   public String getPublished() {
     return published;
   }

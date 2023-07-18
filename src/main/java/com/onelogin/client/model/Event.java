@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * Event
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class Event {
   public static final String SERIALIZED_NAME_ACCOUNT_ID = "account_id";
   @SerializedName(SERIALIZED_NAME_ACCOUNT_ID)
@@ -1363,7 +1367,6 @@ public class Event {
    * @return accountId
   **/
   @javax.annotation.Nullable
-
   public Integer getAccountId() {
     return accountId;
   }
@@ -1385,7 +1388,6 @@ public class Event {
    * @return actorSystem
   **/
   @javax.annotation.Nullable
-
   public String getActorSystem() {
     return actorSystem;
   }
@@ -1407,7 +1409,6 @@ public class Event {
    * @return actorUserId
   **/
   @javax.annotation.Nullable
-
   public Integer getActorUserId() {
     return actorUserId;
   }
@@ -1429,7 +1430,6 @@ public class Event {
    * @return actorUserName
   **/
   @javax.annotation.Nullable
-
   public String getActorUserName() {
     return actorUserName;
   }
@@ -1451,7 +1451,6 @@ public class Event {
    * @return adcId
   **/
   @javax.annotation.Nullable
-
   public Integer getAdcId() {
     return adcId;
   }
@@ -1473,7 +1472,6 @@ public class Event {
    * @return appName
   **/
   @javax.annotation.Nullable
-
   public String getAppName() {
     return appName;
   }
@@ -1495,7 +1493,6 @@ public class Event {
    * @return appId
   **/
   @javax.annotation.Nullable
-
   public Integer getAppId() {
     return appId;
   }
@@ -1517,7 +1514,6 @@ public class Event {
    * @return assumedBySuperadminOrReseller
   **/
   @javax.annotation.Nullable
-
   public Integer getAssumedBySuperadminOrReseller() {
     return assumedBySuperadminOrReseller;
   }
@@ -1539,7 +1535,6 @@ public class Event {
    * @return assumingActingUserId
   **/
   @javax.annotation.Nullable
-
   public Integer getAssumingActingUserId() {
     return assumingActingUserId;
   }
@@ -1561,7 +1556,6 @@ public class Event {
    * @return certificateId
   **/
   @javax.annotation.Nullable
-
   public Integer getCertificateId() {
     return certificateId;
   }
@@ -1583,7 +1577,6 @@ public class Event {
    * @return clientId
   **/
   @javax.annotation.Nullable
-
   public String getClientId() {
     return clientId;
   }
@@ -1605,7 +1598,6 @@ public class Event {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -1627,7 +1619,6 @@ public class Event {
    * @return customMessage
   **/
   @javax.annotation.Nullable
-
   public String getCustomMessage() {
     return customMessage;
   }
@@ -1649,7 +1640,6 @@ public class Event {
    * @return directorySyncRunId
   **/
   @javax.annotation.Nullable
-
   public Integer getDirectorySyncRunId() {
     return directorySyncRunId;
   }
@@ -1671,7 +1661,6 @@ public class Event {
    * @return errorDescription
   **/
   @javax.annotation.Nullable
-
   public String getErrorDescription() {
     return errorDescription;
   }
@@ -1693,7 +1682,6 @@ public class Event {
    * @return eventTypeId
   **/
   @javax.annotation.Nullable
-
   public EventTypeIdEnum getEventTypeId() {
     return eventTypeId;
   }
@@ -1715,7 +1703,6 @@ public class Event {
    * @return groupName
   **/
   @javax.annotation.Nullable
-
   public String getGroupName() {
     return groupName;
   }
@@ -1737,7 +1724,6 @@ public class Event {
    * @return groupId
   **/
   @javax.annotation.Nullable
-
   public Integer getGroupId() {
     return groupId;
   }
@@ -1759,7 +1745,6 @@ public class Event {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -1781,7 +1766,6 @@ public class Event {
    * @return ipaddr
   **/
   @javax.annotation.Nullable
-
   public String getIpaddr() {
     return ipaddr;
   }
@@ -1803,7 +1787,6 @@ public class Event {
    * @return mappingId
   **/
   @javax.annotation.Nullable
-
   public Integer getMappingId() {
     return mappingId;
   }
@@ -1825,7 +1808,6 @@ public class Event {
    * @return notes
   **/
   @javax.annotation.Nullable
-
   public String getNotes() {
     return notes;
   }
@@ -1847,7 +1829,6 @@ public class Event {
    * @return objectId
   **/
   @javax.annotation.Nullable
-
   public Integer getObjectId() {
     return objectId;
   }
@@ -1869,7 +1850,6 @@ public class Event {
    * @return otpDeviceId
   **/
   @javax.annotation.Nullable
-
   public Integer getOtpDeviceId() {
     return otpDeviceId;
   }
@@ -1891,7 +1871,6 @@ public class Event {
    * @return otpDeviceName
   **/
   @javax.annotation.Nullable
-
   public String getOtpDeviceName() {
     return otpDeviceName;
   }
@@ -1913,7 +1892,6 @@ public class Event {
    * @return param
   **/
   @javax.annotation.Nullable
-
   public String getParam() {
     return param;
   }
@@ -1935,7 +1913,6 @@ public class Event {
    * @return policyId
   **/
   @javax.annotation.Nullable
-
   public Integer getPolicyId() {
     return policyId;
   }
@@ -1957,7 +1934,6 @@ public class Event {
    * @return policyName
   **/
   @javax.annotation.Nullable
-
   public String getPolicyName() {
     return policyName;
   }
@@ -1979,7 +1955,6 @@ public class Event {
    * @return policyType
   **/
   @javax.annotation.Nullable
-
   public String getPolicyType() {
     return policyType;
   }
@@ -2001,7 +1976,6 @@ public class Event {
    * @return privilegeId
   **/
   @javax.annotation.Nullable
-
   public Integer getPrivilegeId() {
     return privilegeId;
   }
@@ -2023,7 +1997,6 @@ public class Event {
    * @return proxyIp
   **/
   @javax.annotation.Nullable
-
   public String getProxyIp() {
     return proxyIp;
   }
@@ -2045,7 +2018,6 @@ public class Event {
    * @return radiusConfigId
   **/
   @javax.annotation.Nullable
-
   public Integer getRadiusConfigId() {
     return radiusConfigId;
   }
@@ -2067,7 +2039,6 @@ public class Event {
    * @return resolvedAt
   **/
   @javax.annotation.Nullable
-
   public String getResolvedAt() {
     return resolvedAt;
   }
@@ -2089,7 +2060,6 @@ public class Event {
    * @return resourceTypeId
   **/
   @javax.annotation.Nullable
-
   public Integer getResourceTypeId() {
     return resourceTypeId;
   }
@@ -2111,7 +2081,6 @@ public class Event {
    * @return riskCookieId
   **/
   @javax.annotation.Nullable
-
   public String getRiskCookieId() {
     return riskCookieId;
   }
@@ -2133,7 +2102,6 @@ public class Event {
    * @return riskReasons
   **/
   @javax.annotation.Nullable
-
   public String getRiskReasons() {
     return riskReasons;
   }
@@ -2155,7 +2123,6 @@ public class Event {
    * @return riskScore
   **/
   @javax.annotation.Nullable
-
   public Integer getRiskScore() {
     return riskScore;
   }
@@ -2177,7 +2144,6 @@ public class Event {
    * @return roleId
   **/
   @javax.annotation.Nullable
-
   public Integer getRoleId() {
     return roleId;
   }
@@ -2199,7 +2165,6 @@ public class Event {
    * @return roleName
   **/
   @javax.annotation.Nullable
-
   public String getRoleName() {
     return roleName;
   }
@@ -2221,7 +2186,6 @@ public class Event {
    * @return serviceDirectoryId
   **/
   @javax.annotation.Nullable
-
   public Integer getServiceDirectoryId() {
     return serviceDirectoryId;
   }
@@ -2243,7 +2207,6 @@ public class Event {
    * @return solved
   **/
   @javax.annotation.Nullable
-
   public Boolean getSolved() {
     return solved;
   }
@@ -2265,7 +2228,6 @@ public class Event {
    * @return trustedIdpId
   **/
   @javax.annotation.Nullable
-
   public Integer getTrustedIdpId() {
     return trustedIdpId;
   }
@@ -2287,7 +2249,6 @@ public class Event {
    * @return userFieldId
   **/
   @javax.annotation.Nullable
-
   public Integer getUserFieldId() {
     return userFieldId;
   }
@@ -2309,7 +2270,6 @@ public class Event {
    * @return userId
   **/
   @javax.annotation.Nullable
-
   public Integer getUserId() {
     return userId;
   }
@@ -2331,7 +2291,6 @@ public class Event {
    * @return userName
   **/
   @javax.annotation.Nullable
-
   public String getUserName() {
     return userName;
   }

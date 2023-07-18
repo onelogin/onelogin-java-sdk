@@ -57,7 +57,7 @@ import com.google.gson.JsonParseException;
 
 import com.onelogin.client.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GetEmailSettings200Response extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(GetEmailSettings200Response.class.getName());
 

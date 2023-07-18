@@ -11,7 +11,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateAuthServer**](ApiAuthorizationServerApi.md#updateAuthServer) | **PUT** /api/2/api_authorizations/{api_auth_id} | Update Api Auth Server |
 
 
-<a name="createAuthServer"></a>
+<a id="createAuthServer"></a>
 # **createAuthServer**
 > AuthServer createAuthServer(contentType, authServer)
 
@@ -82,7 +82,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteAuthServer"></a>
+<a id="deleteAuthServer"></a>
 # **deleteAuthServer**
 > deleteAuthServer(apiAuthId, contentType)
 
@@ -152,7 +152,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getAuthServer"></a>
+<a id="getAuthServer"></a>
 # **getAuthServer**
 > AuthServer getAuthServer(apiAuthId, contentType)
 
@@ -222,7 +222,7 @@ public class Example {
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listAuthServers"></a>
+<a id="listAuthServers"></a>
 # **listAuthServers**
 > List&lt;AuthServer&gt; listAuthServers()
 
@@ -286,7 +286,7 @@ This endpoint does not need any parameter.
 | **200** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="updateAuthServer"></a>
+<a id="updateAuthServer"></a>
 # **updateAuthServer**
 > AuthServer updateAuthServer(apiAuthId, contentType, authServer)
 

@@ -8,7 +8,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**getGroups**](GroupsApi.md#getGroups) | **GET** /api/1/groups | Get Groups |
 
 
-<a name="getGroupById"></a>
+<a id="getGroupById"></a>
 # **getGroupById**
 > GetGroups200Response getGroupById(groupId)
 
@@ -78,7 +78,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getGroups"></a>
+<a id="getGroups"></a>
 # **getGroups**
 > GetGroups200Response getGroups()
 

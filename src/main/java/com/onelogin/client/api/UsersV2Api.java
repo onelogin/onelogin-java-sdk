@@ -639,6 +639,7 @@ public class UsersV2Api {
      * @param userIds A comma separated list of OneLogin User IDs (optional)
      * @param customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
+     * @param appId  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -651,7 +652,7 @@ public class UsersV2Api {
         <tr><td> 422 </td><td> Unprocessable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listUsers2Call(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listUsers2Call(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, Integer appId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -752,6 +753,10 @@ public class UsersV2Api {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("fields", fields));
         }
 
+        if (appId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("app_id", appId));
+        }
+
         final String[] localVarAccepts = {
             "application/json"
         };
@@ -772,8 +777,8 @@ public class UsersV2Api {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listUsers2ValidateBeforeCall(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, final ApiCallback _callback) throws ApiException {
-        return listUsers2Call(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, _callback);
+    private okhttp3.Call listUsers2ValidateBeforeCall(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, Integer appId, final ApiCallback _callback) throws ApiException {
+        return listUsers2Call(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId, _callback);
 
     }
 
@@ -799,6 +804,7 @@ public class UsersV2Api {
      * @param userIds A comma separated list of OneLogin User IDs (optional)
      * @param customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
+     * @param appId  (optional)
      * @return List&lt;User&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -810,8 +816,8 @@ public class UsersV2Api {
         <tr><td> 422 </td><td> Unprocessable </td><td>  -  </td></tr>
      </table>
      */
-    public List<User> listUsers2(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields) throws ApiException {
-        ApiResponse<List<User>> localVarResp = listUsers2WithHttpInfo(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields);
+    public List<User> listUsers2(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, Integer appId) throws ApiException {
+        ApiResponse<List<User>> localVarResp = listUsers2WithHttpInfo(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId);
         return localVarResp.getData();
     }
 
@@ -837,6 +843,7 @@ public class UsersV2Api {
      * @param userIds A comma separated list of OneLogin User IDs (optional)
      * @param customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
+     * @param appId  (optional)
      * @return ApiResponse&lt;List&lt;User&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -848,8 +855,8 @@ public class UsersV2Api {
         <tr><td> 422 </td><td> Unprocessable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<List<User>> listUsers2WithHttpInfo(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields) throws ApiException {
-        okhttp3.Call localVarCall = listUsers2ValidateBeforeCall(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, null);
+    public ApiResponse<List<User>> listUsers2WithHttpInfo(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, Integer appId) throws ApiException {
+        okhttp3.Call localVarCall = listUsers2ValidateBeforeCall(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId, null);
         Type localVarReturnType = new TypeToken<List<User>>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -876,6 +883,7 @@ public class UsersV2Api {
      * @param userIds A comma separated list of OneLogin User IDs (optional)
      * @param customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket The short name of a custom attribute. Note that the attribute name is prefixed with custom_attributes. (optional)
      * @param fields Optional. Comma delimited list of fields to return. (optional)
+     * @param appId  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -888,9 +896,9 @@ public class UsersV2Api {
         <tr><td> 422 </td><td> Unprocessable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listUsers2Async(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, final ApiCallback<List<User>> _callback) throws ApiException {
+    public okhttp3.Call listUsers2Async(Integer limit, Integer page, String cursor, String createdSince, String createdUntil, String updatedSince, String updatedUntil, String lastLoginSince, String lastLoginUntil, String firstname, String lastname, String email, String username, String samaccountname, Integer directoryId, String externalId, String userIds, String customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, String fields, Integer appId, final ApiCallback<List<User>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listUsers2ValidateBeforeCall(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, _callback);
+        okhttp3.Call localVarCall = listUsers2ValidateBeforeCall(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields, appId, _callback);
         Type localVarReturnType = new TypeToken<List<User>>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

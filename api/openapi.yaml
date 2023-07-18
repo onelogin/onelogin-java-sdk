@@ -3330,7 +3330,7 @@ paths:
   /api/1/privileges:
     get:
       description: List Privileges
-      operationId: listPriveleges
+      operationId: listPrivileges
       responses:
         "200":
           content:
@@ -3385,7 +3385,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/createPrivilege_200_response'
+                $ref: '#/components/schemas/privilege'
           description: Successful response
         "400":
           content:
@@ -3577,7 +3577,7 @@ paths:
   /api/1/privileges/{privilege_id}/roles:
     get:
       description: List roles for privilege
-      operationId: listPrivelegeRoles
+      operationId: listPrivilegeRoles
       parameters:
       - explode: false
         in: path
@@ -3591,7 +3591,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/listPrivelegeRoles_200_response'
+                $ref: '#/components/schemas/listPrivilegeRoles_200_response'
           description: Successful response
         "401":
           content:
@@ -6870,7 +6870,7 @@ paths:
       - explode: true
         in: query
         name: app_id
-        required: true
+        required: false
         schema:
           type: integer
         style: form
@@ -8536,6 +8536,13 @@ paths:
           - users
           - admins
           type: string
+        style: form
+      - explode: true
+        in: query
+        name: app_id
+        required: false
+        schema:
+          type: integer
         style: form
       responses:
         "200":
@@ -10500,7 +10507,7 @@ components:
       explode: true
       in: query
       name: app_id
-      required: true
+      required: false
       schema:
         type: integer
       style: form
@@ -11204,9 +11211,6 @@ components:
             the `certificate_id` attribute is applied in the `configuration` object.
           example: 123456
           type: integer
-      required:
-      - certificate_id
-      - signature_algorithm
       type: object
     connector:
       example:
@@ -14209,15 +14213,6 @@ components:
             \ {{expiration}} minutes."
           type: string
       type: object
-    createPrivilege_200_response:
-      example:
-        id: 5e43a548-e9c6-47be-9341-92160902f7a6
-      properties:
-        id:
-          description: Privilege Id
-          example: 5e43a548-e9c6-47be-9341-92160902f7a6
-          type: string
-      type: object
     updatePrivilege_200_response:
       example:
         id: id
@@ -14226,7 +14221,7 @@ components:
           description: Privilege ID
           type: string
       type: object
-    listPrivelegeRoles_200_response:
+    listPrivilegeRoles_200_response:
       example:
         total: 0
         previousLink: previousLink
@@ -15355,14 +15350,6 @@ components:
           $ref: '#/components/schemas/sso_saml'
         parameters:
           $ref: '#/components/schemas/saml_app_allOf_parameters'
-      required:
-      - configuration
-      - connector_id
-      - description
-      - name
-      - parameters
-      - policy_id
-      - visible
       type: object
       example: null
     sso_saml_certificate:

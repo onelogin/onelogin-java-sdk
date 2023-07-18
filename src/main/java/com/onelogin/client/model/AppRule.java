@@ -36,6 +36,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -50,7 +54,7 @@ import com.onelogin.client.JSON;
 /**
  * AppRule
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class AppRule {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -121,11 +125,11 @@ public class AppRule {
 
   public static final String SERIALIZED_NAME_CONDITIONS = "conditions";
   @SerializedName(SERIALIZED_NAME_CONDITIONS)
-  private List<Condition> conditions = null;
+  private List<Condition> conditions;
 
   public static final String SERIALIZED_NAME_ACTIONS = "actions";
   @SerializedName(SERIALIZED_NAME_ACTIONS)
-  private List<ActionObj> actions = null;
+  private List<ActionObj> actions;
 
   public AppRule() {
   }
@@ -141,7 +145,6 @@ public class AppRule {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -163,7 +166,6 @@ public class AppRule {
    * @return name
   **/
   @javax.annotation.Nullable
-
   public String getName() {
     return name;
   }
@@ -185,7 +187,6 @@ public class AppRule {
    * @return match
   **/
   @javax.annotation.Nullable
-
   public MatchEnum getMatch() {
     return match;
   }
@@ -207,7 +208,6 @@ public class AppRule {
    * @return enabled
   **/
   @javax.annotation.Nullable
-
   public Boolean getEnabled() {
     return enabled;
   }
@@ -229,7 +229,6 @@ public class AppRule {
    * @return position
   **/
   @javax.annotation.Nullable
-
   public Integer getPosition() {
     return position;
   }
@@ -259,7 +258,6 @@ public class AppRule {
    * @return conditions
   **/
   @javax.annotation.Nullable
-
   public List<Condition> getConditions() {
     return conditions;
   }
@@ -289,7 +287,6 @@ public class AppRule {
    * @return actions
   **/
   @javax.annotation.Nullable
-
   public List<ActionObj> getActions() {
     return actions;
   }

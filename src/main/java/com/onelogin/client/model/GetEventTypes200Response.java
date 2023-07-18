@@ -36,6 +36,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -50,7 +54,7 @@ import com.onelogin.client.JSON;
 /**
  * GetEventTypes200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GetEventTypes200Response {
   public static final String SERIALIZED_NAME_STATUS = "status";
   @SerializedName(SERIALIZED_NAME_STATUS)
@@ -58,7 +62,7 @@ public class GetEventTypes200Response {
 
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
-  private List<GetEventTypes200ResponseDataInner> data = null;
+  private List<GetEventTypes200ResponseDataInner> data;
 
   public GetEventTypes200Response() {
   }
@@ -74,7 +78,6 @@ public class GetEventTypes200Response {
    * @return status
   **/
   @javax.annotation.Nullable
-
   public Error getStatus() {
     return status;
   }
@@ -104,7 +107,6 @@ public class GetEventTypes200Response {
    * @return data
   **/
   @javax.annotation.Nullable
-
   public List<GetEventTypes200ResponseDataInner> getData() {
     return data;
   }

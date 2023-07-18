@@ -27,17 +27,17 @@ import org.junit.jupiter.api.Test;
 
 
 /**
- * Model tests for ListPrivelegeRoles200Response
+ * Model tests for ListPrivilegeRoles200Response
  */
-public class ListPrivelegeRoles200ResponseTest {
-    private final ListPrivelegeRoles200Response model = new ListPrivelegeRoles200Response();
+public class ListPrivilegeRoles200ResponseTest {
+    private final ListPrivilegeRoles200Response model = new ListPrivilegeRoles200Response();
 
     /**
-     * Model tests for ListPrivelegeRoles200Response
+     * Model tests for ListPrivilegeRoles200Response
      */
     @Test
-    public void testListPrivelegeRoles200Response() {
-        // TODO: test ListPrivelegeRoles200Response
+    public void testListPrivilegeRoles200Response() {
+        // TODO: test ListPrivilegeRoles200Response
     }
 
     /**

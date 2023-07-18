@@ -1,6 +1,6 @@
 
 
-# ListPrivelegeRoles200Response
+# ListPrivilegeRoles200Response
 
 
 ## Properties

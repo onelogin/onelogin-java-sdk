@@ -35,6 +35,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -49,7 +53,7 @@ import com.onelogin.client.JSON;
 /**
  * PrivilegePrivilege
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class PrivilegePrivilege {
   public static final String SERIALIZED_NAME_VERSION = "Version";
   @SerializedName(SERIALIZED_NAME_VERSION)
@@ -57,7 +61,7 @@ public class PrivilegePrivilege {
 
   public static final String SERIALIZED_NAME_STATEMENT = "Statement";
   @SerializedName(SERIALIZED_NAME_STATEMENT)
-  private List<PrivilegePrivilegeStatementInner> statement = null;
+  private List<PrivilegePrivilegeStatementInner> statement;
 
   public PrivilegePrivilege() {
   }
@@ -73,7 +77,6 @@ public class PrivilegePrivilege {
    * @return version
   **/
   @javax.annotation.Nullable
-
   public String getVersion() {
     return version;
   }
@@ -103,7 +106,6 @@ public class PrivilegePrivilege {
    * @return statement
   **/
   @javax.annotation.Nullable
-
   public List<PrivilegePrivilegeStatementInner> getStatement() {
     return statement;
   }

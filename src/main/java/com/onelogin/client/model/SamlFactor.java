@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * SamlFactor
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class SamlFactor {
   public static final String SERIALIZED_NAME_APP_ID = "app_id";
   @SerializedName(SERIALIZED_NAME_APP_ID)
@@ -82,7 +86,6 @@ public class SamlFactor {
    * @return appId
   **/
   @javax.annotation.Nonnull
-
   public String getAppId() {
     return appId;
   }
@@ -104,7 +107,6 @@ public class SamlFactor {
    * @return deviceId
   **/
   @javax.annotation.Nonnull
-
   public String getDeviceId() {
     return deviceId;
   }
@@ -126,7 +128,6 @@ public class SamlFactor {
    * @return stateToken
   **/
   @javax.annotation.Nonnull
-
   public String getStateToken() {
     return stateToken;
   }
@@ -148,7 +149,6 @@ public class SamlFactor {
    * @return otpToken
   **/
   @javax.annotation.Nullable
-
   public String getOtpToken() {
     return otpToken;
   }
@@ -170,7 +170,6 @@ public class SamlFactor {
    * @return doNotNotify
   **/
   @javax.annotation.Nullable
-
   public Boolean getDoNotNotify() {
     return doNotNotify;
   }

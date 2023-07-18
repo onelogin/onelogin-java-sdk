@@ -14,7 +14,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateRiskRule**](VigilanceAiApi.md#updateRiskRule) | **PUT** /api/2/risk/rules/{rule_id} | Update Rule |
 
 
-<a name="createRiskRule"></a>
+<a id="createRiskRule"></a>
 # **createRiskRule**
 > RiskRule createRiskRule(riskRule)
 
@@ -83,7 +83,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="deleteRiskRule"></a>
+<a id="deleteRiskRule"></a>
 # **deleteRiskRule**
 > deleteRiskRule(ruleId)
 
@@ -150,7 +150,7 @@ null (empty response body)
 | **204** | Successful response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getRiskRule"></a>
+<a id="getRiskRule"></a>
 # **getRiskRule**
 > RiskRule getRiskRule(ruleId)
 
@@ -218,7 +218,7 @@ public class Example {
 | **200** | Successful Response |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getRiskScore"></a>
+<a id="getRiskScore"></a>
 # **getRiskScore**
 > GetRiskScore200Response getRiskScore(getRiskScoreRequest, before, after)
 
@@ -291,7 +291,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getRiskScores"></a>
+<a id="getRiskScores"></a>
 # **getRiskScores**
 > GetRiskScores200Response getRiskScores()
 
@@ -355,7 +355,7 @@ This endpoint does not need any parameter.
 | **200** | OK |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="listRiskRules"></a>
+<a id="listRiskRules"></a>
 # **listRiskRules**
 > List&lt;RiskRule&gt; listRiskRules()
 
@@ -419,7 +419,7 @@ This endpoint does not need any parameter.
 | **200** | OK |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="trackRiskEvent"></a>
+<a id="trackRiskEvent"></a>
 # **trackRiskEvent**
 > trackRiskEvent(trackRiskEventRequest)
 
@@ -487,7 +487,7 @@ null (empty response body)
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="updateRiskRule"></a>
+<a id="updateRiskRule"></a>
 # **updateRiskRule**
 > RiskRule updateRiskRule(ruleId, updateRiskRuleRequest)
 

@@ -34,6 +34,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -48,7 +52,7 @@ import com.onelogin.client.JSON;
 /**
  * User
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class User {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -92,7 +96,7 @@ public class User {
 
   public static final String SERIALIZED_NAME_ROLE_IDS = "role_ids";
   @SerializedName(SERIALIZED_NAME_ROLE_IDS)
-  private List<Integer> roleIds = null;
+  private List<Integer> roleIds;
 
   public static final String SERIALIZED_NAME_PHONE = "phone";
   @SerializedName(SERIALIZED_NAME_PHONE)
@@ -318,7 +322,6 @@ public class User {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -340,7 +343,6 @@ public class User {
    * @return username
   **/
   @javax.annotation.Nullable
-
   public String getUsername() {
     return username;
   }
@@ -362,7 +364,6 @@ public class User {
    * @return email
   **/
   @javax.annotation.Nullable
-
   public String getEmail() {
     return email;
   }
@@ -384,7 +385,6 @@ public class User {
    * @return firstname
   **/
   @javax.annotation.Nullable
-
   public String getFirstname() {
     return firstname;
   }
@@ -406,7 +406,6 @@ public class User {
    * @return lastname
   **/
   @javax.annotation.Nullable
-
   public String getLastname() {
     return lastname;
   }
@@ -428,7 +427,6 @@ public class User {
    * @return title
   **/
   @javax.annotation.Nullable
-
   public String getTitle() {
     return title;
   }
@@ -450,7 +448,6 @@ public class User {
    * @return department
   **/
   @javax.annotation.Nullable
-
   public String getDepartment() {
     return department;
   }
@@ -472,7 +469,6 @@ public class User {
    * @return company
   **/
   @javax.annotation.Nullable
-
   public String getCompany() {
     return company;
   }
@@ -494,7 +490,6 @@ public class User {
    * @return comment
   **/
   @javax.annotation.Nullable
-
   public String getComment() {
     return comment;
   }
@@ -516,7 +511,6 @@ public class User {
    * @return groupId
   **/
   @javax.annotation.Nullable
-
   public Integer getGroupId() {
     return groupId;
   }
@@ -546,7 +540,6 @@ public class User {
    * @return roleIds
   **/
   @javax.annotation.Nullable
-
   public List<Integer> getRoleIds() {
     return roleIds;
   }
@@ -568,7 +561,6 @@ public class User {
    * @return phone
   **/
   @javax.annotation.Nullable
-
   public String getPhone() {
     return phone;
   }
@@ -590,7 +582,6 @@ public class User {
    * @return state
   **/
   @javax.annotation.Nullable
-
   public StateEnum getState() {
     return state;
   }
@@ -612,7 +603,6 @@ public class User {
    * @return status
   **/
   @javax.annotation.Nullable
-
   public StatusEnum getStatus() {
     return status;
   }
@@ -634,7 +624,6 @@ public class User {
    * @return directoryId
   **/
   @javax.annotation.Nullable
-
   public Integer getDirectoryId() {
     return directoryId;
   }
@@ -656,7 +645,6 @@ public class User {
    * @return trustedIdpId
   **/
   @javax.annotation.Nullable
-
   public Integer getTrustedIdpId() {
     return trustedIdpId;
   }
@@ -678,7 +666,6 @@ public class User {
    * @return managerAdId
   **/
   @javax.annotation.Nullable
-
   public String getManagerAdId() {
     return managerAdId;
   }
@@ -700,7 +687,6 @@ public class User {
    * @return managerUserId
   **/
   @javax.annotation.Nullable
-
   public String getManagerUserId() {
     return managerUserId;
   }
@@ -722,7 +708,6 @@ public class User {
    * @return samaccountname
   **/
   @javax.annotation.Nullable
-
   public String getSamaccountname() {
     return samaccountname;
   }
@@ -744,7 +729,6 @@ public class User {
    * @return memberOf
   **/
   @javax.annotation.Nullable
-
   public String getMemberOf() {
     return memberOf;
   }
@@ -766,7 +750,6 @@ public class User {
    * @return userprincipalname
   **/
   @javax.annotation.Nullable
-
   public String getUserprincipalname() {
     return userprincipalname;
   }
@@ -788,7 +771,6 @@ public class User {
    * @return distinguishedName
   **/
   @javax.annotation.Nullable
-
   public String getDistinguishedName() {
     return distinguishedName;
   }
@@ -810,7 +792,6 @@ public class User {
    * @return externalId
   **/
   @javax.annotation.Nullable
-
   public String getExternalId() {
     return externalId;
   }
@@ -832,7 +813,6 @@ public class User {
    * @return activatedAt
   **/
   @javax.annotation.Nullable
-
   public String getActivatedAt() {
     return activatedAt;
   }
@@ -854,7 +834,6 @@ public class User {
    * @return lastLogin
   **/
   @javax.annotation.Nullable
-
   public String getLastLogin() {
     return lastLogin;
   }
@@ -876,7 +855,6 @@ public class User {
    * @return invitationSentAt
   **/
   @javax.annotation.Nullable
-
   public String getInvitationSentAt() {
     return invitationSentAt;
   }
@@ -898,7 +876,6 @@ public class User {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-
   public String getUpdatedAt() {
     return updatedAt;
   }
@@ -920,7 +897,6 @@ public class User {
    * @return preferredLocaleCode
   **/
   @javax.annotation.Nullable
-
   public String getPreferredLocaleCode() {
     return preferredLocaleCode;
   }
@@ -942,7 +918,6 @@ public class User {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -964,7 +939,6 @@ public class User {
    * @return invalidLoginAttempts
   **/
   @javax.annotation.Nullable
-
   public Integer getInvalidLoginAttempts() {
     return invalidLoginAttempts;
   }
@@ -986,7 +960,6 @@ public class User {
    * @return lockedUntil
   **/
   @javax.annotation.Nullable
-
   public String getLockedUntil() {
     return lockedUntil;
   }
@@ -1008,7 +981,6 @@ public class User {
    * @return passwordChangedAt
   **/
   @javax.annotation.Nullable
-
   public String getPasswordChangedAt() {
     return passwordChangedAt;
   }
@@ -1030,7 +1002,6 @@ public class User {
    * @return password
   **/
   @javax.annotation.Nullable
-
   public String getPassword() {
     return password;
   }
@@ -1052,7 +1023,6 @@ public class User {
    * @return passwordConfirmation
   **/
   @javax.annotation.Nullable
-
   public String getPasswordConfirmation() {
     return passwordConfirmation;
   }
@@ -1074,7 +1044,6 @@ public class User {
    * @return passwordAlgorithm
   **/
   @javax.annotation.Nullable
-
   public String getPasswordAlgorithm() {
     return passwordAlgorithm;
   }
@@ -1096,7 +1065,6 @@ public class User {
    * @return salt
   **/
   @javax.annotation.Nullable
-
   public String getSalt() {
     return salt;
   }

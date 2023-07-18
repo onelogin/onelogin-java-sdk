@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * GetRiskScores200ResponseScores
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class GetRiskScores200ResponseScores {
   public static final String SERIALIZED_NAME_MINIMAL = "minimal";
   @SerializedName(SERIALIZED_NAME_MINIMAL)
@@ -82,7 +86,6 @@ public class GetRiskScores200ResponseScores {
    * @return minimal
   **/
   @javax.annotation.Nullable
-
   public Integer getMinimal() {
     return minimal;
   }
@@ -104,7 +107,6 @@ public class GetRiskScores200ResponseScores {
    * @return low
   **/
   @javax.annotation.Nullable
-
   public Integer getLow() {
     return low;
   }
@@ -126,7 +128,6 @@ public class GetRiskScores200ResponseScores {
    * @return medium
   **/
   @javax.annotation.Nullable
-
   public Integer getMedium() {
     return medium;
   }
@@ -148,7 +149,6 @@ public class GetRiskScores200ResponseScores {
    * @return high
   **/
   @javax.annotation.Nullable
-
   public Integer getHigh() {
     return high;
   }
@@ -170,7 +170,6 @@ public class GetRiskScores200ResponseScores {
    * @return veryHigh
   **/
   @javax.annotation.Nullable
-
   public Integer getVeryHigh() {
     return veryHigh;
   }

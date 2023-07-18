@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * The parameters section contains parameterized attributes that have defined at the connector level as well as custom attributes that have been defined specifically for this app. Regardless of how they are defined, all parameters have the following attributes. Each parameter is an object with the key for the object being set as the parameters short name.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class AppParameters {
   public static final String SERIALIZED_NAME_USER_ATTRIBUTE_MAPPINGS = "user_attribute_mappings";
   @SerializedName(SERIALIZED_NAME_USER_ATTRIBUTE_MAPPINGS)
@@ -78,7 +82,6 @@ public class AppParameters {
    * @return userAttributeMappings
   **/
   @javax.annotation.Nullable
-
   public String getUserAttributeMappings() {
     return userAttributeMappings;
   }
@@ -100,7 +103,6 @@ public class AppParameters {
    * @return userAttributeMacros
   **/
   @javax.annotation.Nullable
-
   public String getUserAttributeMacros() {
     return userAttributeMacros;
   }
@@ -122,7 +124,6 @@ public class AppParameters {
    * @return label
   **/
   @javax.annotation.Nullable
-
   public String getLabel() {
     return label;
   }
@@ -144,7 +145,6 @@ public class AppParameters {
    * @return includeInSamlAssertion
   **/
   @javax.annotation.Nullable
-
   public Boolean getIncludeInSamlAssertion() {
     return includeInSamlAssertion;
   }

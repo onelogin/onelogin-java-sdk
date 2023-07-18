@@ -21,7 +21,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateUser**](UsersV1Api.md#updateUser) | **PUT** /api/1/users/{user_id} | Update a User |
 
 
-<a name="addRolesToUser"></a>
+<a id="addRolesToUser"></a>
 # **addRolesToUser**
 > Error addRolesToUser(userId, addRolesToUserRequest)
 
@@ -94,7 +94,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="createUser"></a>
+<a id="createUser"></a>
 # **createUser**
 > User createUser(mappings, validatePolicy, user)
 
@@ -168,7 +168,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="deleteUser"></a>
+<a id="deleteUser"></a>
 # **deleteUser**
 > deleteUser(userId)
 
@@ -236,7 +236,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getCustomAttributes"></a>
+<a id="getCustomAttributes"></a>
 # **getCustomAttributes**
 > GetCustomAttributes200Response getCustomAttributes()
 
@@ -301,7 +301,7 @@ This endpoint does not need any parameter.
 | **400** | Bad Request |  -  |
 | **401** | Unauthorized |  -  |
 
-<a name="getUserApps"></a>
+<a id="getUserApps"></a>
 # **getUserApps**
 > List&lt;GetUserApps200ResponseInner&gt; getUserApps(userId, ignoreVisibility)
 
@@ -372,7 +372,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getUserById"></a>
+<a id="getUserById"></a>
 # **getUserById**
 > User getUserById(userId)
 
@@ -441,7 +441,7 @@ public class Example {
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getUserRoles"></a>
+<a id="getUserRoles"></a>
 # **getUserRoles**
 > GetUserRoles200Response getUserRoles(userId)
 
@@ -512,7 +512,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="listUsers"></a>
+<a id="listUsers"></a>
 # **listUsers**
 > List&lt;User&gt; listUsers(limit, page, cursor, createdSince, createdUntil, updatedSince, updatedUntil, lastLoginSince, lastLoginUntil, firstname, lastname, email, username, samaccountname, directoryId, externalId, userIds, customAttributesLeftCurlyBracketAttributeNameRightCurlyBracket, fields)
 
@@ -618,7 +618,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **422** | Unprocessable |  -  |
 
-<a name="lockAccountUser"></a>
+<a id="lockAccountUser"></a>
 # **lockAccountUser**
 > Error lockAccountUser(userId, lockAccountUserRequest)
 
@@ -691,7 +691,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="logOutUser"></a>
+<a id="logOutUser"></a>
 # **logOutUser**
 > Error logOutUser(userId, body)
 
@@ -764,7 +764,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="removeUserRole"></a>
+<a id="removeUserRole"></a>
 # **removeUserRole**
 > Error removeUserRole(userId, removeUserRoleRequest)
 
@@ -837,7 +837,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="setUserState"></a>
+<a id="setUserState"></a>
 # **setUserState**
 > Error setUserState(userId, setUserStateRequest)
 
@@ -910,7 +910,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updatePasswordInsecure"></a>
+<a id="updatePasswordInsecure"></a>
 # **updatePasswordInsecure**
 > Error updatePasswordInsecure(userId, updatePasswordInsecureRequest)
 
@@ -983,7 +983,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updatePasswordSecure"></a>
+<a id="updatePasswordSecure"></a>
 # **updatePasswordSecure**
 > Error updatePasswordSecure(userId, updatePasswordSecureRequest)
 
@@ -1056,7 +1056,7 @@ public class Example {
 | **403** | Forbidden |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updateUser"></a>
+<a id="updateUser"></a>
 # **updateUser**
 > User updateUser(userId, mappings, validatePolicy, user)
 

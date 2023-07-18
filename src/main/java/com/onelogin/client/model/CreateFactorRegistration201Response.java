@@ -32,6 +32,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -46,7 +50,7 @@ import com.onelogin.client.JSON;
 /**
  * CreateFactorRegistration201Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class CreateFactorRegistration201Response {
   public static final String SERIALIZED_NAME_DEVICE_ID = "device_id";
   @SerializedName(SERIALIZED_NAME_DEVICE_ID)
@@ -86,7 +90,6 @@ public class CreateFactorRegistration201Response {
    * @return deviceId
   **/
   @javax.annotation.Nullable
-
   public String getDeviceId() {
     return deviceId;
   }
@@ -108,7 +111,6 @@ public class CreateFactorRegistration201Response {
    * @return userDisplayName
   **/
   @javax.annotation.Nullable
-
   public String getUserDisplayName() {
     return userDisplayName;
   }
@@ -130,7 +132,6 @@ public class CreateFactorRegistration201Response {
    * @return typeDisplayName
   **/
   @javax.annotation.Nullable
-
   public String getTypeDisplayName() {
     return typeDisplayName;
   }
@@ -152,7 +153,6 @@ public class CreateFactorRegistration201Response {
    * @return authFactorName
   **/
   @javax.annotation.Nullable
-
   public String getAuthFactorName() {
     return authFactorName;
   }
@@ -174,7 +174,6 @@ public class CreateFactorRegistration201Response {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public String getId() {
     return id;
   }
@@ -196,7 +195,6 @@ public class CreateFactorRegistration201Response {
    * @return userId
   **/
   @javax.annotation.Nullable
-
   public String getUserId() {
     return userId;
   }

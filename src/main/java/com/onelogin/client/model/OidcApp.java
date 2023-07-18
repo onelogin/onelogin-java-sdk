@@ -40,6 +40,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -54,7 +58,7 @@ import com.onelogin.client.JSON;
 /**
  * OidcApp
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class OidcApp {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -110,7 +114,7 @@ public class OidcApp {
 
   public static final String SERIALIZED_NAME_ROLE_IDS = "role_ids";
   @SerializedName(SERIALIZED_NAME_ROLE_IDS)
-  private List<Integer> roleIds = null;
+  private List<Integer> roleIds;
 
   public static final String SERIALIZED_NAME_PROVISIONING = "provisioning";
   @SerializedName(SERIALIZED_NAME_PROVISIONING)
@@ -148,7 +152,6 @@ public class OidcApp {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public Integer getId() {
     return id;
   }
@@ -167,7 +170,6 @@ public class OidcApp {
    * @return name
   **/
   @javax.annotation.Nonnull
-
   public String getName() {
     return name;
   }
@@ -189,7 +191,6 @@ public class OidcApp {
    * @return visible
   **/
   @javax.annotation.Nonnull
-
   public Boolean getVisible() {
     return visible;
   }
@@ -211,7 +212,6 @@ public class OidcApp {
    * @return description
   **/
   @javax.annotation.Nonnull
-
   public String getDescription() {
     return description;
   }
@@ -233,7 +233,6 @@ public class OidcApp {
    * @return notes
   **/
   @javax.annotation.Nullable
-
   public String getNotes() {
     return notes;
   }
@@ -255,7 +254,6 @@ public class OidcApp {
    * @return iconUrl
   **/
   @javax.annotation.Nullable
-
   public String getIconUrl() {
     return iconUrl;
   }
@@ -277,7 +275,6 @@ public class OidcApp {
    * @return authMethod
   **/
   @javax.annotation.Nullable
-
   public AuthMethod getAuthMethod() {
     return authMethod;
   }
@@ -299,7 +296,6 @@ public class OidcApp {
    * @return policyId
   **/
   @javax.annotation.Nonnull
-
   public Integer getPolicyId() {
     return policyId;
   }
@@ -321,7 +317,6 @@ public class OidcApp {
    * @return allowAssumedSignin
   **/
   @javax.annotation.Nullable
-
   public Boolean getAllowAssumedSignin() {
     return allowAssumedSignin;
   }
@@ -343,7 +338,6 @@ public class OidcApp {
    * @return tabId
   **/
   @javax.annotation.Nullable
-
   public Integer getTabId() {
     return tabId;
   }
@@ -365,7 +359,6 @@ public class OidcApp {
    * @return connectorId
   **/
   @javax.annotation.Nonnull
-
   public Integer getConnectorId() {
     return connectorId;
   }
@@ -387,7 +380,6 @@ public class OidcApp {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -409,7 +401,6 @@ public class OidcApp {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-
   public String getUpdatedAt() {
     return updatedAt;
   }
@@ -439,7 +430,6 @@ public class OidcApp {
    * @return roleIds
   **/
   @javax.annotation.Nullable
-
   public List<Integer> getRoleIds() {
     return roleIds;
   }
@@ -461,7 +451,6 @@ public class OidcApp {
    * @return provisioning
   **/
   @javax.annotation.Nullable
-
   public GenericAppProvisioning getProvisioning() {
     return provisioning;
   }
@@ -483,7 +472,6 @@ public class OidcApp {
    * @return parameters
   **/
   @javax.annotation.Nullable
-
   public AppParameters getParameters() {
     return parameters;
   }
@@ -505,7 +493,6 @@ public class OidcApp {
    * @return enforcementPoint
   **/
   @javax.annotation.Nullable
-
   public EnforcementPoint getEnforcementPoint() {
     return enforcementPoint;
   }
@@ -527,7 +514,6 @@ public class OidcApp {
    * @return _configuration
   **/
   @javax.annotation.Nonnull
-
   public ConfigurationOidc getConfiguration() {
     return _configuration;
   }
@@ -549,7 +535,6 @@ public class OidcApp {
    * @return sso
   **/
   @javax.annotation.Nullable
-
   public SsoOidc getSso() {
     return sso;
   }

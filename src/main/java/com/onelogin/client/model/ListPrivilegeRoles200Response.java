@@ -35,6 +35,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -47,17 +51,17 @@ import java.util.Set;
 import com.onelogin.client.JSON;
 
 /**
- * ListPrivelegeRoles200Response
+ * ListPrivilegeRoles200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
-public class ListPrivelegeRoles200Response {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
+public class ListPrivilegeRoles200Response {
   public static final String SERIALIZED_NAME_TOTAL = "total";
   @SerializedName(SERIALIZED_NAME_TOTAL)
   private Integer total;
 
   public static final String SERIALIZED_NAME_ROLES = "roles";
   @SerializedName(SERIALIZED_NAME_ROLES)
-  private List<Integer> roles = null;
+  private List<Integer> roles;
 
   public static final String SERIALIZED_NAME_BEFORE_CURSOR = "beforeCursor";
   @SerializedName(SERIALIZED_NAME_BEFORE_CURSOR)
@@ -75,10 +79,10 @@ public class ListPrivelegeRoles200Response {
   @SerializedName(SERIALIZED_NAME_NEXT_LINK)
   private String nextLink;
 
-  public ListPrivelegeRoles200Response() {
+  public ListPrivilegeRoles200Response() {
   }
 
-  public ListPrivelegeRoles200Response total(Integer total) {
+  public ListPrivilegeRoles200Response total(Integer total) {
     
     this.total = total;
     return this;
@@ -89,7 +93,6 @@ public class ListPrivelegeRoles200Response {
    * @return total
   **/
   @javax.annotation.Nullable
-
   public Integer getTotal() {
     return total;
   }
@@ -100,13 +103,13 @@ public class ListPrivelegeRoles200Response {
   }
 
 
-  public ListPrivelegeRoles200Response roles(List<Integer> roles) {
+  public ListPrivilegeRoles200Response roles(List<Integer> roles) {
     
     this.roles = roles;
     return this;
   }
 
-  public ListPrivelegeRoles200Response addRolesItem(Integer rolesItem) {
+  public ListPrivilegeRoles200Response addRolesItem(Integer rolesItem) {
     if (this.roles == null) {
       this.roles = new ArrayList<>();
     }
@@ -119,7 +122,6 @@ public class ListPrivelegeRoles200Response {
    * @return roles
   **/
   @javax.annotation.Nullable
-
   public List<Integer> getRoles() {
     return roles;
   }
@@ -130,7 +132,7 @@ public class ListPrivelegeRoles200Response {
   }
 
 
-  public ListPrivelegeRoles200Response beforeCursor(Integer beforeCursor) {
+  public ListPrivilegeRoles200Response beforeCursor(Integer beforeCursor) {
     
     this.beforeCursor = beforeCursor;
     return this;
@@ -141,7 +143,6 @@ public class ListPrivelegeRoles200Response {
    * @return beforeCursor
   **/
   @javax.annotation.Nullable
-
   public Integer getBeforeCursor() {
     return beforeCursor;
   }
@@ -152,7 +153,7 @@ public class ListPrivelegeRoles200Response {
   }
 
 
-  public ListPrivelegeRoles200Response previousLink(String previousLink) {
+  public ListPrivilegeRoles200Response previousLink(String previousLink) {
     
     this.previousLink = previousLink;
     return this;
@@ -163,7 +164,6 @@ public class ListPrivelegeRoles200Response {
    * @return previousLink
   **/
   @javax.annotation.Nullable
-
   public String getPreviousLink() {
     return previousLink;
   }
@@ -174,7 +174,7 @@ public class ListPrivelegeRoles200Response {
   }
 
 
-  public ListPrivelegeRoles200Response afterCursor(Integer afterCursor) {
+  public ListPrivilegeRoles200Response afterCursor(Integer afterCursor) {
     
     this.afterCursor = afterCursor;
     return this;
@@ -185,7 +185,6 @@ public class ListPrivelegeRoles200Response {
    * @return afterCursor
   **/
   @javax.annotation.Nullable
-
   public Integer getAfterCursor() {
     return afterCursor;
   }
@@ -196,7 +195,7 @@ public class ListPrivelegeRoles200Response {
   }
 
 
-  public ListPrivelegeRoles200Response nextLink(String nextLink) {
+  public ListPrivilegeRoles200Response nextLink(String nextLink) {
     
     this.nextLink = nextLink;
     return this;
@@ -207,7 +206,6 @@ public class ListPrivelegeRoles200Response {
    * @return nextLink
   **/
   @javax.annotation.Nullable
-
   public String getNextLink() {
     return nextLink;
   }
@@ -227,13 +225,13 @@ public class ListPrivelegeRoles200Response {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ListPrivelegeRoles200Response listPrivelegeRoles200Response = (ListPrivelegeRoles200Response) o;
-    return Objects.equals(this.total, listPrivelegeRoles200Response.total) &&
-        Objects.equals(this.roles, listPrivelegeRoles200Response.roles) &&
-        Objects.equals(this.beforeCursor, listPrivelegeRoles200Response.beforeCursor) &&
-        Objects.equals(this.previousLink, listPrivelegeRoles200Response.previousLink) &&
-        Objects.equals(this.afterCursor, listPrivelegeRoles200Response.afterCursor) &&
-        Objects.equals(this.nextLink, listPrivelegeRoles200Response.nextLink);
+    ListPrivilegeRoles200Response listPrivilegeRoles200Response = (ListPrivilegeRoles200Response) o;
+    return Objects.equals(this.total, listPrivilegeRoles200Response.total) &&
+        Objects.equals(this.roles, listPrivilegeRoles200Response.roles) &&
+        Objects.equals(this.beforeCursor, listPrivilegeRoles200Response.beforeCursor) &&
+        Objects.equals(this.previousLink, listPrivilegeRoles200Response.previousLink) &&
+        Objects.equals(this.afterCursor, listPrivilegeRoles200Response.afterCursor) &&
+        Objects.equals(this.nextLink, listPrivilegeRoles200Response.nextLink);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -255,7 +253,7 @@ public class ListPrivelegeRoles200Response {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ListPrivelegeRoles200Response {\n");
+    sb.append("class ListPrivilegeRoles200Response {\n");
     sb.append("    total: ").append(toIndentedString(total)).append("\n");
     sb.append("    roles: ").append(toIndentedString(roles)).append("\n");
     sb.append("    beforeCursor: ").append(toIndentedString(beforeCursor)).append("\n");
@@ -299,20 +297,20 @@ public class ListPrivelegeRoles200Response {
   * Validates the JSON Object and throws an exception if issues found
   *
   * @param jsonObj JSON Object
-  * @throws IOException if the JSON Object is invalid with respect to ListPrivelegeRoles200Response
+  * @throws IOException if the JSON Object is invalid with respect to ListPrivilegeRoles200Response
   */
   public static void validateJsonObject(JsonObject jsonObj) throws IOException {
       if (jsonObj == null) {
-        if (!ListPrivelegeRoles200Response.openapiRequiredFields.isEmpty()) { // has required fields but JSON object is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ListPrivelegeRoles200Response is not found in the empty JSON string", ListPrivelegeRoles200Response.openapiRequiredFields.toString()));
+        if (!ListPrivilegeRoles200Response.openapiRequiredFields.isEmpty()) { // has required fields but JSON object is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ListPrivilegeRoles200Response is not found in the empty JSON string", ListPrivilegeRoles200Response.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!ListPrivelegeRoles200Response.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ListPrivelegeRoles200Response` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        if (!ListPrivilegeRoles200Response.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ListPrivilegeRoles200Response` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
       // ensure the optional json data is an array if present
@@ -331,22 +329,22 @@ public class ListPrivelegeRoles200Response {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ListPrivelegeRoles200Response.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ListPrivelegeRoles200Response' and its subtypes
+       if (!ListPrivilegeRoles200Response.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ListPrivilegeRoles200Response' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ListPrivelegeRoles200Response> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ListPrivelegeRoles200Response.class));
+       final TypeAdapter<ListPrivilegeRoles200Response> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ListPrivilegeRoles200Response.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<ListPrivelegeRoles200Response>() {
+       return (TypeAdapter<T>) new TypeAdapter<ListPrivilegeRoles200Response>() {
            @Override
-           public void write(JsonWriter out, ListPrivelegeRoles200Response value) throws IOException {
+           public void write(JsonWriter out, ListPrivilegeRoles200Response value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public ListPrivelegeRoles200Response read(JsonReader in) throws IOException {
+           public ListPrivilegeRoles200Response read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
              return thisAdapter.fromJsonTree(jsonObj);
@@ -357,18 +355,18 @@ public class ListPrivelegeRoles200Response {
   }
 
  /**
-  * Create an instance of ListPrivelegeRoles200Response given an JSON string
+  * Create an instance of ListPrivilegeRoles200Response given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of ListPrivelegeRoles200Response
-  * @throws IOException if the JSON string is invalid with respect to ListPrivelegeRoles200Response
+  * @return An instance of ListPrivilegeRoles200Response
+  * @throws IOException if the JSON string is invalid with respect to ListPrivilegeRoles200Response
   */
-  public static ListPrivelegeRoles200Response fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ListPrivelegeRoles200Response.class);
+  public static ListPrivilegeRoles200Response fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ListPrivilegeRoles200Response.class);
   }
 
  /**
-  * Convert an instance of ListPrivelegeRoles200Response to an JSON string
+  * Convert an instance of ListPrivilegeRoles200Response to an JSON string
   *
   * @return JSON string
   */

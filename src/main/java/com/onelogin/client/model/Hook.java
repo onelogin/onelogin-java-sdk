@@ -38,6 +38,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -52,7 +56,7 @@ import com.onelogin.client.JSON;
 /**
  * Hook
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-03-16T13:09:58.336938-07:00[America/Los_Angeles]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-07-18T11:53:48.226013-07:00[America/Los_Angeles]")
 public class Hook {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -161,7 +165,7 @@ public class Hook {
 
   public static final String SERIALIZED_NAME_CONDITIONS = "conditions";
   @SerializedName(SERIALIZED_NAME_CONDITIONS)
-  private List<Condition> conditions = null;
+  private List<Condition> conditions;
 
   public static final String SERIALIZED_NAME_CREATED_AT = "created_at";
   @SerializedName(SERIALIZED_NAME_CREATED_AT)
@@ -185,7 +189,6 @@ public class Hook {
    * @return id
   **/
   @javax.annotation.Nullable
-
   public String getId() {
     return id;
   }
@@ -207,7 +210,6 @@ public class Hook {
    * @return type
   **/
   @javax.annotation.Nonnull
-
   public String getType() {
     return type;
   }
@@ -229,7 +231,6 @@ public class Hook {
    * @return disabled
   **/
   @javax.annotation.Nonnull
-
   public Boolean getDisabled() {
     return disabled;
   }
@@ -251,7 +252,6 @@ public class Hook {
    * @return timeout
   **/
   @javax.annotation.Nonnull
-
   public Integer getTimeout() {
     return timeout;
   }
@@ -269,6 +269,9 @@ public class Hook {
   }
 
   public Hook addEnvVarsItem(String envVarsItem) {
+    if (this.envVars == null) {
+      this.envVars = new ArrayList<>();
+    }
     this.envVars.add(envVarsItem);
     return this;
   }
@@ -278,7 +281,6 @@ public class Hook {
    * @return envVars
   **/
   @javax.annotation.Nonnull
-
   public List<String> getEnvVars() {
     return envVars;
   }
@@ -300,7 +302,6 @@ public class Hook {
    * @return runtime
   **/
   @javax.annotation.Nonnull
-
   public String getRuntime() {
     return runtime;
   }
@@ -323,7 +324,6 @@ public class Hook {
    * @return retries
   **/
   @javax.annotation.Nonnull
-
   public Integer getRetries() {
     return retries;
   }
@@ -341,6 +341,9 @@ public class Hook {
   }
 
   public Hook putPackagesItem(String key, String packagesItem) {
+    if (this.packages == null) {
+      this.packages = new HashMap<>();
+    }
     this.packages.put(key, packagesItem);
     return this;
   }
@@ -350,7 +353,6 @@ public class Hook {
    * @return packages
   **/
   @javax.annotation.Nonnull
-
   public Map<String, String> getPackages() {
     return packages;
   }
@@ -372,7 +374,6 @@ public class Hook {
    * @return function
   **/
   @javax.annotation.Nonnull
-
   public String getFunction() {
     return function;
   }
@@ -394,7 +395,6 @@ public class Hook {
    * @return contextVersion
   **/
   @javax.annotation.Nullable
-
   public String getContextVersion() {
     return contextVersion;
   }
@@ -416,7 +416,6 @@ public class Hook {
    * @return status
   **/
   @javax.annotation.Nullable
-
   public StatusEnum getStatus() {
     return status;
   }
@@ -438,7 +437,6 @@ public class Hook {
    * @return options
   **/
   @javax.annotation.Nullable
-
   public HookOptions getOptions() {
     return options;
   }
@@ -468,7 +466,6 @@ public class Hook {
    * @return conditions
   **/
   @javax.annotation.Nullable
-
   public List<Condition> getConditions() {
     return conditions;
   }
@@ -490,7 +487,6 @@ public class Hook {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -512,7 +508,6 @@ public class Hook {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-
   public String getUpdatedAt() {
     return updatedAt;
   }

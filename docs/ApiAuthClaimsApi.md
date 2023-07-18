@@ -10,7 +10,7 @@ All URIs are relative to *https://your-api-subdomain.onelogin.com*
 | [**updateClaim**](ApiAuthClaimsApi.md#updateClaim) | **PUT** /api/2/api_authorizations/{api_auth_id}/claims/{claim_id} | Update Api Auth Server Claim |
 
 
-<a name="createAuthClaim"></a>
+<a id="createAuthClaim"></a>
 # **createAuthClaim**
 > Integer createAuthClaim(apiAuthId, contentType, authClaim)
 
@@ -84,7 +84,7 @@ public class Example {
 | **404** | Not Found |  -  |
 | **422** | Unprocessable Entity |  -  |
 
-<a name="deleteAuthClaim"></a>
+<a id="deleteAuthClaim"></a>
 # **deleteAuthClaim**
 > deleteAuthClaim(apiAuthId, claimId, contentType)
 
@@ -156,7 +156,7 @@ null (empty response body)
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="getAuthclaims"></a>
+<a id="getAuthclaims"></a>
 # **getAuthclaims**
 > List&lt;TokenClaim&gt; getAuthclaims(apiAuthId, contentType)
 
@@ -227,7 +227,7 @@ public class Example {
 | **401** | Unauthorized |  -  |
 | **404** | Not Found |  -  |
 
-<a name="updateClaim"></a>
+<a id="updateClaim"></a>
 # **updateClaim**
 > AuthId updateClaim(apiAuthId, claimId, contentType, authClaim)
 
