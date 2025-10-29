@@ -56,12 +56,14 @@ Your `~/.m2/settings.xml` should contain:
   <servers>
     <server>
       <id>ossrh</id>
-      <username>your-sonatype-username</username>
-      <password>your-sonatype-password</password>
+      <username>${env.OSSRH_USERNAME}</username>
+      <password>${env.OSSRH_PASSWORD}</password>
     </server>
   </servers>
 </settings>
 ```
+
+Note: Replace `${env.OSSRH_USERNAME}` and `${env.OSSRH_PASSWORD}` with your actual credentials or use environment variables.
 
 ## Troubleshooting
 
