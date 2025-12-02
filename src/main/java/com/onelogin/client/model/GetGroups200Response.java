@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.onelogin.client.model.Error;
+import com.onelogin.client.model.GetGroups200ResponsePagination;
 import com.onelogin.client.model.Group;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +61,10 @@ public class GetGroups200Response {
   @SerializedName(SERIALIZED_NAME_STATUS)
   private Error status;
 
+  public static final String SERIALIZED_NAME_PAGINATION = "pagination";
+  @SerializedName(SERIALIZED_NAME_PAGINATION)
+  private GetGroups200ResponsePagination pagination;
+
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
   private List<Group> data;
@@ -85,6 +90,27 @@ public class GetGroups200Response {
 
   public void setStatus(Error status) {
     this.status = status;
+  }
+
+
+  public GetGroups200Response pagination(GetGroups200ResponsePagination pagination) {
+    
+    this.pagination = pagination;
+    return this;
+  }
+
+   /**
+   * Get pagination
+   * @return pagination
+  **/
+  @javax.annotation.Nullable
+  public GetGroups200ResponsePagination getPagination() {
+    return pagination;
+  }
+
+
+  public void setPagination(GetGroups200ResponsePagination pagination) {
+    this.pagination = pagination;
   }
 
 
@@ -128,12 +154,13 @@ public class GetGroups200Response {
     }
     GetGroups200Response getGroups200Response = (GetGroups200Response) o;
     return Objects.equals(this.status, getGroups200Response.status) &&
+        Objects.equals(this.pagination, getGroups200Response.pagination) &&
         Objects.equals(this.data, getGroups200Response.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, data);
+    return Objects.hash(status, pagination, data);
   }
 
   @Override
@@ -141,6 +168,7 @@ public class GetGroups200Response {
     StringBuilder sb = new StringBuilder();
     sb.append("class GetGroups200Response {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    pagination: ").append(toIndentedString(pagination)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -165,6 +193,7 @@ public class GetGroups200Response {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("status");
+    openapiFields.add("pagination");
     openapiFields.add("data");
 
     // a set of required properties/fields (JSON key names)
@@ -194,6 +223,10 @@ public class GetGroups200Response {
       // validate the optional field `status`
       if (jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) {
         Error.validateJsonObject(jsonObj.getAsJsonObject("status"));
+      }
+      // validate the optional field `pagination`
+      if (jsonObj.get("pagination") != null && !jsonObj.get("pagination").isJsonNull()) {
+        GetGroups200ResponsePagination.validateJsonObject(jsonObj.getAsJsonObject("pagination"));
       }
       if (jsonObj.get("data") != null && !jsonObj.get("data").isJsonNull()) {
         JsonArray jsonArraydata = jsonObj.getAsJsonArray("data");

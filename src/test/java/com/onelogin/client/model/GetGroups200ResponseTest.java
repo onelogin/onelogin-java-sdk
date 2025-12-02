@@ -19,6 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.onelogin.client.model.Error;
+import com.onelogin.client.model.GetGroups200ResponsePagination;
 import com.onelogin.client.model.Group;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +48,14 @@ public class GetGroups200ResponseTest {
     @Test
     public void statusTest() {
         // TODO: test status
+    }
+
+    /**
+     * Test the property 'pagination'
+     */
+    @Test
+    public void paginationTest() {
+        // TODO: test pagination
     }
 
     /**
