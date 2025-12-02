@@ -33,16 +33,52 @@ The toolkit is hosted on github. You can download it from:
 * V3 (OpenAPI-generated): https://github.com/onelogin/onelogin-java-sdk/tree/v3
 
 
-#### Maven
-The toolkit is hosted at [Sonatype OSSRH (OSS Repository Hosting)](http://central.sonatype.org/pages/ossrh-guide.html) that is synced to the Central Repository.
+#### Maven (via JitPack)
 
-Install it as a maven dependency:
+Add the JitPack repository to your `pom.xml`:
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 ```
-  <dependency>
-      <groupId>com.onelogin</groupId>
-      <artifactId>onelogin-java-sdk</artifactId>
-      <version>2.0.2</version>
-  </dependency>
+
+Then add the dependency:
+```xml
+<dependency>
+    <groupId>com.github.onelogin</groupId>
+    <artifactId>onelogin-java-sdk</artifactId>
+    <version>2.1.0</version>
+</dependency>
+```
+
+#### Gradle (via JitPack)
+
+Add JitPack to your repositories in `build.gradle`:
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+Then add the dependency:
+```groovy
+dependencies {
+    implementation 'com.github.onelogin:onelogin-java-sdk:2.1.0'
+}
+```
+
+#### Maven Central (legacy)
+
+Version 2.0.2 is also available on Maven Central (without the latest security patches):
+```xml
+<dependency>
+    <groupId>com.onelogin</groupId>
+    <artifactId>onelogin-java-sdk</artifactId>
+    <version>2.0.2</version>
+</dependency>
 ```
 
 Note: If you need the OpenAPI-generated v3 SDK (with additional APIs for Branding, Smart Hooks, API Authorization Servers, etc.), see the [v3 branch](https://github.com/onelogin/onelogin-java-sdk/tree/v3).
