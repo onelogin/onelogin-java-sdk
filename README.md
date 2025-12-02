@@ -123,12 +123,6 @@ The sdk is hosted on github. You can download it from:
 
 ## Getting started
 
-### Javadocs
-
-Javadocs of this SDK are published at:
-https://onelogin.github.io/onelogin-java-sdk/index.html
-
-
 ### Settings
 
 SDK settings are stored in a file named *onelogin.sdk.properties* that can be found at *src/resources* folder.
