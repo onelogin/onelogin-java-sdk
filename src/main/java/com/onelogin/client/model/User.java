@@ -1163,7 +1163,7 @@ public class User {
         Objects.equals(this.password, user.password) &&
         Objects.equals(this.passwordConfirmation, user.passwordConfirmation) &&
         Objects.equals(this.passwordAlgorithm, user.passwordAlgorithm) &&
-        Objects.equals(this.salt, user.salt)&&
+        Objects.equals(this.salt, user.salt) &&
         Objects.equals(this.customAttributes, user.customAttributes);
   }
 
@@ -1416,7 +1416,7 @@ public class User {
                  else if (entry.getValue() instanceof Character)
                    obj.addProperty(entry.getKey(), (Character) entry.getValue());
                  else {
-                   obj.add(entry.getKey(), gson.toJsonTree(entry.getValue()).getAsJsonObject());
+                   obj.add(entry.getKey(), gson.toJsonTree(entry.getValue()));
                  }
                }
              }
