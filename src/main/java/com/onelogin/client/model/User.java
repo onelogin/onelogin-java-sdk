@@ -308,6 +308,12 @@ public class User {
   @SerializedName(SERIALIZED_NAME_SALT)
   private String salt;
 
+  /**
+   * A container for custom attributes.
+   * Custom attributes are returned with keys that match their shortname.
+   */
+  private Map<String, Object> customAttributes;
+
   public User() {
   }
 
@@ -1074,6 +1080,43 @@ public class User {
     this.salt = salt;
   }
 
+  /**
+   * Set a custom attribute with the specified name and value.
+   * 
+   * @param key name of the custom attribute
+   * @param value value of the custom attribute
+   * @return the User instance itself
+   */
+  public User putCustomAttribute(String key, Object value) {
+    if (this.customAttributes == null) {
+        this.customAttributes = new HashMap<>();
+    }
+    this.customAttributes.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the custom attributes.
+   *
+   * @return a map of custom attributes
+   */
+  public Map<String, Object> getCustomAttributes() {
+    return customAttributes;
+  }
+
+  /**
+   * Return the custom attribute with the specified name.
+   *
+   * @param key name of the custom attribute
+   * @return the value of the custom attribute
+   */
+  public Object getCustomAttribute(String key) {
+    if (this.customAttributes == null) {
+        return null;
+    }
+    return this.customAttributes.get(key);
+  }
+
 
 
   @Override
@@ -1120,12 +1163,13 @@ public class User {
         Objects.equals(this.password, user.password) &&
         Objects.equals(this.passwordConfirmation, user.passwordConfirmation) &&
         Objects.equals(this.passwordAlgorithm, user.passwordAlgorithm) &&
-        Objects.equals(this.salt, user.salt);
+        Objects.equals(this.salt, user.salt) &&
+        Objects.equals(this.customAttributes, user.customAttributes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, firstname, lastname, title, department, company, comment, groupId, roleIds, phone, state, status, directoryId, trustedIdpId, managerAdId, managerUserId, samaccountname, memberOf, userprincipalname, distinguishedName, externalId, activatedAt, lastLogin, invitationSentAt, updatedAt, preferredLocaleCode, createdAt, invalidLoginAttempts, lockedUntil, passwordChangedAt, password, passwordConfirmation, passwordAlgorithm, salt);
+    return Objects.hash(id, username, email, firstname, lastname, title, department, company, comment, groupId, roleIds, phone, state, status, directoryId, trustedIdpId, managerAdId, managerUserId, samaccountname, memberOf, userprincipalname, distinguishedName, externalId, activatedAt, lastLogin, invitationSentAt, updatedAt, preferredLocaleCode, createdAt, invalidLoginAttempts, lockedUntil, passwordChangedAt, password, passwordConfirmation, passwordAlgorithm, salt, customAttributes);
   }
 
   @Override
@@ -1168,6 +1212,7 @@ public class User {
     sb.append("    passwordConfirmation: ").append(toIndentedString(passwordConfirmation)).append("\n");
     sb.append("    passwordAlgorithm: ").append(toIndentedString(passwordAlgorithm)).append("\n");
     sb.append("    salt: ").append(toIndentedString(salt)).append("\n");
+    sb.append("    customAttributes: ").append(toIndentedString(customAttributes)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -1246,9 +1291,11 @@ public class User {
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
+      // Note: custom attributes are allowed as they are dynamic fields
       for (Entry<String, JsonElement> entry : entries) {
         if (!User.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `User` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+          // Allow any field that doesn't match the known fields - these are custom attributes
+          // Custom attributes are returned as top-level fields in the User object
         }
       }
       if ((jsonObj.get("username") != null && !jsonObj.get("username").isJsonNull()) && !jsonObj.get("username").isJsonPrimitive()) {
@@ -1356,6 +1403,23 @@ public class User {
            @Override
            public void write(JsonWriter out, User value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             obj.remove("customAttributes");
+             // serialize custom attributes
+             if (value.getCustomAttributes() != null) {
+               for (Map.Entry<String, Object> entry : value.getCustomAttributes().entrySet()) {
+                 if (entry.getValue() instanceof String)
+                   obj.addProperty(entry.getKey(), (String) entry.getValue());
+                 else if (entry.getValue() instanceof Number)
+                   obj.addProperty(entry.getKey(), (Number) entry.getValue());
+                 else if (entry.getValue() instanceof Boolean)
+                   obj.addProperty(entry.getKey(), (Boolean) entry.getValue());
+                 else if (entry.getValue() instanceof Character)
+                   obj.addProperty(entry.getKey(), (Character) entry.getValue());
+                 else {
+                   obj.add(entry.getKey(), gson.toJsonTree(entry.getValue()));
+                 }
+               }
+             }
              elementAdapter.write(out, obj);
            }
 
@@ -1363,7 +1427,27 @@ public class User {
            public User read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
-             return thisAdapter.fromJsonTree(jsonObj);
+             // store custom attributes in the deserialized instance
+             User instance = thisAdapter.fromJsonTree(jsonObj);
+             for (Map.Entry<String, JsonElement> entry : jsonObj.entrySet()) {
+               if (!openapiFields.contains(entry.getKey())) {
+                 if (entry.getValue().isJsonPrimitive()) { // primitive type
+                   if (entry.getValue().getAsJsonPrimitive().isString())
+                     instance.putCustomAttribute(entry.getKey(), entry.getValue().getAsString());
+                   else if (entry.getValue().getAsJsonPrimitive().isNumber())
+                     instance.putCustomAttribute(entry.getKey(), entry.getValue().getAsNumber());
+                   else if (entry.getValue().getAsJsonPrimitive().isBoolean())
+                     instance.putCustomAttribute(entry.getKey(), entry.getValue().getAsBoolean());
+                   else
+                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                 } else if (entry.getValue().isJsonArray()) {
+                     instance.putCustomAttribute(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
+                 } else { // JSON object
+                     instance.putCustomAttribute(entry.getKey(), gson.fromJson(entry.getValue(), HashMap.class));
+                 }
+               }
+             }
+             return instance;
            }
 
        }.nullSafe();
