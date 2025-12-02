@@ -52,7 +52,7 @@
     <servletApiVersion>4.0.1</servletApiVersion>
     <junitVersion>4.13.2</junitVersion>
     <slf4jVersion>1.7.32</slf4jVersion>
-    <logbackVersion>1.2.6</logbackVersion>
+    <logbackVersion>1.2.13</logbackVersion>
     <jodaVersion>2.10.6</jodaVersion>
     <jsonVersion>20160810</jsonVersion>
     <httpClientVersion>4.5.13</httpClientVersion>
