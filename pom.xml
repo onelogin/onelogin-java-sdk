@@ -54,7 +54,7 @@
     <slf4jVersion>1.7.32</slf4jVersion>
     <logbackVersion>1.2.6</logbackVersion>
     <jodaVersion>2.10.6</jodaVersion>
-    <jsonVersion>20160810</jsonVersion>
+    <jsonVersion>20231013</jsonVersion>
     <httpClientVersion>4.5.13</httpClientVersion>
   </properties>
 
