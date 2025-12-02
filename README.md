@@ -1,5 +1,9 @@
 # OneLogin's Java SDK
 
+## Support
+
+OneLogin by One Identity open source projects are supported through [OneLogin GitHub issues](https://github.com/onelogin/onelogin-java-sdk/issues). This includes all scripts, plugins, SDKs, modules, code snippets or other solutions. For assistance with any OneLogin by One Identity GitHub project, please raise a new Issue on the [OneLogin GitHub issues](https://github.com/onelogin/onelogin-java-sdk/issues) page. Requests for assistance made through official One Identity Support will be referred back to GitHub where those requests can benefit all users.
+
 ## What's new on v2
 
 v2 is mostly backward compatible with v1, only some models where modified in order to be used for v1 and v2 at same time and some parameters types on methods could be modified.
@@ -14,7 +18,7 @@ the SDK v2 will let you execute all the API methods available at:
 V2 implements a flexible mechanism to decide what version use per resource
 (read more about this at the [Getting Started](https://github.com/onelogin/onelogin-java-sdk#getting-started) section, the `apiConfiguration` parameter).
 
-V2 also allows you to call urls using the generic domain: api.[region].onelogin.com (that was the unique way on SDK v1) or branded domain: [subdomain].onelogin.com (read more about this at the [Getting Started](https://github.com/onelogin/onelogin-python-sdk#getting-started) section, the `subdomain` parameter).
+V2 also allows you to call urls using the generic domain: api.[region].onelogin.com (that was the unique way on SDK v1) or branded domain: [subdomain].onelogin.com (read more about this at the [Getting Started](https://github.com/onelogin/onelogin-java-sdk#getting-started) section, the `subdomain` parameter).
 
 The org.apache.oltu project was removed as dependency and since the project is abandoned, it was included in the SDK and we plan to patch
 it when necesary.
@@ -24,26 +28,24 @@ it when necesary.
 ### Hosting
 #### Github
 The toolkit is hosted on github. You can download it from:
-* Lastest release: https://github.com/onelogin/onelogin-java-sdk/releases/latest
-* Master repo: https://github.com/onelogin/onelogin-java-sdk/tree/master
-* V1: https://github.com/onelogin/onelogin-java-sdk/tree/v1
-* V2: https://github.com/onelogin/onelogin-java-sdk/tree/v2
+* Latest release: https://github.com/onelogin/onelogin-java-sdk/releases/latest
+* Main repo: https://github.com/onelogin/onelogin-java-sdk/tree/main
+* V3 (OpenAPI-generated): https://github.com/onelogin/onelogin-java-sdk/tree/v3
 
 
 #### Maven
 The toolkit is hosted at [Sonatype OSSRH (OSS Repository Hosting)](http://central.sonatype.org/pages/ossrh-guide.html) that is synced to the Central Repository.
 
-Install it as a maven dependecy:
+Install it as a maven dependency:
 ```
   <dependency>
       <groupId>com.onelogin</groupId>
       <artifactId>onelogin-java-sdk</artifactId>
-      <version>1.6.0</version>
+      <version>2.0.2</version>
   </dependency>
 ```
 
-V2 is not currently available on Maven Central, you will need to provide it manually. At the github repo you can find the file
-bin/onelogin-java-sdk-v2.jar which contains the SDK
+Note: If you need the OpenAPI-generated v3 SDK (with additional APIs for Branding, Smart Hooks, API Authorization Servers, etc.), see the [v3 branch](https://github.com/onelogin/onelogin-java-sdk/tree/v3).
 
 ### Dependencies
 onelogin-java-sdk (com.onelogin:onelogin-java-sdk) has the following dependencies:
@@ -62,22 +64,21 @@ onelogin-java-sdk (com.onelogin:onelogin-java-sdk) has the following dependencie
 * org.slf4j:slf4j-api
 * ch.qos.logback:logback-classic
 
-also the [Java Cryptography Extension (JCE)](https://en.wikipedia.org/wiki/Java_Cryptography_Extension) is required. If you don't have it, download the version of [jce-6](http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html), [jce-7](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html) or [jce-8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html), unzip it, and drop its content at
-*${java.home}/jre/lib/security/*
+Note: Java 8u161+ and Java 9+ include unlimited strength JCE by default. For older Java versions, you may need to install the [Java Cryptography Extension (JCE)](https://en.wikipedia.org/wiki/Java_Cryptography_Extension) unlimited strength policy files.
 
 *maven:*
 * org.apache.maven.plugins:maven-jar-plugin
 * org.apache.maven.plugins:maven-surefire-plugin
 * org.apache.maven.plugins:maven-enforcer-plugin
 
-For more info, open and read the [pom.xml](https://github.com/onelogin/onelogin-java-sdk/blob/master/pom.xml) file.
+For more info, open and read the [pom.xml](https://github.com/onelogin/onelogin-java-sdk/blob/main/pom.xml) file.
 
 
 ## Working with the github repository code and Eclipse.
 ### Get the sdk.
 The sdk is hosted on github. You can download it from:
-* Lastest release: https://github.com/onelogin/onelogin-java-sdk/releases/latest
-* Master repo: https://github.com/onelogin/onelogin-java-sdk/tree/master
+* Latest release: https://github.com/onelogin/onelogin-java-sdk/releases/latest
+* Main repo: https://github.com/onelogin/onelogin-java-sdk/tree/main
 
 ### Adding onelogin-java-sdk components as a project
 1. Open Eclipse and set a workspace
