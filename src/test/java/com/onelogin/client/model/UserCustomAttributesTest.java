@@ -37,6 +37,7 @@ public class UserCustomAttributesTest {
         Gson gson = builder.create();
         JSON.setGson(gson);
     }
+
     /**
      * Test that custom attributes can be set and retrieved
      */

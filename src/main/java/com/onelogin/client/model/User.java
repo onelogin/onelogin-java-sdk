@@ -1089,7 +1089,7 @@ public class User {
    */
   public User putCustomAttribute(String key, Object value) {
     if (this.customAttributes == null) {
-        this.customAttributes = new HashMap<String, Object>();
+        this.customAttributes = new HashMap<>();
     }
     this.customAttributes.put(key, value);
     return this;
